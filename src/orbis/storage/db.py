@@ -2,18 +2,22 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, SQLModel, create_engine
 
 
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
 class Scan(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     target: str
     auth_state_path: str | None = None
-    started_at: datetime = Field(default_factory=datetime.utcnow)
+    started_at: datetime = Field(default_factory=_utcnow)
     finished_at: datetime | None = None
     pages_crawled: int = 0
     endpoints_found: int = 0

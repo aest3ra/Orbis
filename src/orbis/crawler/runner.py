@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import time
 
 from playwright.async_api import async_playwright
@@ -15,6 +16,8 @@ from orbis.crawler.frontier import Frontier
 from orbis.crawler.scope import Scope
 from orbis.storage.db import open_db
 from orbis.storage.repo import create_scan, finish_scan, save_endpoints
+
+log = logging.getLogger("orbis.crawler")
 
 
 async def run_scan(
@@ -33,7 +36,11 @@ async def run_scan(
     with Session(engine) as session:
         scan_id = create_scan(session, config.target, auth_path)
 
-    frontier = Frontier(scope, config.limits.max_visits_per_template)
+    frontier = Frontier(
+        scope,
+        config.limits.max_visits_per_template,
+        max_depth=config.limits.max_depth,
+    )
     frontier.enqueue(config.target)
 
     limits = config.limits
@@ -52,7 +59,7 @@ async def run_scan(
 
         while frontier.size > 0 and pages < limits.max_pages:
             if time.monotonic() > deadline:
-                print(f"  [timeout] {limits.max_duration_sec}s limit reached")
+                log.warning("timeout: %ds limit reached", limits.max_duration_sec)
                 break
 
             item = frontier.pop()
@@ -73,7 +80,10 @@ async def run_scan(
                 )
             except Exception as exc:
                 pages += 1
-                print(f"  [{pages}/{limits.max_pages}] FAIL {item.url} ({type(exc).__name__})")
+                log.warning(
+                    "[%d/%d] FAIL %s (%s)",
+                    pages, limits.max_pages, item.url, type(exc).__name__,
+                )
                 continue
 
             pages += 1
@@ -92,9 +102,10 @@ async def run_scan(
             api_n = len(result.endpoints)
             link_n = len(result.frontier_urls)
             err = f" err={capture.error}" if capture.error else ""
-            print(
-                f"  [{pages}/{limits.max_pages}] {item.url}"
-                f" -> api={api_n} links={link_n} queue={frontier.size}{err}"
+            log.info(
+                "[%d/%d] %s -> api=%d links=%d queue=%d%s",
+                pages, limits.max_pages, item.url,
+                api_n, link_n, frontier.size, err,
             )
 
         await browser.close()

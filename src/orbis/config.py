@@ -22,6 +22,7 @@ class AuthConfig(BaseModel):
 
 class LimitsConfig(BaseModel):
     max_pages: int = 100
+    max_depth: int | None = None
     max_duration_sec: int = 600
     max_visits_per_template: int = 5
     max_scrolls_per_page: int = 3

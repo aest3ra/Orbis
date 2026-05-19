@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections import deque
+import heapq
+from itertools import count
 from urllib.parse import urlparse
 
 from orbis.analysis.url import templatize_path
@@ -19,16 +20,25 @@ class FrontierItem:
 
 
 class Frontier:
-    def __init__(self, scope: Scope, max_per_template: int = 5) -> None:
-        self._queue: deque[FrontierItem] = deque()
+    def __init__(
+        self,
+        scope: Scope,
+        max_per_template: int = 5,
+        max_depth: int | None = None,
+    ) -> None:
+        self._heap: list[tuple[int, int, FrontierItem]] = []
+        self._counter = count()
         self._seen: set[str] = set()
         self._template_visits: dict[tuple[str, str], int] = {}
         self._scope = scope
         self._cap = max_per_template
+        self._max_depth = max_depth
 
     def enqueue(self, url: str, depth: int = 0) -> bool:
         url = _normalize(url)
         if not url or url in self._seen:
+            return False
+        if self._max_depth is not None and depth > self._max_depth:
             return False
         if not self._scope.allows(url) or not is_safe_url(url):
             return False
@@ -37,15 +47,21 @@ class Frontier:
             return False
         self._seen.add(url)
         self._template_visits[tkey] = self._template_visits.get(tkey, 0) + 1
-        _insert_by_priority(self._queue, FrontierItem(url, depth))
+        heapq.heappush(
+            self._heap,
+            (_priority(url), next(self._counter), FrontierItem(url, depth)),
+        )
         return True
 
     def pop(self) -> FrontierItem | None:
-        return self._queue.popleft() if self._queue else None
+        if not self._heap:
+            return None
+        _, _, item = heapq.heappop(self._heap)
+        return item
 
     @property
     def size(self) -> int:
-        return len(self._queue)
+        return len(self._heap)
 
 
 def _normalize(url: str) -> str:
@@ -81,10 +97,3 @@ def _priority(url: str) -> int:
     return 30
 
 
-def _insert_by_priority(queue: deque[FrontierItem], item: FrontierItem) -> None:
-    p = _priority(item.url)
-    for i, existing in enumerate(queue):
-        if p < _priority(existing.url):
-            queue.insert(i, item)
-            return
-    queue.append(item)

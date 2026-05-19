@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import logging
 import re
 from datetime import datetime
 from pathlib import Path
@@ -25,6 +26,18 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 CrawlMode = Literal["quick", "deep", "exhaustive"]
 
 
+def _setup_logging(verbose: bool = False) -> None:
+    level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(
+        level=level,
+        format="  %(message)s",
+        handlers=[logging.StreamHandler()],
+    )
+    if not verbose:
+        logging.getLogger("urllib3").setLevel(logging.WARNING)
+        logging.getLogger("httpx").setLevel(logging.WARNING)
+
+
 @app.command()
 def scan(
     target_or_config: str = typer.Argument(..., help="Target URL or YAML config."),
@@ -32,12 +45,15 @@ def scan(
     auth: Path | None = typer.Option(None, "--auth", exists=True),
     headless: bool = typer.Option(True, "--headless/--no-headless"),
     max_pages: int | None = typer.Option(None, "--max-pages", min=1),
+    max_depth: int | None = typer.Option(None, "--max-depth", min=0),
     max_duration: int | None = typer.Option(None, "--max-duration", min=1),
     per_template: int | None = typer.Option(None, "--per-template", min=1),
     max_scrolls: int | None = typer.Option(None, "--max-scrolls", min=0),
     crawl_mode: CrawlMode | None = typer.Option(None, "--crawl-mode"),
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Crawl target and collect API endpoints."""
+    _setup_logging(verbose)
     config = _load_config(target_or_config)
 
     if auth:
@@ -47,6 +63,8 @@ def scan(
             setattr(config.limits, k, v)
     if max_pages is not None:
         config.limits.max_pages = max_pages
+    if max_depth is not None:
+        config.limits.max_depth = max_depth
     if max_duration is not None:
         config.limits.max_duration_sec = max_duration
     if per_template is not None:
@@ -60,7 +78,8 @@ def scan(
     print(f"[bold]orbis scan[/bold] {config.target}")
     print(f"  db:     {db_path}")
     print(f"  scope:  {config.scope.include_domains}")
-    print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s\n")
+    depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"
+    print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}\n")
 
     scan_id = asyncio.run(run_scan(config, db_path=str(db_path), headless=headless))
 

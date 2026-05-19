@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
@@ -22,7 +22,7 @@ def create_scan(session: Session, target: str, auth_path: str | None = None) -> 
 def finish_scan(session: Session, scan_id: int, pages: int, endpoints: int) -> None:
     scan = session.get(Scan, scan_id)
     if scan:
-        scan.finished_at = datetime.utcnow()
+        scan.finished_at = datetime.now(timezone.utc)
         scan.pages_crawled = pages
         scan.endpoints_found = endpoints
         session.commit()
@@ -33,7 +33,7 @@ def save_endpoints(
     scan_id: int,
     endpoints: list[NormalizedEndpoint],
 ) -> tuple[int, int]:
-    """Returns (added, updated)."""
+    """Batch-save all endpoints in a single transaction. Returns (added, updated)."""
     added = updated = 0
     for ep in endpoints:
         row = session.exec(
@@ -48,8 +48,7 @@ def save_endpoints(
         if row:
             row.seen_count += ep.seen_count
             row.sample_url = ep.sample_url
-            session.commit()
-            session.refresh(row)
+            session.flush()
             ep_id = row.id
             updated += 1
         else:
@@ -63,12 +62,13 @@ def save_endpoints(
                 seen_count=ep.seen_count,
             )
             session.add(row)
-            session.commit()
-            session.refresh(row)
+            session.flush()
             ep_id = row.id
             added += 1
 
         _save_params(session, ep_id, ep)  # type: ignore[arg-type]
+
+    session.commit()
     return added, updated
 
 
@@ -95,7 +95,6 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
                 sample_values_json=samples,
                 seen_count=param.seen_count,
             ))
-        session.commit()
 
 
 def list_endpoints(session: Session, scan_id: int | None = None) -> list[Endpoint]:

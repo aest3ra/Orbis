@@ -92,6 +92,7 @@ async def capture_page(
     max_scrolls: int = 3,
     nav_timeout_ms: int = 20_000,
     settle_ms: int = 2_000,
+    collect_bodies: bool = False,
 ) -> PageCapture:
     """Visit url, capture all network traffic and DOM elements. No filtering."""
     captured: dict[str, NetworkEvent] = {}
@@ -152,7 +153,8 @@ async def capture_page(
     for ev in await _collect_init_script_events(page, url, seen_keys):
         captured[ev.request_id] = ev
 
-    await _fill_bodies(client, captured)
+    if collect_bodies:
+        await _fill_bodies(client, captured)
     result.network_events = list(captured.values())
 
     with suppress(Exception):
