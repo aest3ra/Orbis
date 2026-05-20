@@ -5,6 +5,7 @@
 runs/
 auth.json
 *.db
+docs.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

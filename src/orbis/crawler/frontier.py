@@ -1,4 +1,4 @@
-"""URL frontier: dedup, template-based visit cap, priority ordering."""
+"""URL frontier: dedup, template-based visit cap, novelty-based priority."""
 
 from __future__ import annotations
 
@@ -49,7 +49,7 @@ class Frontier:
         self._template_visits[tkey] = self._template_visits.get(tkey, 0) + 1
         heapq.heappush(
             self._heap,
-            (_priority(url), next(self._counter), FrontierItem(url, depth)),
+            (self._calc_priority(tkey), next(self._counter), FrontierItem(url, depth)),
         )
         return True
 
@@ -62,6 +62,21 @@ class Frontier:
     @property
     def size(self) -> int:
         return len(self._heap)
+
+    # ------------------------------------------------------------------
+    # Priority: novelty-based (no keyword heuristics)
+    #
+    # First visit to a template gets the highest priority (0).
+    # Repeated visits to the same template are progressively deprioritized.
+    # This ensures the crawler explores structurally diverse paths first,
+    # regardless of whether they contain "/api/", "/admin/", etc.
+    # ------------------------------------------------------------------
+
+    def _calc_priority(self, tkey: tuple[str, str]) -> int:
+        visits = self._template_visits.get(tkey, 0)
+        if visits <= 1:
+            return 0                            # first of this template
+        return min(10 + visits * 10, 90)        # 2nd→30, 3rd→40, ...
 
 
 def _normalize(url: str) -> str:
@@ -82,18 +97,3 @@ def _normalize(url: str) -> str:
 def _template_key(url: str) -> tuple[str, str]:
     parsed = urlparse(url)
     return parsed.hostname or "", templatize_path(parsed.path or "/")
-
-
-_API_MARKERS = ("/api/", "/rest/", "/graphql")
-_HIGH_VALUE = ("admin", "account", "profile", "setting", "dashboard", "login", "search")
-
-
-def _priority(url: str) -> int:
-    path = urlparse(url).path.lower()
-    if any(m in path for m in _API_MARKERS):
-        return 0
-    if any(kw in path for kw in _HIGH_VALUE):
-        return 10
-    return 30
-
-

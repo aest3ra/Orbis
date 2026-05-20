@@ -15,7 +15,12 @@ from orbis.crawler.browser import capture_page
 from orbis.crawler.frontier import Frontier
 from orbis.crawler.scope import Scope
 from orbis.storage.db import open_db
-from orbis.storage.repo import create_scan, finish_scan, save_endpoints
+from orbis.storage.repo import (
+    collapse_scan_endpoints,
+    create_scan,
+    finish_scan,
+    save_endpoints,
+)
 
 log = logging.getLogger("orbis.crawler")
 
@@ -111,6 +116,7 @@ async def run_scan(
         await browser.close()
 
     with Session(engine) as session:
-        finish_scan(session, scan_id, pages, total_added)
+        collapsed = collapse_scan_endpoints(session, scan_id)
+        finish_scan(session, scan_id, pages, total_added - collapsed)
 
     return scan_id

@@ -59,6 +59,39 @@ class TestTemplatizePath:
     def test_embedded_numbers(self, path: str, expected: str) -> None:
         assert templatize_path(path) == expected
 
+    # --- Slugs (number-text patterns) ---
+
+    @pytest.mark.parametrize("path, expected", [
+        ("/posts/1944-%ED%99%94%EC%9D%B4%ED%8A%B8%ED%96%87%EC%8A%A4%EC%BF%A8-%EC%A7%80%EC%9B%90",
+         "/posts/{slug}"),
+        ("/posts/1954-bob-vs-%ED%99%94%EC%9D%B4%ED%96%87%EC%8A%A4%EC%BF%A8",
+         "/posts/{slug}"),
+        ("/blog/12345-this-is-a-long-slug-title",
+         "/blog/{slug}"),
+        ("/articles/99-abcdefgh",
+         "/articles/{slug}"),
+    ])
+    def test_slug_patterns(self, path: str, expected: str) -> None:
+        assert templatize_path(path) == expected
+
+    @pytest.mark.parametrize("path, expected", [
+        ("/posts/123-abc", "/posts/123-abc"),           # suffix too short (<8)
+        ("/posts/1234-short", "/posts/{n}-short"),       # suffix short, embedded num
+        ("/items/123-v2", "/items/123-v2"),              # not a slug, possible variant
+    ])
+    def test_short_suffix_not_slug(self, path: str, expected: str) -> None:
+        assert templatize_path(path) == expected
+
+    def test_slug_order_does_not_break_date(self) -> None:
+        """DATE must be matched before SLUG to avoid false positives."""
+        assert templatize_path("/report/2024-01-15") == "/report/{date}"
+
+    def test_slug_order_does_not_break_uuid(self) -> None:
+        """UUID must be matched before SLUG."""
+        assert templatize_path(
+            "/item/550e8400-e29b-41d4-a716-446655440000"
+        ) == "/item/{uuid}"
+
     # --- Should NOT templatize ---
 
     @pytest.mark.parametrize("path", [

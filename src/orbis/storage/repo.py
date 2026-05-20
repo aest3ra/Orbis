@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import json
+import logging
+from collections import defaultdict
 from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
 from orbis.analysis.analyzer import NormalizedEndpoint
 from orbis.storage.db import Endpoint, Parameter, Scan
+
+log = logging.getLogger("orbis.storage")
 
 
 def create_scan(session: Session, target: str, auth_path: str | None = None) -> int:
@@ -95,6 +99,72 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
                 sample_values_json=samples,
                 seen_count=param.seen_count,
             ))
+
+
+def collapse_scan_endpoints(
+    session: Session,
+    scan_id: int,
+    threshold: int = 3,
+) -> int:
+    """Post-scan: collapse high-cardinality sibling endpoints.
+
+    When multiple endpoints share the same (method, host, parent_path)
+    and differ only in the last path segment, they are merged into one
+    endpoint with a ``{slug}`` placeholder.  Root-level paths (prefix is
+    empty) are never collapsed to avoid merging unrelated top-level pages
+    like ``/about`` and ``/contact``.
+
+    Returns the number of endpoints removed by merging.
+    """
+    endpoints = list(
+        session.exec(select(Endpoint).where(Endpoint.scan_id == scan_id)).all()
+    )
+
+    # Group by (method, host, parent_path) — skip already-templatized last segments
+    # and root-level paths (empty prefix).
+    groups: dict[tuple[str, str, str], list[Endpoint]] = defaultdict(list)
+    for ep in endpoints:
+        parts = ep.path_template.rsplit("/", 1)
+        if len(parts) == 2 and parts[0] and not parts[1].startswith("{"):
+            key = (ep.method, ep.host, parts[0])
+            groups[key].append(ep)
+
+    merged = 0
+    for key, eps in groups.items():
+        if len(eps) < threshold:
+            continue
+        last_segs = {e.path_template.rsplit("/", 1)[-1] for e in eps}
+        if len(last_segs) < threshold:
+            continue
+
+        method, host, prefix = key
+        survivor = eps[0]
+        survivor.path_template = f"{prefix}/{{slug}}"
+        survivor.seen_count = sum(e.seen_count for e in eps)
+
+        for ep in eps[1:]:
+            # Migrate unique params to survivor, then delete the duplicate.
+            for param in session.exec(
+                select(Parameter).where(Parameter.endpoint_id == ep.id)
+            ).all():
+                existing = session.exec(
+                    select(Parameter).where(
+                        Parameter.endpoint_id == survivor.id,
+                        Parameter.location == param.location,
+                        Parameter.name == param.name,
+                    )
+                ).first()
+                if existing:
+                    existing.seen_count += param.seen_count
+                session.delete(param)
+            session.delete(ep)
+            merged += 1
+
+    if merged:
+        session.commit()
+        log.info("collapsed %d sibling endpoints into {slug} templates", merged)
+
+    return merged
 
 
 def list_endpoints(session: Session, scan_id: int | None = None) -> list[Endpoint]:

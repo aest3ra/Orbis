@@ -11,6 +11,7 @@ _UUID = re.compile(
 )
 _LONG_HEX = re.compile(r"[0-9a-fA-F]{16,}$")
 _DATE = re.compile(r"\d{4}-\d{2}-\d{2}$")
+_SLUG = re.compile(r"^\d+-.{8,}$")
 _EMBEDDED_NUM = re.compile(r"\d{4,}")
 
 
@@ -25,6 +26,8 @@ def _replace(seg: str) -> str:
         return "{uuid}"
     if _DATE.match(seg):
         return "{date}"
+    if _SLUG.match(seg):
+        return "{slug}"
     if _LONG_HEX.match(seg):
         return "{hash}"
     if _NUMERIC.match(seg):

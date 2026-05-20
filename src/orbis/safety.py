@@ -22,18 +22,15 @@ _SEG_SPLIT = re.compile(r"[-_]")
 
 
 def is_dangerous_url(url: str) -> bool:
-    """Segment-level matching: /delete → blocked, /undelete → allowed."""
     path = urlparse(url).path.lower()
     for seg in path.split("/"):
         if not seg:
             continue
         if seg in DANGER_KEYWORDS:
             return True
-        # normalize underscores → hyphens so cancel_account matches cancel-account
         normalized = seg.replace("_", "-")
         if normalized in DANGER_KEYWORDS:
             return True
-        # handle compound segments: delete-user, cancel_account
         parts = _SEG_SPLIT.split(seg)
         if len(parts) > 1 and any(p in DANGER_KEYWORDS for p in parts):
             return True

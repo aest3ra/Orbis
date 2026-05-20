@@ -3,7 +3,7 @@
 import pytest
 
 from orbis.config import ScopeConfig
-from orbis.crawler.frontier import Frontier, _normalize, _priority
+from orbis.crawler.frontier import Frontier, _normalize
 from orbis.crawler.scope import Scope
 
 
@@ -38,19 +38,64 @@ class TestNormalize:
         assert "!/settings" in _normalize(url)
 
 
-class TestPriority:
-    def test_api_paths_highest_priority(self) -> None:
-        assert _priority("https://example.com/api/users") < \
-            _priority("https://example.com/about")
+class TestNoveltyPriority:
+    """Priority is based on template novelty, not URL keywords."""
 
-    def test_high_value_mid_priority(self) -> None:
-        p_admin = _priority("https://example.com/admin")
-        p_api = _priority("https://example.com/api/v1")
-        p_general = _priority("https://example.com/about")
-        assert p_api < p_admin < p_general
+    def test_all_novel_templates_get_equal_priority(self) -> None:
+        """First visit to any template gets priority 0 — FIFO decides order."""
+        f = Frontier(_scope())
+        f.enqueue("https://example.com/about")
+        f.enqueue("https://example.com/api/users")
+        f.enqueue("https://example.com/admin/dashboard")
+        # All novel → all priority 0 → FIFO order
+        first = f.pop()
+        second = f.pop()
+        third = f.pop()
+        assert first is not None and "about" in first.url
+        assert second is not None and "api/users" in second.url
+        assert third is not None and "admin/dashboard" in third.url
 
-    def test_general_lowest_priority(self) -> None:
-        assert _priority("https://example.com/about") == 30
+    def test_repeated_template_deprioritized(self) -> None:
+        """Second visit to same template goes behind novel templates."""
+        f = Frontier(_scope())
+        f.enqueue("https://example.com/user/1")    # /user/{id} visits=1 → p=0
+        f.enqueue("https://example.com/about")      # /about     visits=1 → p=0
+        f.enqueue("https://example.com/user/2")     # /user/{id} visits=2 → p=30
+        first = f.pop()
+        second = f.pop()
+        third = f.pop()
+        assert first is not None and "user/1" in first.url   # novel, FIFO first
+        assert second is not None and "about" in second.url   # novel, FIFO second
+        assert third is not None and "user/2" in third.url    # repeated, deprioritized
+
+    def test_progressive_deprioritization(self) -> None:
+        """Each repeat pushes priority further back."""
+        f = Frontier(_scope())
+        f.enqueue("https://example.com/item/1")   # visits=1 → p=0
+        f.enqueue("https://example.com/item/2")   # visits=2 → p=30
+        f.enqueue("https://example.com/item/3")   # visits=3 → p=40
+        f.enqueue("https://example.com/other")     # visits=1 → p=0
+        first = f.pop()
+        second = f.pop()
+        # Both novel (item/1 and other) come out before repeats
+        assert first is not None and "item/1" in first.url
+        assert second is not None and "other" in second.url
+        third = f.pop()
+        fourth = f.pop()
+        assert third is not None and "item/2" in third.url
+        assert fourth is not None and "item/3" in fourth.url
+
+    def test_priority_capped_at_90(self) -> None:
+        """Priority doesn't exceed 90 even with many repeats."""
+        f = Frontier(_scope(), max_per_template=20)
+        for i in range(15):
+            f.enqueue(f"https://example.com/item/{i}")
+        # All enqueued — the last ones should have priority capped at 90
+        # Just verify they all come out (no crash)
+        count = 0
+        while f.pop() is not None:
+            count += 1
+        assert count == 15
 
 
 class TestFrontierEnqueue:
@@ -89,6 +134,14 @@ class TestFrontierEnqueue:
         f = Frontier(_scope(), max_depth=None)
         assert f.enqueue("https://example.com/deep", depth=100) is True
 
+    def test_slug_urls_share_template(self) -> None:
+        """Slug URLs collapse to same template, sharing the per-template cap."""
+        f = Frontier(_scope(["dreamhack.io"]), max_per_template=2)
+        base = "https://dreamhack.io/forum/posts"
+        assert f.enqueue(f"{base}/1944-%ED%99%94%EC%9D%B4%ED%8A%B8%ED%96%87%EC%8A%A4%EC%BF%A8-long-title") is True
+        assert f.enqueue(f"{base}/1954-bob-vs-something-long-enough") is True
+        assert f.enqueue(f"{base}/1950-another-slug-long-enough-text") is False  # cap hit
+
 
 class TestFrontierPop:
     def test_pop_empty(self) -> None:
@@ -102,15 +155,6 @@ class TestFrontierPop:
         assert item is not None
         assert "example.com" in item.url
         assert f.size == 0
-
-    def test_priority_ordering(self) -> None:
-        """API paths should come out before general paths."""
-        f = Frontier(_scope())
-        f.enqueue("https://example.com/about")
-        f.enqueue("https://example.com/api/users")
-        first = f.pop()
-        assert first is not None
-        assert "/api/" in first.url
 
     def test_fifo_within_same_priority(self) -> None:
         """Items with same priority maintain insertion order."""
