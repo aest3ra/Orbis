@@ -39,6 +39,8 @@ class Endpoint(SQLModel, table=True):
     sample_url: str
     route_kind: str
     seen_count: int = 1
+    source: str = "dynamic"           # dynamic | static_js | static_openapi | static_docs
+    probe_status: str | None = None   # NULL | unverified | verified | failed
 
 
 class Parameter(SQLModel, table=True):

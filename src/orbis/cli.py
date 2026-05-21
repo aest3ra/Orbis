@@ -50,6 +50,8 @@ def scan(
     per_template: int | None = typer.Option(None, "--per-template", min=1),
     max_scrolls: int | None = typer.Option(None, "--max-scrolls", min=0),
     crawl_mode: CrawlMode | None = typer.Option(None, "--crawl-mode"),
+    js_analysis: bool = typer.Option(True, "--js-analysis/--no-js-analysis",
+                                     help="Enable external JS static analysis."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Crawl target and collect API endpoints."""
@@ -79,9 +81,14 @@ def scan(
     print(f"  db:     {db_path}")
     print(f"  scope:  {config.scope.include_domains}")
     depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"
-    print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}\n")
+    js_str = "on" if js_analysis else "off"
+    print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}")
+    print(f"  static: js_analysis={js_str}\n")
 
-    scan_id = asyncio.run(run_scan(config, db_path=str(db_path), headless=headless))
+    scan_id = asyncio.run(run_scan(
+        config, db_path=str(db_path), headless=headless,
+        js_analysis=js_analysis,
+    ))
 
     engine = open_db(db_path)
     with Session(engine) as session:
@@ -108,6 +115,10 @@ def login(
 def list_cmd(
     db_path: Path = typer.Argument(..., exists=True, help="orbis DB path."),
     kind: str | None = typer.Option(None, "--kind", help="Filter by route_kind."),
+    source: str | None = typer.Option(None, "--source",
+                                      help="Filter by source (dynamic|static_js|static_openapi|static_docs)."),
+    probe_status: str | None = typer.Option(None, "--probe-status",
+                                            help="Filter by probe_status (unverified|verified|failed)."),
 ) -> None:
     """List all endpoints in the DB."""
     engine = open_db(db_path)
@@ -115,6 +126,10 @@ def list_cmd(
         endpoints = list_endpoints(session)
     if kind:
         endpoints = [e for e in endpoints if e.route_kind == kind]
+    if source:
+        endpoints = [e for e in endpoints if e.source == source]
+    if probe_status:
+        endpoints = [e for e in endpoints if e.probe_status == probe_status]
     if not endpoints:
         print("[dim]no endpoints found[/dim]")
         return
@@ -137,6 +152,8 @@ def inspect(
 
     print(f"[bold cyan]#{ep.id}[/bold cyan] [bold]{ep.method}[/bold] {ep.host}{ep.path_template}")
     print(f"  kind:   {ep.route_kind}")
+    print(f"  source: {ep.source}")
+    print(f"  probe:  {ep.probe_status or 'n/a'}")
     print(f"  sample: {ep.sample_url}")
     print(f"  seen:   {ep.seen_count}")
 
@@ -166,11 +183,15 @@ def _print_table(endpoints, title: str = "Endpoints") -> None:
     table.add_column("host")
     table.add_column("path")
     table.add_column("kind")
+    table.add_column("source")
+    table.add_column("probe")
     table.add_column("seen", justify="right")
     for ep in endpoints:
         table.add_row(
             str(ep.id), ep.method, ep.host,
-            ep.path_template, ep.route_kind, str(ep.seen_count),
+            ep.path_template, ep.route_kind,
+            ep.source, ep.probe_status or "-",
+            str(ep.seen_count),
         )
     print(table)
 
