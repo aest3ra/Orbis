@@ -30,6 +30,7 @@ async def run_scan(
     *,
     db_path: str,
     headless: bool = True,
+    js_analysis: bool = True,
 ) -> int:
     scope = Scope(config.scope)
     engine = open_db(db_path)
@@ -82,6 +83,7 @@ async def run_scan(
                     item.url,
                     scope=scope,
                     max_scrolls=limits.max_scrolls_per_page,
+                    js_analysis=js_analysis,
                 )
             except Exception as exc:
                 pages += 1

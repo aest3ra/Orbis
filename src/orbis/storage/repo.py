@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
-from orbis.analysis.analyzer import NormalizedEndpoint
+from orbis.analysis.analyzer import NormalizedEndpoint, _SOURCE_PRIORITY
 from orbis.storage.db import Endpoint, Parameter, Scan
 
 log = logging.getLogger("orbis.storage")
@@ -49,9 +49,16 @@ def save_endpoints(
             )
         ).first()
 
+        # Derive probe_status from source:
+        # dynamic → NULL (already observed), static_* → "unverified"
+        probe_status = None if ep.source == "dynamic" else "unverified"
+
         if row:
             row.seen_count += ep.seen_count
-            row.sample_url = ep.sample_url
+            if _SOURCE_PRIORITY.get(ep.source, 99) < _SOURCE_PRIORITY.get(row.source, 99):
+                row.source = ep.source
+                row.probe_status = probe_status
+                row.sample_url = ep.sample_url
             session.flush()
             ep_id = row.id
             updated += 1
@@ -64,6 +71,8 @@ def save_endpoints(
                 sample_url=ep.sample_url,
                 route_kind=ep.route_kind,
                 seen_count=ep.seen_count,
+                source=ep.source,
+                probe_status=probe_status,
             )
             session.add(row)
             session.flush()
