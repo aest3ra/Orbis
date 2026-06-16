@@ -309,6 +309,94 @@ class TestAnalyzeIntegration:
         result = analyze(cap, _scope())
         assert len(result.frontier_urls) == 0
 
+    def test_out_of_scope_network_api_filtered(self) -> None:
+        from orbis.crawler.browser import NetworkEvent
+
+        cap = PageCapture(
+            page_url="https://example.com",
+            final_url="https://example.com",
+            network_events=[
+                NetworkEvent(
+                    request_id="out",
+                    method="GET",
+                    url="https://evil.com/api/leak",
+                    resource_type="Fetch",
+                    response_mime="application/json",
+                    status=200,
+                ),
+                NetworkEvent(
+                    request_id="in",
+                    method="GET",
+                    url="https://example.com/api/users",
+                    resource_type="Fetch",
+                    response_mime="application/json",
+                    status=200,
+                ),
+            ],
+        )
+
+        result = analyze(cap, _scope())
+        hosts = {ep.host for ep in result.endpoints}
+        paths = {ep.path_template for ep in result.endpoints}
+        assert "evil.com" not in hosts
+        assert paths == {"/api/users"}
+
+    def test_discovered_via_tagged_from_interaction(self) -> None:
+        from orbis.crawler.browser import NetworkEvent
+
+        cap = PageCapture(
+            page_url="https://example.com",
+            final_url="https://example.com",
+            network_events=[
+                NetworkEvent(
+                    request_id="r1",
+                    method="GET",
+                    url="https://example.com/api/more",
+                    resource_type="Fetch",
+                    response_mime="application/json",
+                    status=200,
+                    triggered_by="Load more",
+                ),
+            ],
+        )
+
+        result = analyze(cap, _scope())
+        ep = next(e for e in result.endpoints if e.path_template == "/api/more")
+        assert ep.discovered_via == "Load more"
+
+    def test_passive_sighting_clears_interaction_tag(self) -> None:
+        from orbis.crawler.browser import NetworkEvent
+
+        # Same endpoint reached once via a click and once on plain load.
+        cap = PageCapture(
+            page_url="https://example.com",
+            final_url="https://example.com",
+            network_events=[
+                NetworkEvent(
+                    request_id="r1",
+                    method="GET",
+                    url="https://example.com/api/items",
+                    resource_type="Fetch",
+                    response_mime="application/json",
+                    status=200,
+                    triggered_by="Load more",
+                ),
+                NetworkEvent(
+                    request_id="r2",
+                    method="GET",
+                    url="https://example.com/api/items",
+                    resource_type="Fetch",
+                    response_mime="application/json",
+                    status=200,
+                    triggered_by=None,
+                ),
+            ],
+        )
+
+        result = analyze(cap, _scope())
+        ep = next(e for e in result.endpoints if e.path_template == "/api/items")
+        assert ep.discovered_via is None
+
     def test_dedup_within_same_capture(self) -> None:
         """Same URL from multiple elements should appear only once."""
         cap = self._capture_with_dom([

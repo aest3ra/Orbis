@@ -44,3 +44,15 @@ def is_download_url(url: str) -> bool:
 
 def is_safe_url(url: str) -> bool:
     return not is_dangerous_url(url) and not is_download_url(url)
+
+
+def text_has_danger_keyword(text: str, extra: frozenset[str] = frozenset()) -> bool:
+    """Danger-keyword check for free UI text (button labels, form text).
+
+    Unlike is_dangerous_url's path-segment matching, free text — CJK in
+    particular, which has no reliable word boundaries — is matched by
+    substring. Centralized here so interaction callers share one keyword set
+    instead of maintaining a parallel copy that can drift.
+    """
+    normalized = text.lower().replace("_", "-")
+    return any(keyword in normalized for keyword in (DANGER_KEYWORDS | extra))

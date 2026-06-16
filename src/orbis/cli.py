@@ -154,6 +154,7 @@ def inspect(
     print(f"  kind:   {ep.route_kind}")
     print(f"  source: {ep.source}")
     print(f"  probe:  {ep.probe_status or 'n/a'}")
+    print(f"  via:    {ep.discovered_via or 'passive load'}")
     print(f"  sample: {ep.sample_url}")
     print(f"  seen:   {ep.seen_count}")
 
