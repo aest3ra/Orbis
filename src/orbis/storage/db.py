@@ -41,6 +41,7 @@ class Endpoint(SQLModel, table=True):
     seen_count: int = 1
     source: str = "dynamic"           # dynamic | static_js | static_openapi | static_docs
     probe_status: str | None = None   # NULL | unverified | verified | failed
+    discovered_via: str | None = None  # NULL = passive load; else interaction label
 
 
 class Parameter(SQLModel, table=True):

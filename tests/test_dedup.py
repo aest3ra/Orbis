@@ -3,8 +3,9 @@
 import pytest
 from sqlmodel import Session
 
+from orbis.analysis.analyzer import NormalizedEndpoint
 from orbis.storage.db import Endpoint, Parameter, open_db
-from orbis.storage.repo import collapse_scan_endpoints, create_scan
+from orbis.storage.repo import collapse_scan_endpoints, create_scan, save_endpoints
 
 
 @pytest.fixture()
@@ -167,3 +168,43 @@ class TestCollapseScanEndpoints:
         merged = collapse_scan_endpoints(session, scan_id, threshold=3)
 
         assert merged == 0  # different prefixes, different groups
+
+
+def _norm(method, host, path, *, discovered_via=None, seen=1):
+    return NormalizedEndpoint(
+        method=method,
+        host=host,
+        path_template=path,
+        sample_url=f"https://{host}{path}",
+        route_kind="application_api",
+        seen_count=seen,
+        discovered_via=discovered_via,
+    )
+
+
+class TestSaveDiscoveredVia:
+    def test_persists_interaction_tag(self, session) -> None:
+        scan_id = create_scan(session, "https://ex.com")
+        save_endpoints(session, scan_id, [
+            _norm("GET", "ex.com", "/api/more", discovered_via="Load more"),
+        ])
+        row = session.exec(
+            Endpoint.__table__.select().where(Endpoint.scan_id == scan_id)
+        ).first()
+        assert row.discovered_via == "Load more"
+
+    def test_passive_load_wins_across_pages(self, session) -> None:
+        """First page reaches it via a click; a later page sees it on load."""
+        scan_id = create_scan(session, "https://ex.com")
+        save_endpoints(session, scan_id, [
+            _norm("GET", "ex.com", "/api/items", discovered_via="Load more"),
+        ])
+        save_endpoints(session, scan_id, [
+            _norm("GET", "ex.com", "/api/items", discovered_via=None),
+        ])
+        rows = list(session.exec(
+            Endpoint.__table__.select().where(Endpoint.scan_id == scan_id)
+        ))
+        assert len(rows) == 1
+        assert rows[0].discovered_via is None
+        assert rows[0].seen_count == 2

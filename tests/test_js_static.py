@@ -192,6 +192,23 @@ class TestVariableResolution:
         refs = extract_js_endpoints(js)
         assert any("/api/v1/users" in r.raw_url for r in refs)
 
+    def test_assignment_value_with_comma(self) -> None:
+        js = '''
+        const ENDPOINT = "/api/v1,legacy";
+        fetch(ENDPOINT + "/users");
+        '''
+        refs = extract_js_endpoints(js)
+        assert any(r.raw_url == "/api/v1,legacy/users" for r in refs)
+
+    def test_template_literal_assignment_with_newline(self) -> None:
+        js = (
+            "const ENDPOINT = `/api/v1/users/${userId}\n"
+            "/profile`;\n"
+            "fetch(ENDPOINT);"
+        )
+        refs = extract_js_endpoints(js)
+        assert any(r.raw_url == "/api/v1/users/{id}\n/profile" for r in refs)
+
 
 # ---------------------------------------------------------------------------
 # Template literal evaluation

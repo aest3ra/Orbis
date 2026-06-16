@@ -56,6 +56,7 @@ class NormalizedEndpoint:
     route_kind: str
     seen_count: int = 1
     source: str = "dynamic"           # dynamic | static_js | static_openapi | static_docs
+    discovered_via: str | None = None  # None = passive load; else interaction label
     params: dict[tuple[str, str], NormalizedParam] = field(default_factory=dict)
 
 
@@ -181,10 +182,15 @@ def _accumulate(
             sample_url=event.url,
             route_kind=kind,
             source="dynamic",
+            discovered_via=event.triggered_by,
         )
         eps[key] = ep
     else:
         ep.seen_count += 1
+        # Passive reachability wins: if this endpoint is ever seen on plain
+        # load, drop any interaction tag — you don't need the click to reach it.
+        if event.triggered_by is None:
+            ep.discovered_via = None
 
     for location, name, value in extract_params(event):
         pkey = (location, name)

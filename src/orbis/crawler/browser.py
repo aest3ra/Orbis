@@ -11,6 +11,7 @@ from urllib.parse import urljoin, urlparse
 
 from playwright.async_api import BrowserContext, Page
 
+from orbis.crawler.interactor import run_safe_interactions
 from orbis.crawler.scope import Scope
 
 log = logging.getLogger("orbis.capture")
@@ -93,6 +94,16 @@ class NetworkEvent:
     response_body: str | None = None
     body_truncated: bool = False
     source: str = "cdp"
+    triggered_by: str | None = None   # None = passive load; else interaction label
+
+
+@dataclass
+class InteractionRecord:
+    """One interaction and the network requests it triggered (delta tracking)."""
+    action: str                       # "click" | "form" | "input"
+    selector: str
+    label: str
+    triggered: list[tuple[str, str]]  # [(method, url), ...]
 
 
 @dataclass
@@ -112,6 +123,7 @@ class PageCapture:
     dom_elements: list[DomElement] = field(default_factory=list)
     inline_urls: list[str] = field(default_factory=list)
     selective_bodies: list[CapturedBody] = field(default_factory=list)
+    interactions: list[InteractionRecord] = field(default_factory=list)
     error: str | None = None
 
 
@@ -130,11 +142,6 @@ async def capture_page(
     captured: dict[str, NetworkEvent] = {}
     page = await context.new_page()
     await page.add_init_script(INIT_SCRIPT)
-
-    if scope is not None:
-        async def handle_route(route):
-            await _scoped_route(route, scope)
-        await page.route("**/*", handle_route)
 
     client = await context.new_cdp_session(page)
     await client.send("Network.enable")
@@ -182,6 +189,23 @@ async def capture_page(
     result.dom_elements = await _collect_dom(page)
     result.inline_urls = await _collect_inline_data(page)
 
+    if scope is not None:
+        tracker = _DeltaTracker(captured)
+        actions = await run_safe_interactions(page, scope, tracker=tracker)
+        result.interactions = tracker.records
+        # Re-collect only when an interaction actually fired; an empty or
+        # all-filtered candidate set leaves the DOM unchanged, so re-walking
+        # it would just double the per-page cost for no new signal.
+        if actions > 0:
+            result.dom_elements = _merge_dom_elements(
+                result.dom_elements,
+                await _collect_dom(page),
+            )
+            result.inline_urls = _merge_strings(
+                result.inline_urls,
+                await _collect_inline_data(page),
+            )
+
     seen_keys = {(e.method, e.url) for e in captured.values()}
     for ev in await _collect_init_script_events(page, url, seen_keys):
         captured[ev.request_id] = ev
@@ -193,6 +217,7 @@ async def capture_page(
         )
     if collect_bodies:
         await _fill_bodies(client, captured, skip_rids=selective_rids)
+    result.final_url = page.url
     result.network_events = list(captured.values())
 
     with suppress(Exception):
@@ -203,17 +228,63 @@ async def capture_page(
     return result
 
 
-async def _scoped_route(route, scope: Scope) -> None:
-    """Allow passive resources (JS/CSS/images) through; block other out-of-scope."""
-    url = route.request.url
-    rtype = route.request.resource_type
-    passthrough = {"script", "stylesheet", "image", "font", "media", "manifest"}
-    if not scope.allows(url) and rtype not in passthrough:
-        with suppress(Exception):
-            await route.abort()
-        return
-    with suppress(Exception):
-        await route.continue_()
+def _merge_dom_elements(
+    first: list[DomElement],
+    second: list[DomElement],
+) -> list[DomElement]:
+    merged: list[DomElement] = []
+    seen: set[tuple[str, tuple[tuple[str, str], ...], str]] = set()
+    for elem in first + second:
+        key = (
+            elem.tag,
+            tuple(sorted((str(k), str(v)) for k, v in elem.attributes.items())),
+            elem.text,
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(elem)
+    return merged
+
+
+def _merge_strings(first: list[str], second: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for value in first + second:
+        if value in seen:
+            continue
+        seen.add(value)
+        merged.append(value)
+    return merged
+
+
+class _DeltaTracker:
+    """Attributes network requests to the interaction that triggered them.
+
+    Lives in the capture layer because it owns the live ``captured`` dict.
+    The interactor stays ignorant of network internals — it only brackets
+    each action with begin()/commit(); the diff and tagging happen here.
+    """
+
+    def __init__(self, captured: dict[str, NetworkEvent]) -> None:
+        self._captured = captured
+        self._before: set[str] = set()
+        self.records: list[InteractionRecord] = []
+
+    def begin(self) -> None:
+        self._before = set(self._captured)
+
+    def commit(self, action: str, selector: str, label: str) -> None:
+        tag = label.strip() or action
+        triggered: list[tuple[str, str]] = []
+        for rid in set(self._captured) - self._before:
+            ev = self._captured[rid]
+            ev.triggered_by = tag
+            triggered.append((ev.method, ev.url))
+        if triggered:
+            self.records.append(
+                InteractionRecord(action, selector, label, triggered)
+            )
 
 
 async def _collect_dom(page: Page) -> list[DomElement]:

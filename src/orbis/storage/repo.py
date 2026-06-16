@@ -59,6 +59,10 @@ def save_endpoints(
                 row.source = ep.source
                 row.probe_status = probe_status
                 row.sample_url = ep.sample_url
+            # Passive reachability wins: a plain-load sighting on any page
+            # clears the interaction tag.
+            if ep.discovered_via is None:
+                row.discovered_via = None
             session.flush()
             ep_id = row.id
             updated += 1
@@ -73,6 +77,7 @@ def save_endpoints(
                 seen_count=ep.seen_count,
                 source=ep.source,
                 probe_status=probe_status,
+                discovered_via=ep.discovered_via,
             )
             session.add(row)
             session.flush()
