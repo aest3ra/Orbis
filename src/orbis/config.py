@@ -27,6 +27,12 @@ class LimitsConfig(BaseModel):
     max_visits_per_template: int = 5
     max_scrolls_per_page: int = 3
     rate_limit_rps: float = 2.0
+    # Cardinality-based slug detection (crawl-time templating).
+    # A path position with this many distinct observed values becomes {slug}.
+    slug_threshold: int = 8
+    # Diminishing-returns stop: after this many consecutive visits to one
+    # template yield no new endpoints, stop visiting that template.
+    template_saturation: int = 3
 
 
 class ScanConfig(BaseModel):

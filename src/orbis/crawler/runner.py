@@ -46,6 +46,7 @@ async def run_scan(
         scope,
         config.limits.max_visits_per_template,
         max_depth=config.limits.max_depth,
+        slug_threshold=config.limits.slug_threshold,
     )
     frontier.enqueue(config.target)
 
@@ -55,6 +56,8 @@ async def run_scan(
     pages = 0
     total_added = 0
     last_req_at = 0.0
+    # Per-template count of consecutive visits that produced no new endpoint.
+    zero_streak: dict[tuple[str, str], int] = {}
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=headless)
@@ -101,10 +104,22 @@ async def run_scan(
             for url in result.frontier_urls:
                 frontier.enqueue(url, depth=item.depth + 1)
 
+            added = 0
             if result.endpoints:
                 with Session(engine) as session:
                     added, _ = save_endpoints(session, scan_id, result.endpoints)
                     total_added += added
+
+            # Diminishing returns: when repeated visits to one template stop
+            # producing new endpoints, freeze it so its remaining siblings are
+            # not crawled. Unique pages (visited once) never reach the streak.
+            tkey = frontier.template_key(item.url)
+            if added > 0:
+                zero_streak.pop(tkey, None)
+            else:
+                zero_streak[tkey] = zero_streak.get(tkey, 0) + 1
+                if zero_streak[tkey] >= limits.template_saturation:
+                    frontier.saturate(tkey)
 
             api_n = len(result.endpoints)
             link_n = len(result.frontier_urls)

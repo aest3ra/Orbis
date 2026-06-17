@@ -69,21 +69,18 @@ class TestNoveltyPriority:
         assert third is not None and "user/2" in third.url    # repeated, deprioritized
 
     def test_progressive_deprioritization(self) -> None:
-        """Each repeat pushes priority further back."""
-        f = Frontier(_scope())
-        f.enqueue("https://example.com/item/1")   # visits=1 → p=0
-        f.enqueue("https://example.com/item/2")   # visits=2 → p=30
-        f.enqueue("https://example.com/item/3")   # visits=3 → p=40
-        f.enqueue("https://example.com/other")     # visits=1 → p=0
-        first = f.pop()
-        second = f.pop()
-        # Both novel (item/1 and other) come out before repeats
-        assert first is not None and "item/1" in first.url
-        assert second is not None and "other" in second.url
-        third = f.pop()
-        fourth = f.pop()
-        assert third is not None and "item/2" in third.url
-        assert fourth is not None and "item/3" in fourth.url
+        """Once siblings collapse to one template, repeats are deprioritized."""
+        f = Frontier(_scope(), max_per_template=20, slug_threshold=2)
+        f.enqueue("https://example.com/item/a")   # raw /item/a, novel p0
+        f.enqueue("https://example.com/item/b")   # rule forms; /item/{slug} p0
+        f.enqueue("https://example.com/item/c")   # /item/{slug} repeat → p=30
+        f.enqueue("https://example.com/other")     # novel p0
+        urls = []
+        while (it := f.pop()) is not None:
+            urls.append(it.url)
+        # The repeated-template visit is pushed to the back; novel ones precede.
+        assert "item/c" in urls[-1]
+        assert all("item/c" not in u for u in urls[:-1])
 
     def test_priority_capped_at_90(self) -> None:
         """Priority doesn't exceed 90 even with many repeats."""
@@ -119,10 +116,24 @@ class TestFrontierEnqueue:
         assert f.enqueue("https://example.com/logout") is False
 
     def test_template_cap(self) -> None:
-        f = Frontier(_scope(), max_per_template=2)
-        assert f.enqueue("https://example.com/user/1") is True
-        assert f.enqueue("https://example.com/user/2") is True
-        assert f.enqueue("https://example.com/user/3") is False
+        # slug_threshold=2: /post/aaa raw, /post/bbb forms the rule, then
+        # /post/{slug} fills its 2-visit cap and the 4th is rejected.
+        f = Frontier(_scope(), max_per_template=2, slug_threshold=2)
+        assert f.enqueue("https://example.com/post/aaa") is True
+        assert f.enqueue("https://example.com/post/bbb") is True
+        assert f.enqueue("https://example.com/post/ccc") is True
+        assert f.enqueue("https://example.com/post/ddd") is False
+
+    def test_numeric_ids_collapse_by_cardinality(self) -> None:
+        """Numbers are handled by cardinality, not a shape rule — they only
+        collapse after enough distinct values are seen (a few cold-start visits)."""
+        f = Frontier(_scope(), max_per_template=2, slug_threshold=3)
+        assert f.enqueue("https://example.com/u/1") is True   # raw
+        assert f.enqueue("https://example.com/u/2") is True   # raw
+        assert f.enqueue("https://example.com/u/3") is True   # rule forms here
+        assert f.template_key("https://example.com/u/9") == (
+            "example.com", "/u/{slug}",
+        )
 
     def test_max_depth(self) -> None:
         f = Frontier(_scope(), max_depth=2)
@@ -135,12 +146,27 @@ class TestFrontierEnqueue:
         assert f.enqueue("https://example.com/deep", depth=100) is True
 
     def test_slug_urls_share_template(self) -> None:
-        """Slug URLs collapse to same template, sharing the per-template cap."""
-        f = Frontier(_scope(["dreamhack.io"]), max_per_template=2)
+        """High-cardinality slug siblings collapse to one template (no shape rules)."""
+        f = Frontier(_scope(["dreamhack.io"]), max_per_template=2, slug_threshold=2)
         base = "https://dreamhack.io/forum/posts"
-        assert f.enqueue(f"{base}/1944-%ED%99%94%EC%9D%B4%ED%8A%B8%ED%96%87%EC%8A%A4%EC%BF%A8-long-title") is True
-        assert f.enqueue(f"{base}/1954-bob-vs-something-long-enough") is True
-        assert f.enqueue(f"{base}/1950-another-slug-long-enough-text") is False  # cap hit
+        assert f.enqueue(f"{base}/first-article-title") is True    # raw
+        assert f.enqueue(f"{base}/second-different-post") is True  # rule forms; v1
+        assert f.enqueue(f"{base}/third-some-other-text") is True  # {slug} v2
+        assert f.enqueue(f"{base}/fourth-yet-another") is False    # cap hit
+
+    def test_saturate_drops_queued_and_rejects_future(self) -> None:
+        """Saturating a template prunes its queued members and blocks new ones."""
+        f = Frontier(_scope(), max_per_template=20, slug_threshold=2)
+        base = "https://example.com/board"
+        f.enqueue(f"{base}/aaa")
+        f.enqueue(f"{base}/bbb")   # rule forms → /board/{slug}
+        f.enqueue(f"{base}/ccc")
+        tkey = f.template_key(f"{base}/bbb")
+        assert tkey == ("example.com", "/board/{slug}")
+        f.saturate(tkey)
+        # every queued /board/* member normalizes to the saturated template
+        assert f.size == 0
+        assert f.enqueue(f"{base}/ddd") is False
 
 
 class TestFrontierPop:
