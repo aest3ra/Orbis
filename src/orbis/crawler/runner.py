@@ -133,7 +133,12 @@ async def run_scan(
         await browser.close()
 
     with Session(engine) as session:
-        collapsed = collapse_scan_endpoints(session, scan_id)
+        # Same cardinality bar as the frontier: only genuinely high-cardinality
+        # sibling sets collapse, so a handful of distinct API resources
+        # (/api/forum/{communities,questions,reviews}) are left intact.
+        collapsed = collapse_scan_endpoints(
+            session, scan_id, threshold=limits.slug_threshold,
+        )
         finish_scan(session, scan_id, pages, total_added - collapsed)
 
     return scan_id

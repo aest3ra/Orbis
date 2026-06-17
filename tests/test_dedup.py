@@ -157,6 +157,44 @@ class TestCollapseScanEndpoints:
         assert len(page_param) == 1
         assert page_param[0].seen_count == 5
 
+    def test_does_not_collapse_resources_with_children(self, session) -> None:
+        """Siblings that have their own sub-paths are distinct resources,
+        not data slugs — collapsing them would destroy real endpoints."""
+        scan_id = create_scan(session, "https://ex.com")
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/api/forum/communities")
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/api/forum/posts")
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/api/forum/notices")
+        # communities and posts are resources with deeper endpoints
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/api/forum/communities/careers")
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/api/forum/posts/best")
+        session.commit()
+
+        merged = collapse_scan_endpoints(session, scan_id, threshold=3)
+
+        assert merged == 0
+        paths = {e.path_template for e in session.exec(
+            Endpoint.__table__.select().where(Endpoint.scan_id == scan_id)
+        )}
+        assert "/api/forum/{slug}" not in paths
+        assert {"/api/forum/communities", "/api/forum/posts"} <= paths
+
+    def test_collapses_leaf_data_even_with_one_child(self, session) -> None:
+        """A mostly-leaf slug set still collapses if only a minority nest."""
+        scan_id = create_scan(session, "https://ex.com")
+        for slug in ("alpha", "beta", "gamma", "delta"):
+            _add_endpoint(session, scan_id, "GET", "ex.com", f"/blog/{slug}")
+        # only one post has a sub-path — minority, so the set is still data
+        _add_endpoint(session, scan_id, "GET", "ex.com", "/blog/alpha/comments")
+        session.commit()
+
+        merged = collapse_scan_endpoints(session, scan_id, threshold=3)
+
+        assert merged == 3  # 4 /blog/* leaves → /blog/{slug}
+        paths = {e.path_template for e in session.exec(
+            Endpoint.__table__.select().where(Endpoint.scan_id == scan_id)
+        )}
+        assert "/blog/{slug}" in paths
+
     def test_same_last_segment_different_prefix_not_collapsed(self, session) -> None:
         """/api/v1/posts and /api/v2/posts differ by prefix, not collapsed."""
         scan_id = create_scan(session, "https://ex.com")

@@ -115,6 +115,12 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
             ))
 
 
+def _has_children(path: str, all_paths: set[str]) -> bool:
+    """True if some other observed path nests under ``path`` (path/...)."""
+    prefix = path.rstrip("/") + "/"
+    return any(p != path and p.startswith(prefix) for p in all_paths)
+
+
 def collapse_scan_endpoints(
     session: Session,
     scan_id: int,
@@ -143,12 +149,23 @@ def collapse_scan_endpoints(
             key = (ep.method, ep.host, parts[0])
             groups[key].append(ep)
 
+    # All observed paths (any method) — used to tell a leaf data value from a
+    # resource that has its own sub-paths.
+    all_paths = {e.path_template for e in endpoints}
+
     merged = 0
     for key, eps in groups.items():
         if len(eps) < threshold:
             continue
         last_segs = {e.path_template.rsplit("/", 1)[-1] for e in eps}
         if len(last_segs) < threshold:
+            continue
+        # Leaf guard: siblings that mostly have deeper paths of their own are
+        # distinct resources (e.g. /api/forum/{communities,posts} where
+        # /api/forum/communities/... exists), not data slugs. Collapsing those
+        # would destroy real endpoints, so skip the group.
+        non_leaf = sum(1 for e in eps if _has_children(e.path_template, all_paths))
+        if non_leaf * 2 >= len(eps):
             continue
 
         method, host, prefix = key
