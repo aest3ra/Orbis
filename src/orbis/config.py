@@ -33,6 +33,8 @@ class LimitsConfig(BaseModel):
     # Diminishing-returns stop: after this many consecutive visits to one
     # template yield no new endpoints, stop visiting that template.
     template_saturation: int = 3
+    # Max archived URLs to pull per host from passive sources (Wayback).
+    passive_max_urls: int = 5000
 
 
 class ScanConfig(BaseModel):

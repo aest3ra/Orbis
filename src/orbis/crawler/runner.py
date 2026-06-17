@@ -9,10 +9,11 @@ import time
 from playwright.async_api import async_playwright
 from sqlmodel import Session
 
-from orbis.analysis.analyzer import analyze
+from orbis.analysis.analyzer import analyze, build_passive_results
 from orbis.config import ScanConfig
 from orbis.crawler.browser import capture_page
 from orbis.crawler.frontier import Frontier
+from orbis.crawler.passive import fetch_wayback_urls
 from orbis.crawler.scope import Scope
 from orbis.storage.db import open_db
 from orbis.storage.repo import (
@@ -31,6 +32,7 @@ async def run_scan(
     db_path: str,
     headless: bool = True,
     js_analysis: bool = True,
+    passive: bool = True,
 ) -> int:
     scope = Scope(config.scope)
     engine = open_db(db_path)
@@ -58,6 +60,25 @@ async def run_scan(
     last_req_at = 0.0
     # Per-template count of consecutive visits that produced no new endpoint.
     zero_streak: dict[tuple[str, str], int] = {}
+
+    # Passive layer: pull archived URLs and record API-marked ones as unverified
+    # endpoints (the recon "passive" coverage layer). This is budget-free — they
+    # are stored directly, not crawled — so it never starves live discovery.
+    # (Page-like archived URLs are intentionally NOT seeded into the frontier:
+    # measured on a real SPA, seeding them crowded out live crawling for no clear
+    # gain. Low-priority seeding is a possible future refinement.) Failures here
+    # are non-fatal — passive is a bonus, never a reason to abort.
+    if passive:
+        passive_eps = []
+        for host in config.scope.include_domains:
+            urls = fetch_wayback_urls(host, limit=limits.passive_max_urls)
+            eps, _seeds = build_passive_results(urls, scope)
+            passive_eps.extend(eps)
+        if passive_eps:
+            with Session(engine) as session:
+                added, _ = save_endpoints(session, scan_id, passive_eps)
+                total_added += added
+        log.info("passive: %d API endpoints recorded", len(passive_eps))
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=headless)
