@@ -8,11 +8,11 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 
 from orbis.crawler.browser import DomElement, NetworkEvent, PageCapture
 from orbis.crawler.scope import Scope
-from orbis.analysis.classifier import classify
+from orbis.analysis.classifier import API_MARKER, ASSET_SUFFIXES, classify
 from orbis.analysis.params import extract_params, infer_type
 from orbis.analysis.url import templatize_path
 
@@ -215,6 +215,7 @@ _SOURCE_PRIORITY: dict[str, int] = {
     "static_openapi": 1,
     "static_docs": 2,
     "static_js": 3,
+    "passive": 4,   # archived/unverified — lowest; any live sighting overrides
 }
 
 
@@ -337,3 +338,73 @@ def _analyze_selective_bodies(
         except Exception:
             log.debug("static analysis failed for %s (%s)", cb.url, cb.kind,
                       exc_info=True)
+
+
+# --- Passive sources (archived URLs) ---
+
+
+def build_passive_results(
+    urls: list[str], scope: Scope,
+) -> tuple[list[NormalizedEndpoint], list[str]]:
+    """Split archived URLs into recorded API endpoints + page seeds to crawl.
+
+    API-marked URLs are recorded directly as source="passive" (unverified)
+    endpoints with their query params; page-like URLs become frontier seeds;
+    assets are dropped. Endpoints are keyed/templatized here, so thousands of
+    archived /courses/15, /courses/16 ... collapse to /courses/{id} before
+    storage. Returns (endpoints, seed_urls).
+    """
+    endpoints: dict[tuple[str, str, str], NormalizedEndpoint] = {}
+    seeds: list[str] = []
+    seen_seeds: set[str] = set()
+    for raw in urls:
+        parsed = urlparse(raw)
+        if parsed.scheme not in ("http", "https") or not scope.allows(raw):
+            continue
+        path = parsed.path or "/"
+        if path.lower().endswith(ASSET_SUFFIXES):
+            continue
+        if API_MARKER.search(path):
+            _accumulate_passive(endpoints, parsed)
+        elif raw not in seen_seeds:
+            seen_seeds.add(raw)
+            seeds.append(raw)
+    return list(endpoints.values()), seeds
+
+
+def _accumulate_passive(
+    eps: dict[tuple[str, str, str], NormalizedEndpoint],
+    parsed,
+) -> None:
+    host = parsed.hostname or ""
+    path = (parsed.path or "/").rstrip("/") or "/"
+    template = templatize_path(path)
+    key = ("GET", host, template)
+    ep = eps.get(key)
+    if ep is None:
+        ep = NormalizedEndpoint(
+            method="GET",
+            host=host,
+            path_template=template,
+            sample_url=parsed.geturl(),
+            route_kind="application_api",
+            source="passive",
+            discovered_via="archive",
+        )
+        eps[key] = ep
+    else:
+        ep.seen_count += 1
+
+    for name, values in parse_qs(parsed.query).items():
+        pkey = ("query", name)
+        param = ep.params.get(pkey)
+        if param is None:
+            param = NormalizedParam(
+                location="query", name=name,
+                type_inferred=infer_type(values[0] if values else ""),
+            )
+            ep.params[pkey] = param
+        param.seen_count += 1
+        for v in values:
+            if v and v not in param.sample_values and len(param.sample_values) < MAX_SAMPLES:
+                param.sample_values.append(v)

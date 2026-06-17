@@ -52,6 +52,8 @@ def scan(
     crawl_mode: CrawlMode | None = typer.Option(None, "--crawl-mode"),
     js_analysis: bool = typer.Option(True, "--js-analysis/--no-js-analysis",
                                      help="Enable external JS static analysis."),
+    passive: bool = typer.Option(True, "--passive/--no-passive",
+                                 help="Pull archived URLs (Wayback) as a passive layer."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Crawl target and collect API endpoints."""
@@ -82,12 +84,13 @@ def scan(
     print(f"  scope:  {config.scope.include_domains}")
     depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"
     js_str = "on" if js_analysis else "off"
+    passive_str = "on" if passive else "off"
     print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}")
-    print(f"  static: js_analysis={js_str}\n")
+    print(f"  static: js_analysis={js_str}  passive={passive_str}\n")
 
     scan_id = asyncio.run(run_scan(
         config, db_path=str(db_path), headless=headless,
-        js_analysis=js_analysis,
+        js_analysis=js_analysis, passive=passive,
     ))
 
     engine = open_db(db_path)
