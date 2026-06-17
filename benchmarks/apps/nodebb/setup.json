@@ -1,0 +1,11 @@
+{
+  "defaults": {
+    "mongo": {
+      "host": "mongo",
+      "port": 27017,
+      "database": "nodebb",
+      "username": "nodebb",
+      "password": "nodebb"
+    }
+  }
+}

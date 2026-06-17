@@ -1,0 +1,24 @@
+services:
+  openproject:
+    image: openproject/openproject:17
+    container_name: orbis-bench-openproject
+    restart: unless-stopped
+    environment:
+      SECRET_KEY_BASE: a6ccba660f2707a3f3be09213021122b565372b529eb442b89594a502c23666f4c84e031066b32ce8abfbf18b6035a9c63207fb6a0777c337ffc674bdada084f
+      OPENPROJECT_HOST__NAME: localhost:38088
+      OPENPROJECT_HTTPS: "false"
+      OPENPROJECT_DEFAULT__LANGUAGE: en
+    volumes:
+      - ./data/pgdata:/var/openproject/pgdata
+      - ./data/assets:/var/openproject/assets
+
+  proxy:
+    image: nginx:1.27-alpine
+    container_name: orbis-bench-openproject-proxy
+    restart: unless-stopped
+    depends_on:
+      - openproject
+    ports:
+      - "38088:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro

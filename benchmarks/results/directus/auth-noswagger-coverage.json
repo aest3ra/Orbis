@@ -1,0 +1,1099 @@
+{
+  "exact_matches": [
+    {
+      "expected_path": "/server/info",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/server/info",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/users/me",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/users/me",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/auth/refresh",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/auth/refresh",
+      "source": "dynamic"
+    }
+  ],
+  "extra": [
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/auth",
+      "route_kind": "application_api",
+      "seen_count": 2,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/graphql/system",
+      "route_kind": "application_api",
+      "seen_count": 2,
+      "source": "static_js"
+    }
+  ],
+  "missing": [
+    {
+      "method": "DELETE",
+      "operation_id": "deleteCollection",
+      "path_template": "/collections/{id}",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteComments",
+      "path_template": "/comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteComment",
+      "path_template": "/comments/{id}",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteField",
+      "path_template": "/fields/{id}/{id}",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFiles",
+      "path_template": "/files",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFile",
+      "path_template": "/files/{id}",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFlows",
+      "path_template": "/flows",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFlow",
+      "path_template": "/flows/{id}",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFolders",
+      "path_template": "/folders",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteFolder",
+      "path_template": "/folders/{id}",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteOperations",
+      "path_template": "/operations",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteOperation",
+      "path_template": "/operations/{id}",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deletePermissions",
+      "path_template": "/permissions",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deletePermission",
+      "path_template": "/permissions/{id}",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deletePresets",
+      "path_template": "/presets",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deletePreset",
+      "path_template": "/presets/{id}",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRelation",
+      "path_template": "/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRoles",
+      "path_template": "/roles",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRole",
+      "path_template": "/roles/{id}",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteUsers",
+      "path_template": "/users",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteUser",
+      "path_template": "/users/{id}",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteContentVersions",
+      "path_template": "/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteContentVersion",
+      "path_template": "/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteWebhooks",
+      "path_template": "/webhooks",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteWebhook",
+      "path_template": "/webhooks/{id}",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getActivities",
+      "path_template": "/activity",
+      "tags": [
+        "Activity"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getActivity",
+      "path_template": "/activity/{id}",
+      "tags": [
+        "Activity"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAsset",
+      "path_template": "/assets/{id}",
+      "tags": [
+        "Assets"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "oauth",
+      "path_template": "/auth/oauth",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "oauthProvider",
+      "path_template": "/auth/oauth/{id}",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCollections",
+      "path_template": "/collections",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCollection",
+      "path_template": "/collections/{id}",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getComments",
+      "path_template": "/comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getComment",
+      "path_template": "/comments/{id}",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listExtensions",
+      "path_template": "/extensions",
+      "tags": [
+        "Extensions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFields",
+      "path_template": "/fields",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCollectionFields",
+      "path_template": "/fields/{id}",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCollectionField",
+      "path_template": "/fields/{id}/{id}",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFiles",
+      "path_template": "/files",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFile",
+      "path_template": "/files/{id}",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFlows",
+      "path_template": "/flows",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFlow",
+      "path_template": "/flows/{id}",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFolders",
+      "path_template": "/folders",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFolder",
+      "path_template": "/folders/{id}",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOperations",
+      "path_template": "/operations",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOperation",
+      "path_template": "/operations/{id}",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPermissions",
+      "path_template": "/permissions",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMyPermissions",
+      "path_template": "/permissions/me",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPermission",
+      "path_template": "/permissions/{id}",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPresets",
+      "path_template": "/presets",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPreset",
+      "path_template": "/presets/{id}",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRelations",
+      "path_template": "/relations",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRelation",
+      "path_template": "/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRevisions",
+      "path_template": "/revisions",
+      "tags": [
+        "Revisions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRevision",
+      "path_template": "/revisions/{id}",
+      "tags": [
+        "Revisions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRoles",
+      "path_template": "/roles",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRole",
+      "path_template": "/roles/{id}",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "schemaSnapshot",
+      "path_template": "/schema/snapshot",
+      "tags": [
+        "Schema"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "ping",
+      "path_template": "/server/ping",
+      "tags": [
+        "Server"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getSettings",
+      "path_template": "/settings",
+      "tags": [
+        "Settings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUsers",
+      "path_template": "/users",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUser",
+      "path_template": "/users/{id}",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "random",
+      "path_template": "/utils/random/string",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getContentVersions",
+      "path_template": "/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getContentVersion",
+      "path_template": "/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "compareContentVersion",
+      "path_template": "/versions/{id}/compare",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWebhooks",
+      "path_template": "/webhooks",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWebhook",
+      "path_template": "/webhooks/{id}",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateCollection",
+      "path_template": "/collections/{id}",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateComments",
+      "path_template": "/comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateComment",
+      "path_template": "/comments/{id}",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateExtensions",
+      "path_template": "/extensions/{id}",
+      "tags": [
+        "Extensions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateExtensionBundle",
+      "path_template": "/extensions/{id}/{id}",
+      "tags": [
+        "Extensions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateField",
+      "path_template": "/fields/{id}/{id}",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFiles",
+      "path_template": "/files",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFile",
+      "path_template": "/files/{id}",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFlows",
+      "path_template": "/flows",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFlow",
+      "path_template": "/flows/{id}",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFolders",
+      "path_template": "/folders",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateFolder",
+      "path_template": "/folders/{id}",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateOperations",
+      "path_template": "/operations",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateOperation",
+      "path_template": "/operations/{id}",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updatePermissions",
+      "path_template": "/permissions",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updatePermission",
+      "path_template": "/permissions/{id}",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updatePresets",
+      "path_template": "/presets",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updatePreset",
+      "path_template": "/presets/{id}",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateRelation",
+      "path_template": "/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateRoles",
+      "path_template": "/roles",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateRole",
+      "path_template": "/roles/{id}",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateSetting",
+      "path_template": "/settings",
+      "tags": [
+        "Settings"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateUsers",
+      "path_template": "/users",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateMe",
+      "path_template": "/users/me",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateLastUsedPageMe",
+      "path_template": "/users/me/track/page",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateUser",
+      "path_template": "/users/{id}",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateContentVersions",
+      "path_template": "/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateContentVersion",
+      "path_template": "/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateWebhooks",
+      "path_template": "/webhooks",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "updateWebhook",
+      "path_template": "/webhooks/{id}",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "login",
+      "path_template": "/auth/login",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "logout",
+      "path_template": "/auth/logout",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "passwordRequest",
+      "path_template": "/auth/password/request",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "passwordReset",
+      "path_template": "/auth/password/reset",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createCollection",
+      "path_template": "/collections",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createComment",
+      "path_template": "/comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createField",
+      "path_template": "/fields/{id}",
+      "tags": [
+        "Fields"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createFile",
+      "path_template": "/files",
+      "tags": [
+        "Files"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createFlow",
+      "path_template": "/flows",
+      "tags": [
+        "Flows"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createFolder",
+      "path_template": "/folders",
+      "tags": [
+        "Folders"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createOperation",
+      "path_template": "/operations",
+      "tags": [
+        "Operations"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createPermission",
+      "path_template": "/permissions",
+      "tags": [
+        "Permissions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createPreset",
+      "path_template": "/presets",
+      "tags": [
+        "Presets"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createRelation",
+      "path_template": "/relations",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createRole",
+      "path_template": "/roles",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "schemaApply",
+      "path_template": "/schema/apply",
+      "tags": [
+        "Schema"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "schemaDiff",
+      "path_template": "/schema/diff",
+      "tags": [
+        "Schema"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createUser",
+      "path_template": "/users",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "invite",
+      "path_template": "/users/invite",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "acceptInvite",
+      "path_template": "/users/invite/accept",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "meTfaDisable",
+      "path_template": "/users/me/tfa/disable",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "meTfaEnable",
+      "path_template": "/users/me/tfa/enable",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "clear-cache",
+      "path_template": "/utils/cache/clear",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "export",
+      "path_template": "/utils/export/{id}",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "hash-generate",
+      "path_template": "/utils/hash/generate",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "hash-verify",
+      "path_template": "/utils/hash/verify",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "import",
+      "path_template": "/utils/import/{id}",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "sort",
+      "path_template": "/utils/sort/{id}",
+      "tags": [
+        "Utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createContentVersion",
+      "path_template": "/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "promoteContentVersion",
+      "path_template": "/versions/{id}/promote",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveContentVersion",
+      "path_template": "/versions/{id}/save",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createWebhook",
+      "path_template": "/webhooks",
+      "tags": [
+        "Webhooks"
+      ]
+    }
+  ],
+  "shape_matches": [],
+  "summary": {
+    "effective_coverage": 0.022556,
+    "exact_coverage": 0.022556,
+    "exact_matches": 3,
+    "expected_count": 133,
+    "extra_count": 2,
+    "missing_count": 130,
+    "observed_count": 5,
+    "shape_matches": 0
+  }
+}

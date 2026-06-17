@@ -1,0 +1,3900 @@
+{
+  "exact_matches": [
+    {
+      "expected_path": "/api/dashboard/home",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/dashboard/home",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/dashboard/serverTime",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/dashboard/serverTime",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/edge/types",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/edge/types",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/entityView/types",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/entityView/types",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/mobile/qr/deepLink",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/mobile/qr/deepLink",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/mobile/qr/settings",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/mobile/qr/settings",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/oauth2/config/template",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/oauth2/config/template",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/ruleChain/autoAssignToEdgeRuleChains",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/ruleChain/autoAssignToEdgeRuleChains",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/tenant/dashboard/home/info",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/tenant/dashboard/home/info",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/tenant/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/tenant/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/user/dashboards",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/user/dashboards",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/user/settings/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/user/settings/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/user/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/user/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/entitiesQuery/find",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/entitiesQuery/find",
+      "source": "dynamic"
+    }
+  ],
+  "extra": [
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/audit/logs",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/mobile/bundle/infos",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/system/params",
+      "route_kind": "application_api",
+      "seen_count": 27,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v2/alarms",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/{id}",
+      "route_kind": "application_api",
+      "seen_count": 35,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/assets/dashboard/api_usage.json",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/assets/dashboard/tenant_admin_home_page.json",
+      "route_kind": "application_api",
+      "seen_count": 2,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/assets/locale/locale.constant-en_US.json",
+      "route_kind": "application_api",
+      "seen_count": 27,
+      "source": "dynamic"
+    }
+  ],
+  "missing": [
+    {
+      "method": "DELETE",
+      "operation_id": "deleteTwoFaAccountConfig",
+      "path_template": "/api/2fa/account/config{",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAutoCommitSettings",
+      "path_template": "/api/admin/autoCommitSettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRepositorySettings",
+      "path_template": "/api/admin/repositorySettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAiModelById",
+      "path_template": "/api/ai/model/{id}",
+      "tags": [
+        "ai-model-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAlarm",
+      "path_template": "/api/alarm/{id}",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignAlarm",
+      "path_template": "/api/alarm/{id}/assign",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAlarmComment",
+      "path_template": "/api/alarm/{id}/comment/{id}",
+      "tags": [
+        "alarm-comment-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAsset",
+      "path_template": "/api/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAssetProfile",
+      "path_template": "/api/assetProfile/{id}",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteCalculatedField",
+      "path_template": "/api/calculatedField/{id}",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignAssetFromCustomer",
+      "path_template": "/api/customer/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignDeviceFromCustomer",
+      "path_template": "/api/customer/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "reClaimDevice",
+      "path_template": "/api/customer/device/{id}/claim",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignEdgeFromCustomer",
+      "path_template": "/api/customer/edge/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignEntityViewFromCustomer",
+      "path_template": "/api/customer/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignDashboardFromPublicCustomer",
+      "path_template": "/api/customer/public/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteCustomer",
+      "path_template": "/api/customer/{id}",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignDashboardFromCustomer",
+      "path_template": "/api/customer/{id}/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteDashboard",
+      "path_template": "/api/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteDevice",
+      "path_template": "/api/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteDeviceProfile",
+      "path_template": "/api/deviceProfile/{id}",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteDomain",
+      "path_template": "/api/domain/{id}",
+      "tags": [
+        "domain-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteEdge",
+      "path_template": "/api/edge/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignAssetFromEdge",
+      "path_template": "/api/edge/{id}/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignDashboardFromEdge",
+      "path_template": "/api/edge/{id}/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignDeviceFromEdge",
+      "path_template": "/api/edge/{id}/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignEntityViewFromEdge",
+      "path_template": "/api/edge/{id}/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unassignRuleChainFromEdge",
+      "path_template": "/api/edge/{id}/ruleChain/{id}",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteEntityView",
+      "path_template": "/api/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteImage",
+      "path_template": "/api/images/{id}/{id}{",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteJob",
+      "path_template": "/api/job/{id}",
+      "tags": [
+        "job-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteMobileApp",
+      "path_template": "/api/mobile/app/{id}",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteMobileAppBundle",
+      "path_template": "/api/mobile/bundle/{id}",
+      "tags": [
+        "mobile-app-bundle-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteNotificationRequest",
+      "path_template": "/api/notification/request/{id}",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteNotificationRule",
+      "path_template": "/api/notification/rule/{id}",
+      "tags": [
+        "notification-rule-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteNotificationTargetById",
+      "path_template": "/api/notification/target/{id}",
+      "tags": [
+        "notification-target-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteNotificationTemplateById",
+      "path_template": "/api/notification/template/{id}",
+      "tags": [
+        "notification-template-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteNotification",
+      "path_template": "/api/notification/{id}",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteOauth2Client",
+      "path_template": "/api/oauth2/client/{id}",
+      "tags": [
+        "o-auth-2-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteClientRegistrationTemplate",
+      "path_template": "/api/oauth2/config/template/{id}",
+      "tags": [
+        "o-auth-2-config-template-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteOtaPackage",
+      "path_template": "/api/otaPackage/{id}",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteEntityTimeseries",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/delete{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteEntityAttributes",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/{id}{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteDeviceAttributes",
+      "path_template": "/api/plugins/telemetry/{id}/{id}{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteQueue",
+      "path_template": "/api/queues/{id}",
+      "tags": [
+        "queue-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRelations",
+      "path_template": "/api/relations{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRelation",
+      "path_template": "/api/relation{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteResource",
+      "path_template": "/api/resource/{id}{",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRpc",
+      "path_template": "/api/rpc/persistent/{id}",
+      "tags": [
+        "rpc-v-2-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRuleChain",
+      "path_template": "/api/ruleChain/{id}",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unsetAutoAssignToEdgeRuleChain",
+      "path_template": "/api/ruleChain/{id}/autoAssignToEdge",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteTenant",
+      "path_template": "/api/tenant/{id}",
+      "tags": [
+        "tenant-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteTenantProfile",
+      "path_template": "/api/tenantProfile/{id}",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "removeMobileSession",
+      "path_template": "/api/user/mobile/session",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteUserSettings_1",
+      "path_template": "/api/user/settings/{id}",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteUserSettings",
+      "path_template": "/api/user/settings/{id}/{id}",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteUser",
+      "path_template": "/api/user/{id}",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteRelationV2",
+      "path_template": "/api/v2/relation{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteWidgetType",
+      "path_template": "/api/widgetType/{id}",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteWidgetsBundle",
+      "path_template": "/api/widgetsBundle/{id}",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAccountTwoFaSettings",
+      "path_template": "/api/2fa/account/settings",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAvailableTwoFaProviders_1",
+      "path_template": "/api/2fa/providers",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPlatformTwoFaSettings",
+      "path_template": "/api/2fa/settings",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAutoCommitSettings",
+      "path_template": "/api/admin/autoCommitSettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "autoCommitSettingsExists",
+      "path_template": "/api/admin/autoCommitSettings/exists",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFeaturesInfo",
+      "path_template": "/api/admin/featuresInfo",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getJwtSettings",
+      "path_template": "/api/admin/jwtSettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAuthorizationUrl",
+      "path_template": "/api/admin/mail/oauth2/authorize",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "codeProcessingUrl",
+      "path_template": "/api/admin/mail/oauth2/code{",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMailProcessingUrl",
+      "path_template": "/api/admin/mail/oauth2/loginProcessingUrl",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRepositorySettings",
+      "path_template": "/api/admin/repositorySettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "repositorySettingsExists",
+      "path_template": "/api/admin/repositorySettings/exists",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRepositorySettingsInfo",
+      "path_template": "/api/admin/repositorySettings/info",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getSecuritySettings",
+      "path_template": "/api/admin/securitySettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAdminSettings",
+      "path_template": "/api/admin/settings/{id}",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getSystemInfo",
+      "path_template": "/api/admin/systemInfo",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "checkUpdates",
+      "path_template": "/api/admin/updates",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAiModelById",
+      "path_template": "/api/ai/model/{id}",
+      "tags": [
+        "ai-model-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAiModels",
+      "path_template": "/api/ai/model{",
+      "tags": [
+        "ai-model-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getHighestAlarmSeverity",
+      "path_template": "/api/alarm/highestSeverity/{id}/{id}{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarmInfoById",
+      "path_template": "/api/alarm/info/{id}",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarmTypes",
+      "path_template": "/api/alarm/types{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarmById",
+      "path_template": "/api/alarm/{id}",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarmComments",
+      "path_template": "/api/alarm/{id}/comment{",
+      "tags": [
+        "alarm-comment-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarms",
+      "path_template": "/api/alarm/{id}/{id}{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAllAlarms",
+      "path_template": "/api/alarms{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetInfoById",
+      "path_template": "/api/asset/info/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetTypes",
+      "path_template": "/api/asset/types",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetById",
+      "path_template": "/api/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetProfileNames",
+      "path_template": "/api/assetProfile/names{",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetProfileById",
+      "path_template": "/api/assetProfile/{id}{",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDefaultAssetProfileInfo",
+      "path_template": "/api/assetProfileInfo/default",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetProfileInfoById",
+      "path_template": "/api/assetProfileInfo/{id}",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetProfileInfos",
+      "path_template": "/api/assetProfileInfos{",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetProfiles",
+      "path_template": "/api/assetProfiles{",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAssetsByIds",
+      "path_template": "/api/assets{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAuditLogsByCustomerId",
+      "path_template": "/api/audit/logs/customer/{id}{",
+      "tags": [
+        "audit-log-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAuditLogsByEntityId",
+      "path_template": "/api/audit/logs/entity/{id}/{id}{",
+      "tags": [
+        "audit-log-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAuditLogsByUserId",
+      "path_template": "/api/audit/logs/user/{id}{",
+      "tags": [
+        "audit-log-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAuditLogs",
+      "path_template": "/api/audit/logs{",
+      "tags": [
+        "audit-log-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAvailableTwoFaProviders",
+      "path_template": "/api/auth/2fa/providers",
+      "tags": [
+        "two-factor-auth-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUser",
+      "path_template": "/api/auth/user",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCalculatedFieldById",
+      "path_template": "/api/calculatedField/{id}",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLatestCalculatedFieldDebugEvent",
+      "path_template": "/api/calculatedField/{id}/debug",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getComponentDescriptorByClazz",
+      "path_template": "/api/component/{id}",
+      "tags": [
+        "component-descriptor-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getComponentDescriptorsByType",
+      "path_template": "/api/components/{id}{",
+      "tags": [
+        "component-descriptor-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getComponentDescriptorsByTypes",
+      "path_template": "/api/components{",
+      "tags": [
+        "component-descriptor-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerById",
+      "path_template": "/api/customer/{id}",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerAssetInfos",
+      "path_template": "/api/customer/{id}/assetInfos{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerAssets",
+      "path_template": "/api/customer/{id}/assets{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerDashboards",
+      "path_template": "/api/customer/{id}/dashboards{",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerDeviceInfos",
+      "path_template": "/api/customer/{id}/deviceInfos{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerDevices",
+      "path_template": "/api/customer/{id}/devices{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerEdgeInfos",
+      "path_template": "/api/customer/{id}/edgeInfos{",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerEdges",
+      "path_template": "/api/customer/{id}/edges{",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerEntityViewInfos",
+      "path_template": "/api/customer/{id}/entityViewInfos{",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerEntityViews",
+      "path_template": "/api/customer/{id}/entityViews{",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getShortCustomerInfoById",
+      "path_template": "/api/customer/{id}/shortInfo",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerTitleById",
+      "path_template": "/api/customer/{id}/title",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomerUsers",
+      "path_template": "/api/customer/{id}/users{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCustomers",
+      "path_template": "/api/customers{",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getHomeDashboardInfo",
+      "path_template": "/api/dashboard/home/info",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDashboardInfoById",
+      "path_template": "/api/dashboard/info/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMaxDatapointsLimit",
+      "path_template": "/api/dashboard/maxDatapointsLimit",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDashboardById",
+      "path_template": "/api/dashboard/{id}{",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadGatewayDockerCompose",
+      "path_template": "/api/device-connectivity/gateway-launch/{id}/docker-compose/download",
+      "tags": [
+        "device-connectivity-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDevicePublishTelemetryCommands",
+      "path_template": "/api/device-connectivity/{id}",
+      "tags": [
+        "device-connectivity-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadServerCertificate",
+      "path_template": "/api/device-connectivity/{id}/certificate/download",
+      "tags": [
+        "device-connectivity-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceInfoById",
+      "path_template": "/api/device/info/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceTypes",
+      "path_template": "/api/device/types",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceById",
+      "path_template": "/api/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceCredentialsByDeviceId",
+      "path_template": "/api/device/{id}/credentials",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAttributesKeys",
+      "path_template": "/api/deviceProfile/devices/keys/attributes{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTimeseriesKeys_1",
+      "path_template": "/api/deviceProfile/devices/keys/timeseries{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceProfileNames",
+      "path_template": "/api/deviceProfile/names{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceProfileById",
+      "path_template": "/api/deviceProfile/{id}{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDefaultDeviceProfileInfo",
+      "path_template": "/api/deviceProfileInfo/default",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceProfileInfoById",
+      "path_template": "/api/deviceProfileInfo/{id}",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceProfileInfos",
+      "path_template": "/api/deviceProfileInfos{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceProfiles",
+      "path_template": "/api/deviceProfiles{",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "countByDeviceProfileAndEmptyOtaPackage",
+      "path_template": "/api/devices/count/{id}/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDevicesByIds",
+      "path_template": "/api/devices{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDomainInfoById",
+      "path_template": "/api/domain/info/{id}",
+      "tags": [
+        "domain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantDomainInfos",
+      "path_template": "/api/domain/infos{",
+      "tags": [
+        "domain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeInfoById",
+      "path_template": "/api/edge/info/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeInstallInstructions",
+      "path_template": "/api/edge/instructions/install/{id}/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeUpgradeInstructions",
+      "path_template": "/api/edge/instructions/upgrade/{id}/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "findMissingToRelatedRuleChains",
+      "path_template": "/api/edge/missingToRelatedRuleChains/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeById",
+      "path_template": "/api/edge/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeAssets",
+      "path_template": "/api/edge/{id}/assets{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeDashboards",
+      "path_template": "/api/edge/{id}/dashboards{",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeDevices",
+      "path_template": "/api/edge/{id}/devices{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeEntityViews",
+      "path_template": "/api/edge/{id}/entityViews{",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeEvents",
+      "path_template": "/api/edge/{id}/events{",
+      "tags": [
+        "edge-event-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdgeRuleChains",
+      "path_template": "/api/edge/{id}/ruleChains{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "isEdgeUpgradeAvailable",
+      "path_template": "/api/edge/{id}/upgrade/available",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "isEdgesSupportEnabled",
+      "path_template": "/api/edges/enabled",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdges",
+      "path_template": "/api/edges{",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEdqsState",
+      "path_template": "/api/edqs/state",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listBranches",
+      "path_template": "/api/entities/vc/branches",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "compareEntityDataToVersion",
+      "path_template": "/api/entities/vc/diff/{id}/{id}{",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listAllEntitiesAtVersion",
+      "path_template": "/api/entities/vc/entity/{id}",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getVersionLoadRequestStatus",
+      "path_template": "/api/entities/vc/entity/{id}/status",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listEntitiesAtVersion",
+      "path_template": "/api/entities/vc/entity/{id}/{id}",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEntityDataInfo",
+      "path_template": "/api/entities/vc/info/{id}/{id}/{id}",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getVersionCreateRequestStatus",
+      "path_template": "/api/entities/vc/version/{id}/status",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listEntityVersions",
+      "path_template": "/api/entities/vc/version/{id}/{id}{",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listEntityTypeVersions",
+      "path_template": "/api/entities/vc/version/{id}{",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listVersions",
+      "path_template": "/api/entities/vc/version{",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEntityViewInfoById",
+      "path_template": "/api/entityView/info/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEntityViewById",
+      "path_template": "/api/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEvents_2",
+      "path_template": "/api/events/{id}/{id}/{id}{",
+      "tags": [
+        "event-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getEvents",
+      "path_template": "/api/events/{id}/{id}{",
+      "tags": [
+        "event-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadPublicImage",
+      "path_template": "/api/images/public/{id}",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadImage",
+      "path_template": "/api/images/{id}/{id}",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "exportImage",
+      "path_template": "/api/images/{id}/{id}/export",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getImageInfo",
+      "path_template": "/api/images/{id}/{id}/info",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadImagePreview",
+      "path_template": "/api/images/{id}/{id}/preview",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getImages",
+      "path_template": "/api/images{",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getJobById",
+      "path_template": "/api/job/{id}",
+      "tags": [
+        "job-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getJobs",
+      "path_template": "/api/jobs{",
+      "tags": [
+        "job-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLwm2mBootstrapSecurityInfo",
+      "path_template": "/api/lwm2m/deviceProfile/bootstrap/{id}",
+      "tags": [
+        "lwm-2m-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getClientRegistrationTemplates_1",
+      "path_template": "/api/mail/config/template",
+      "tags": [
+        "mail-config-template-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMobileAppById",
+      "path_template": "/api/mobile/app/{id}",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantMobileApps",
+      "path_template": "/api/mobile/app{",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMobileAppBundleInfoById",
+      "path_template": "/api/mobile/bundle/info/{id}",
+      "tags": [
+        "mobile-app-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantMobileAppBundleInfos",
+      "path_template": "/api/mobile/bundle/infos{",
+      "tags": [
+        "mobile-app-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserMobileInfo",
+      "path_template": "/api/mobile{",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "checkActivateToken",
+      "path_template": "/api/noauth/activate{",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLoginMobileInfo",
+      "path_template": "/api/noauth/mobile{",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getApplicationRedirect",
+      "path_template": "/api/noauth/qr",
+      "tags": [
+        "qr-code-settings-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserTokenByMobileSecret",
+      "path_template": "/api/noauth/qr/{id}",
+      "tags": [
+        "qr-code-settings-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "checkResetToken",
+      "path_template": "/api/noauth/resetPassword{",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserPasswordPolicy",
+      "path_template": "/api/noauth/userPasswordPolicy",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAvailableDeliveryMethods",
+      "path_template": "/api/notification/deliveryMethods",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationRequestById",
+      "path_template": "/api/notification/request/{id}",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationRequests",
+      "path_template": "/api/notification/requests{",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationRuleById",
+      "path_template": "/api/notification/rule/{id}",
+      "tags": [
+        "notification-rule-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationRules",
+      "path_template": "/api/notification/rules{",
+      "tags": [
+        "notification-rule-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationSettings",
+      "path_template": "/api/notification/settings",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserNotificationSettings",
+      "path_template": "/api/notification/settings/user",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "listSlackConversations",
+      "path_template": "/api/notification/slack/conversations{",
+      "tags": [
+        "notification-template-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationTargetById",
+      "path_template": "/api/notification/target/{id}",
+      "tags": [
+        "notification-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationTargets",
+      "path_template": "/api/notification/targets{",
+      "tags": [
+        "notification-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationTemplateById",
+      "path_template": "/api/notification/template/{id}",
+      "tags": [
+        "notification-template-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotificationTemplates",
+      "path_template": "/api/notification/templates{",
+      "tags": [
+        "notification-template-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUnreadNotificationsCount",
+      "path_template": "/api/notifications/unread/count{",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getNotifications",
+      "path_template": "/api/notifications{",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "findTenantOAuth2ClientInfos",
+      "path_template": "/api/oauth2/client/infos{",
+      "tags": [
+        "o-auth-2-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLoginProcessingUrl",
+      "path_template": "/api/oauth2/loginProcessingUrl",
+      "tags": [
+        "o-auth-2-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOtaPackageInfoById",
+      "path_template": "/api/otaPackage/info/{id}",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOtaPackageById",
+      "path_template": "/api/otaPackage/{id}",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadOtaPackage",
+      "path_template": "/api/otaPackage/{id}/download",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOtaPackages_1",
+      "path_template": "/api/otaPackages/{id}/{id}{",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getOtaPackages",
+      "path_template": "/api/otaPackages{",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAttributeKeys",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/attributes",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAttributeKeysByScope",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/attributes/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTimeseriesKeys",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/timeseries",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAttributesByScope",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/attributes/{id}{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAttributes",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/attributes{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLatestTimeseries",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/timeseries{",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getQueueStatsById",
+      "path_template": "/api/queueStats/{id}",
+      "tags": [
+        "queue-stats-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getQueueStatsByIds",
+      "path_template": "/api/queueStats{",
+      "tags": [
+        "queue-stats-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getQueueByName",
+      "path_template": "/api/queues/name/{id}",
+      "tags": [
+        "queue-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getQueueById",
+      "path_template": "/api/queues/{id}",
+      "tags": [
+        "queue-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantQueuesByServiceType",
+      "path_template": "/api/queues{",
+      "tags": [
+        "queue-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "findInfoByTo",
+      "path_template": "/api/relations/info{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "findByTo",
+      "path_template": "/api/relations{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRelation",
+      "path_template": "/api/relation{",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getResourceInfoById",
+      "path_template": "/api/resource/info/{id}",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadJksResourceIfChanged",
+      "path_template": "/api/resource/jks/{id}/download",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadJsResourceIfChanged",
+      "path_template": "/api/resource/js/{id}/download",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLwm2mListObjectsPage",
+      "path_template": "/api/resource/lwm2m/page{",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadLwm2mResourceIfChanged",
+      "path_template": "/api/resource/lwm2m/{id}/download",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLwm2mListObjects",
+      "path_template": "/api/resource/lwm2m{",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadPkcs12ResourceIfChanged",
+      "path_template": "/api/resource/pkcs12/{id}/download",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantResources",
+      "path_template": "/api/resource/tenant{",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getResourceById",
+      "path_template": "/api/resource/{id}",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "downloadResource",
+      "path_template": "/api/resource/{id}/download",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getResourceInfo",
+      "path_template": "/api/resource/{id}/{id}/{id}/info",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getResources",
+      "path_template": "/api/resource{",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPersistedRpcByDevice",
+      "path_template": "/api/rpc/persistent/device/{id}{",
+      "tags": [
+        "rpc-v-2-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getPersistedRpc",
+      "path_template": "/api/rpc/persistent/{id}",
+      "tags": [
+        "rpc-v-2-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "isTbelEnabled",
+      "path_template": "/api/ruleChain/tbelEnabled",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRuleChainById",
+      "path_template": "/api/ruleChain/{id}",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRuleChainMetaData",
+      "path_template": "/api/ruleChain/{id}/metadata",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRuleChainOutputLabels",
+      "path_template": "/api/ruleChain/{id}/output/labels",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRuleChainOutputLabelsUsage",
+      "path_template": "/api/ruleChain/{id}/output/labels/usage",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "exportRuleChains",
+      "path_template": "/api/ruleChains/export{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getRuleChains",
+      "path_template": "/api/ruleChains{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getLatestRuleNodeDebugInput",
+      "path_template": "/api/ruleNode/{id}/debugIn",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantAssetInfos",
+      "path_template": "/api/tenant/assetInfos{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantAssets",
+      "path_template": "/api/tenant/assets{",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantCustomer",
+      "path_template": "/api/tenant/customers{",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantDashboards_1",
+      "path_template": "/api/tenant/dashboards{",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantDeviceInfos",
+      "path_template": "/api/tenant/deviceInfos{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantDevices",
+      "path_template": "/api/tenant/devices{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantEdgeInfos",
+      "path_template": "/api/tenant/edgeInfos{",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantEdges",
+      "path_template": "/api/tenant/edges{",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantEntityViewInfos",
+      "path_template": "/api/tenant/entityViewInfos{",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantEntityViews",
+      "path_template": "/api/tenant/entityViews{",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantInfoById",
+      "path_template": "/api/tenant/info/{id}",
+      "tags": [
+        "tenant-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantDashboards",
+      "path_template": "/api/tenant/{id}/dashboards{",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantAdmins",
+      "path_template": "/api/tenant/{id}/users{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantInfos",
+      "path_template": "/api/tenantInfos{",
+      "tags": [
+        "tenant-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantProfileById",
+      "path_template": "/api/tenantProfile/{id}",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDefaultTenantProfileInfo",
+      "path_template": "/api/tenantProfileInfo/default",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantProfileInfoById",
+      "path_template": "/api/tenantProfileInfo/{id}",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantProfileInfos",
+      "path_template": "/api/tenantProfileInfos{",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantProfiles",
+      "path_template": "/api/tenantProfiles{",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenants",
+      "path_template": "/api/tenants{",
+      "tags": [
+        "tenant-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTrendzSettings",
+      "path_template": "/api/trendz/settings",
+      "tags": [
+        "trendz-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getHelpBaseUrl",
+      "path_template": "/api/uiSettings/helpBaseUrl",
+      "tags": [
+        "ui-settings-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getTenantUsageInfo",
+      "path_template": "/api/usage",
+      "tags": [
+        "usage-info-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "reportUserDashboardAction",
+      "path_template": "/api/user/dashboards/{id}/{id}",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getMobileSession",
+      "path_template": "/api/user/mobile/session",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserSettings",
+      "path_template": "/api/user/settings",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "isUserTokenAccessEnabled",
+      "path_template": "/api/user/tokenAccessEnabled",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getActivationLink",
+      "path_template": "/api/user/{id}/activationLink",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getActivationLinkInfo",
+      "path_template": "/api/user/{id}/activationLinkInfo",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUserToken",
+      "path_template": "/api/user/{id}/token",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUsersForAssign",
+      "path_template": "/api/users/assign/{id}{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "findUsersByQuery",
+      "path_template": "/api/users/info{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getUsers",
+      "path_template": "/api/users{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "subscribeToAttributes",
+      "path_template": "/api/v1/{id}/attributes/updates{",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getDeviceAttributes",
+      "path_template": "/api/v1/{id}/attributes{",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getFirmware",
+      "path_template": "/api/v1/{id}/firmware{",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "subscribeToCommands",
+      "path_template": "/api/v1/{id}/rpc{",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getSoftware",
+      "path_template": "/api/v1/{id}/software{",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAlarmsV2",
+      "path_template": "/api/v2/alarm/{id}/{id}{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getAllAlarmsV2",
+      "path_template": "/api/v2/alarms{",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetTypeById",
+      "path_template": "/api/widgetType/{id}{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getBundleWidgetTypeFqns",
+      "path_template": "/api/widgetTypeFqns{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetTypeInfoById",
+      "path_template": "/api/widgetTypeInfo/{id}",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getBundleWidgetTypesDetails",
+      "path_template": "/api/widgetTypesDetails{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getBundleWidgetTypesInfos",
+      "path_template": "/api/widgetTypesInfos{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getBundleWidgetTypes",
+      "path_template": "/api/widgetTypes{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetTypeByBundleAliasAndTypeAlias",
+      "path_template": "/api/widgetType{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetsBundleById",
+      "path_template": "/api/widgetsBundle/{id}{",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetsBundles",
+      "path_template": "/api/widgetsBundles",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getWidgetsBundles_1",
+      "path_template": "/api/widgetsBundles{",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "getCalculatedFieldsByEntityId",
+      "path_template": "/api/{id}/{id}/calculatedFields{",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "generateTwoFaAccountConfig",
+      "path_template": "/api/2fa/account/config/generate{",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "submitTwoFaAccountConfig",
+      "path_template": "/api/2fa/account/config/submit",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "verifyAndSaveTwoFaAccountConfig",
+      "path_template": "/api/2fa/account/config{",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "savePlatformTwoFaSettings",
+      "path_template": "/api/2fa/settings",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAutoCommitSettings",
+      "path_template": "/api/admin/autoCommitSettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveJwtSettings",
+      "path_template": "/api/admin/jwtSettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRepositorySettings",
+      "path_template": "/api/admin/repositorySettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "checkRepositoryAccess",
+      "path_template": "/api/admin/repositorySettings/checkAccess",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveSecuritySettings",
+      "path_template": "/api/admin/securitySettings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAdminSettings",
+      "path_template": "/api/admin/settings",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "sendTestMail",
+      "path_template": "/api/admin/settings/testMail",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "sendTestSms",
+      "path_template": "/api/admin/settings/testSms",
+      "tags": [
+        "admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAiModel",
+      "path_template": "/api/ai/model",
+      "tags": [
+        "ai-model-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "sendChatRequest",
+      "path_template": "/api/ai/model/chat",
+      "tags": [
+        "ai-model-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAlarm",
+      "path_template": "/api/alarm",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "ackAlarm",
+      "path_template": "/api/alarm/{id}/ack",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignAlarm",
+      "path_template": "/api/alarm/{id}/assign/{id}",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "clearAlarm",
+      "path_template": "/api/alarm/{id}/clear",
+      "tags": [
+        "alarm-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAlarmComment",
+      "path_template": "/api/alarm/{id}/comment",
+      "tags": [
+        "alarm-comment-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "countAlarmsByQuery",
+      "path_template": "/api/alarmsQuery/count",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findAlarmDataByQuery",
+      "path_template": "/api/alarmsQuery/find",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAsset",
+      "path_template": "/api/asset",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "processAssetsBulkImport",
+      "path_template": "/api/asset/bulk_import",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveAssetProfile",
+      "path_template": "/api/assetProfile",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setDefaultAssetProfile",
+      "path_template": "/api/assetProfile/{id}/default",
+      "tags": [
+        "asset-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findByQuery_4",
+      "path_template": "/api/assets",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "checkTwoFaVerificationCode",
+      "path_template": "/api/auth/2fa/verification/check{",
+      "tags": [
+        "two-factor-auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "requestTwoFaVerificationCode",
+      "path_template": "/api/auth/2fa/verification/send{",
+      "tags": [
+        "two-factor-auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "changePassword",
+      "path_template": "/api/auth/changePassword",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/auth/login",
+      "tags": [
+        "login-endpoint"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "logout",
+      "path_template": "/api/auth/logout",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/auth/token",
+      "tags": [
+        "login-endpoint"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveCalculatedField",
+      "path_template": "/api/calculatedField",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "testScript_1",
+      "path_template": "/api/calculatedField/testScript",
+      "tags": [
+        "calculated-field-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveCustomer",
+      "path_template": "/api/customer",
+      "tags": [
+        "customer-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "claimDevice_1",
+      "path_template": "/api/customer/device/{id}/claim",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignAssetToPublicCustomer",
+      "path_template": "/api/customer/public/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDashboardToPublicCustomer",
+      "path_template": "/api/customer/public/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDeviceToPublicCustomer",
+      "path_template": "/api/customer/public/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignEdgeToPublicCustomer",
+      "path_template": "/api/customer/public/edge/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignEntityViewToPublicCustomer",
+      "path_template": "/api/customer/public/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignAssetToCustomer",
+      "path_template": "/api/customer/{id}/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDashboardToCustomer",
+      "path_template": "/api/customer/{id}/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDeviceToCustomer",
+      "path_template": "/api/customer/{id}/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignEdgeToCustomer",
+      "path_template": "/api/customer/{id}/edge/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignEntityViewToCustomer",
+      "path_template": "/api/customer/{id}/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDashboard",
+      "path_template": "/api/dashboard",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "updateDashboardCustomers",
+      "path_template": "/api/dashboard/{id}/customers",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "addDashboardCustomers",
+      "path_template": "/api/dashboard/{id}/customers/add",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "removeDashboardCustomers",
+      "path_template": "/api/dashboard/{id}/customers/remove",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDeviceWithCredentials_1",
+      "path_template": "/api/device-with-credentials",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "processDevicesBulkImport",
+      "path_template": "/api/device/bulk_import",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "updateDeviceCredentials",
+      "path_template": "/api/device/credentials",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDeviceProfile",
+      "path_template": "/api/deviceProfile",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setDefaultDeviceProfile",
+      "path_template": "/api/deviceProfile/{id}/default",
+      "tags": [
+        "device-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findByQuery_3",
+      "path_template": "/api/devices",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDevice",
+      "path_template": "/api/device{",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDomain",
+      "path_template": "/api/domain{",
+      "tags": [
+        "domain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEdge",
+      "path_template": "/api/edge",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "processEdgesBulkImport",
+      "path_template": "/api/edge/bulk_import",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "syncEdge",
+      "path_template": "/api/edge/sync/{id}",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignAssetToEdge",
+      "path_template": "/api/edge/{id}/asset/{id}",
+      "tags": [
+        "asset-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDashboardToEdge",
+      "path_template": "/api/edge/{id}/dashboard/{id}",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDeviceToEdge",
+      "path_template": "/api/edge/{id}/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignEntityViewToEdge",
+      "path_template": "/api/edge/{id}/entityView/{id}",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignRuleChainToEdge",
+      "path_template": "/api/edge/{id}/ruleChain/{id}",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setEdgeRootRuleChain",
+      "path_template": "/api/edge/{id}/{id}/root",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findByQuery_2",
+      "path_template": "/api/edges",
+      "tags": [
+        "edge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "processSystemEdqsRequest",
+      "path_template": "/api/edqs/system/request",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "loadEntitiesVersion",
+      "path_template": "/api/entities/vc/entity",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntitiesVersion",
+      "path_template": "/api/entities/vc/version",
+      "tags": [
+        "entities-version-control-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "countEntitiesByQuery",
+      "path_template": "/api/entitiesQuery/count",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findEntityTimeseriesAndAttributesKeysByQuery",
+      "path_template": "/api/entitiesQuery/find/keys{",
+      "tags": [
+        "entity-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntityView",
+      "path_template": "/api/entityView",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findByQuery_1",
+      "path_template": "/api/entityViews",
+      "tags": [
+        "entity-view-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "clearEvents",
+      "path_template": "/api/events/{id}/{id}/clear{",
+      "tags": [
+        "event-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "getEvents_1",
+      "path_template": "/api/events/{id}/{id}{",
+      "tags": [
+        "event-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "uploadImage",
+      "path_template": "/api/image",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "cancelJob",
+      "path_template": "/api/job/{id}/cancel",
+      "tags": [
+        "job-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "reprocessJob",
+      "path_template": "/api/job/{id}/reprocess",
+      "tags": [
+        "job-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDeviceWithCredentials",
+      "path_template": "/api/lwm2m/device-credentials",
+      "tags": [
+        "lwm-2m-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveMobileApp",
+      "path_template": "/api/mobile/app",
+      "tags": [
+        "mobile-app-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveMobileAppBundle",
+      "path_template": "/api/mobile/bundle{",
+      "tags": [
+        "mobile-app-bundle-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveQrCodeSettings",
+      "path_template": "/api/mobile/qr/settings",
+      "tags": [
+        "qr-code-settings-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "activateUser",
+      "path_template": "/api/noauth/activate{",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "getOAuth2Clients",
+      "path_template": "/api/noauth/oauth2Clients{",
+      "tags": [
+        "o-auth-2-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "resetPassword",
+      "path_template": "/api/noauth/resetPassword",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "requestResetPasswordByEmail",
+      "path_template": "/api/noauth/resetPasswordByEmail",
+      "tags": [
+        "auth-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "createNotificationRequest",
+      "path_template": "/api/notification/request",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "getNotificationRequestPreview",
+      "path_template": "/api/notification/request/preview{",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveNotificationRule",
+      "path_template": "/api/notification/rule",
+      "tags": [
+        "notification-rule-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveNotificationSettings",
+      "path_template": "/api/notification/settings",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveUserNotificationSettings",
+      "path_template": "/api/notification/settings/user",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveNotificationTarget",
+      "path_template": "/api/notification/target",
+      "tags": [
+        "notification-target-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "getRecipientsForNotificationTargetConfig",
+      "path_template": "/api/notification/target/recipients{",
+      "tags": [
+        "notification-target-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveNotificationTemplate",
+      "path_template": "/api/notification/template",
+      "tags": [
+        "notification-template-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveOAuth2Client",
+      "path_template": "/api/oauth2/client",
+      "tags": [
+        "o-auth-2-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveClientRegistrationTemplate",
+      "path_template": "/api/oauth2/config/template",
+      "tags": [
+        "o-auth-2-config-template-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveOtaPackageInfo",
+      "path_template": "/api/otaPackage",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveOtaPackageData",
+      "path_template": "/api/otaPackage/{id}{",
+      "tags": [
+        "ota-package-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleOneWayDeviceRPCRequest_1",
+      "path_template": "/api/plugins/rpc/oneway/{id}",
+      "tags": [
+        "rpc-v-1-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleTwoWayDeviceRPCRequest_1",
+      "path_template": "/api/plugins/rpc/twoway/{id}",
+      "tags": [
+        "rpc-v-1-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveDeviceAttributes",
+      "path_template": "/api/plugins/telemetry/{id}/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntityAttributesV2",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/attributes/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntityTelemetry",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntityTelemetryWithTTL",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/{id}/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveEntityAttributesV1",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/{id}",
+      "tags": [
+        "telemetry-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveQueue",
+      "path_template": "/api/queues{",
+      "tags": [
+        "queue-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRelation",
+      "path_template": "/api/relation",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findByQuery",
+      "path_template": "/api/relations",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "findInfoByQuery",
+      "path_template": "/api/relations/info",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveResource",
+      "path_template": "/api/resource",
+      "tags": [
+        "tb-resource-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleOneWayDeviceRPCRequest",
+      "path_template": "/api/rpc/oneway/{id}",
+      "tags": [
+        "rpc-v-2-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleTwoWayDeviceRPCRequest",
+      "path_template": "/api/rpc/twoway/{id}",
+      "tags": [
+        "rpc-v-2-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleRuleEngineRequest_3",
+      "path_template": "/api/rule-engine",
+      "tags": [
+        "rule-engine-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleRuleEngineRequest",
+      "path_template": "/api/rule-engine/{id}/{id}",
+      "tags": [
+        "rule-engine-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleRuleEngineRequest_1",
+      "path_template": "/api/rule-engine/{id}/{id}/{id}",
+      "tags": [
+        "rule-engine-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "handleRuleEngineRequest_2",
+      "path_template": "/api/rule-engine/{id}/{id}/{id}/{id}",
+      "tags": [
+        "rule-engine-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRuleChain",
+      "path_template": "/api/ruleChain",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRuleChain_1",
+      "path_template": "/api/ruleChain/device/default",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRuleChainMetaData",
+      "path_template": "/api/ruleChain/metadata{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "testScript",
+      "path_template": "/api/ruleChain/testScript{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setAutoAssignToEdgeRuleChain",
+      "path_template": "/api/ruleChain/{id}/autoAssignToEdge",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setEdgeTemplateRootRuleChain",
+      "path_template": "/api/ruleChain/{id}/edgeTemplateRoot",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setRootRuleChain",
+      "path_template": "/api/ruleChain/{id}/root",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "importRuleChains",
+      "path_template": "/api/ruleChains/import{",
+      "tags": [
+        "rule-chain-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveTenant",
+      "path_template": "/api/tenant",
+      "tags": [
+        "tenant-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setTenantHomeDashboardInfo",
+      "path_template": "/api/tenant/dashboard/home/info",
+      "tags": [
+        "dashboard-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignDeviceToTenant",
+      "path_template": "/api/tenant/{id}/device/{id}",
+      "tags": [
+        "device-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveTenantProfile",
+      "path_template": "/api/tenantProfile",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setDefaultTenantProfile",
+      "path_template": "/api/tenantProfile/{id}/default",
+      "tags": [
+        "tenant-profile-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveTrendzSettings",
+      "path_template": "/api/trendz/settings",
+      "tags": [
+        "trendz-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveMobileSession",
+      "path_template": "/api/user/mobile/session",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "sendActivationEmail",
+      "path_template": "/api/user/sendActivationMail{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveUserSettings",
+      "path_template": "/api/user/settings",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "setUserCredentialsEnabled",
+      "path_template": "/api/user/{id}/userCredentialsEnabled{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveUser",
+      "path_template": "/api/user{",
+      "tags": [
+        "user-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "provisionDevice",
+      "path_template": "/api/v1/provision",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "postDeviceAttributes",
+      "path_template": "/api/v1/{id}/attributes",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "claimDevice",
+      "path_template": "/api/v1/{id}/claim",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "postRpcRequest",
+      "path_template": "/api/v1/{id}/rpc",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "replyToCommand",
+      "path_template": "/api/v1/{id}/rpc/{id}",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "postTelemetry",
+      "path_template": "/api/v1/{id}/telemetry",
+      "tags": [
+        "device-api-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveRelationV2",
+      "path_template": "/api/v2/relation",
+      "tags": [
+        "entity-relation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveWidgetType",
+      "path_template": "/api/widgetType{",
+      "tags": [
+        "widget-type-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "saveWidgetsBundle",
+      "path_template": "/api/widgetsBundle",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "updateWidgetsBundleWidgetFqns",
+      "path_template": "/api/widgetsBundle/{id}/widgetTypeFqns",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "updateWidgetsBundleWidgetTypes",
+      "path_template": "/api/widgetsBundle/{id}/widgetTypes",
+      "tags": [
+        "widgets-bundle-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateTwoFaAccountConfig",
+      "path_template": "/api/2fa/account/config{",
+      "tags": [
+        "two-factor-auth-config-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateOauth2Clients_1",
+      "path_template": "/api/domain/{id}/oauth2Clients",
+      "tags": [
+        "domain-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "importImage",
+      "path_template": "/api/image/import",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateImage",
+      "path_template": "/api/images/{id}/{id}",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateImageInfo",
+      "path_template": "/api/images/{id}/{id}/info",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateImagePublicStatus",
+      "path_template": "/api/images/{id}/{id}/public/{id}",
+      "tags": [
+        "image-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "updateOauth2Clients",
+      "path_template": "/api/mobile/bundle/{id}/oauth2Clients",
+      "tags": [
+        "mobile-app-bundle-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "markNotificationAsRead",
+      "path_template": "/api/notification/{id}/read",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "markAllNotificationsAsRead",
+      "path_template": "/api/notifications/read{",
+      "tags": [
+        "notification-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": "putUserSettings",
+      "path_template": "/api/user/settings",
+      "tags": [
+        "user-controller"
+      ]
+    }
+  ],
+  "shape_matches": [
+    {
+      "expected_path": "/api/oauth2/client/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/oauth2/client/infos",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/resource/{id}/{id}/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/resource/dashboard/system/gateways_dashboard.json",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/user/settings/{id}",
+      "host": "localhost",
+      "method": "PUT",
+      "mode": "shape",
+      "observed_path": "/api/user/settings/GETTING_STARTED",
+      "source": "dynamic"
+    }
+  ],
+  "summary": {
+    "effective_coverage": 0.035639,
+    "exact_coverage": 0.02935,
+    "exact_matches": 14,
+    "expected_count": 477,
+    "extra_count": 8,
+    "missing_count": 460,
+    "observed_count": 25,
+    "shape_matches": 3
+  }
+}

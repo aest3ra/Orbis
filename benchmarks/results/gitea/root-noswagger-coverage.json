@@ -1,0 +1,4265 @@
+{
+  "excluded": [],
+  "miss_reasons": {
+    "openapi_not_collected_or_not_parsed": 471
+  },
+  "missed_eligible": [
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/jobs",
+      "summary": "Lists all jobs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runners",
+      "summary": "Get all runners",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runners/registration-token",
+      "summary": "Get a global actions runner registration token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runners/{id}",
+      "summary": "Get a global runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runners/{id}",
+      "summary": "Delete a global runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runners/{id}",
+      "summary": "Update a global runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/actions/runs",
+      "summary": "Lists all runs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/cron",
+      "summary": "List cron tasks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/cron/{id}",
+      "summary": "Run cron task",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/emails",
+      "summary": "List all emails",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/emails/search",
+      "summary": "Search all emails",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/hooks",
+      "summary": "List system's webhooks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/hooks",
+      "summary": "Create a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/hooks/{id}",
+      "summary": "Get a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/hooks/{id}",
+      "summary": "Delete a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/hooks/{id}",
+      "summary": "Update a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/orgs",
+      "summary": "List all organizations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/unadopted",
+      "summary": "List unadopted repositories",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/unadopted/{id}/{id}",
+      "summary": "Adopt unadopted files as a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/unadopted/{id}/{id}",
+      "summary": "Delete unadopted files",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users",
+      "summary": "Search users according filter conditions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users",
+      "summary": "Create a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}",
+      "summary": "Delete a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}",
+      "summary": "Edit an existing user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/badges",
+      "summary": "List a user's badges",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/badges",
+      "summary": "Add a badge to a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/badges",
+      "summary": "Remove a badge from a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/keys",
+      "summary": "Add a public key on behalf of a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/keys/{id}",
+      "summary": "Delete a user's public key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/orgs",
+      "summary": "Create an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/rename",
+      "summary": "Rename a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/admin/users/{id}/repos",
+      "summary": "Create a repository on behalf of a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/gitignore/templates",
+      "summary": "Returns a list of all gitignore templates",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/gitignore/templates/{id}",
+      "summary": "Returns information about a gitignore template",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/label/templates",
+      "summary": "Returns a list of all label templates",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/label/templates/{id}",
+      "summary": "Returns all labels in a template",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/licenses",
+      "summary": "Returns a list of all license templates",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/licenses/{id}",
+      "summary": "Returns information about a license template",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/markdown",
+      "summary": "Render a markdown document as HTML",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/markdown/raw",
+      "summary": "Render raw markdown as HTML",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/markup",
+      "summary": "Render a markup document as HTML",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/notifications",
+      "summary": "List users's notification threads",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/notifications",
+      "summary": "Mark notification threads as read, pinned or unread",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/notifications/new",
+      "summary": "Check if unread notifications exist",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/notifications/threads/{id}",
+      "summary": "Get notification thread by ID",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/notifications/threads/{id}",
+      "summary": "Mark notification thread as read by ID",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/org/{id}/repos",
+      "summary": "Create a repository in an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs",
+      "summary": "Get list of organizations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs",
+      "summary": "Create an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}",
+      "summary": "Get an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}",
+      "summary": "Delete an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}",
+      "summary": "Edit an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/jobs",
+      "summary": "Get org-level workflow jobs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runners",
+      "summary": "Get org-level runners",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runners/registration-token",
+      "summary": "Get an organization's actions runner registration token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runners/{id}",
+      "summary": "Get an org-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runners/{id}",
+      "summary": "Delete an org-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runners/{id}",
+      "summary": "Update an org-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/runs",
+      "summary": "Get org-level workflow runs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/secrets",
+      "summary": "List an organization's actions secrets",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/secrets/{id}",
+      "summary": "Create or Update a secret value in an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/secrets/{id}",
+      "summary": "Delete a secret in an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/variables",
+      "summary": "Get an org-level variables list",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/variables/{id}",
+      "summary": "Get an org-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/variables/{id}",
+      "summary": "Update an org-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/variables/{id}",
+      "summary": "Create an org-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/actions/variables/{id}",
+      "summary": "Delete an org-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/activities/feeds",
+      "summary": "List an organization's activity feeds",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/avatar",
+      "summary": "Update Avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/avatar",
+      "summary": "Delete Avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/blocks",
+      "summary": "List users blocked by the organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/blocks/{id}",
+      "summary": "Check if a user is blocked by the organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/blocks/{id}",
+      "summary": "Block a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/blocks/{id}",
+      "summary": "Unblock a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/hooks",
+      "summary": "List an organization's webhooks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/hooks",
+      "summary": "Create a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/hooks/{id}",
+      "summary": "Get a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/hooks/{id}",
+      "summary": "Delete a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/hooks/{id}",
+      "summary": "Update a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/labels",
+      "summary": "List an organization's labels",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/labels",
+      "summary": "Create a label for an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/labels/{id}",
+      "summary": "Get a single label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/labels/{id}",
+      "summary": "Delete a label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/labels/{id}",
+      "summary": "Update a label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/members",
+      "summary": "List an organization's members",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/members/{id}",
+      "summary": "Check if a user is a member of an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/members/{id}",
+      "summary": "Remove a member from an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/public_members",
+      "summary": "List an organization's public members",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/public_members/{id}",
+      "summary": "Check if a user is a public member of an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/public_members/{id}",
+      "summary": "Publicize a user's membership",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/public_members/{id}",
+      "summary": "Conceal a user's membership",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/rename",
+      "summary": "Rename an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/repos",
+      "summary": "List an organization's repos",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/repos",
+      "summary": "Create a repository in an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/teams",
+      "summary": "List an organization's teams",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/teams",
+      "summary": "Create a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/orgs/{id}/teams/search",
+      "summary": "Search for teams within an organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}",
+      "summary": "Gets all packages of an owner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}",
+      "summary": "Gets all versions of a package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}",
+      "summary": "Delete a package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/-/latest",
+      "summary": "Gets the latest version of a package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/-/link/{id}",
+      "summary": "Link a package to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/-/unlink",
+      "summary": "Unlink a package from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/{id}",
+      "summary": "Gets a package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/{id}",
+      "summary": "Delete a package version",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/packages/{id}/{id}/{id}/{id}/files",
+      "summary": "Gets all files of a package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/issues/search",
+      "summary": "Search for issues across the repositories that the user has access to",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/migrate",
+      "summary": "Migrate a remote git repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/search",
+      "summary": "Search for repositories",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}",
+      "summary": "Get a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}",
+      "summary": "Delete a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}",
+      "summary": "Edit a repository's properties. Only fields that are set will be changed.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/artifacts",
+      "summary": "Lists all artifacts for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/artifacts/{id}",
+      "summary": "Gets a specific artifact for a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/artifacts/{id}",
+      "summary": "Deletes a specific artifact for a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/artifacts/{id}/zip",
+      "summary": "Downloads a specific artifact for a workflow run redirects to blob url",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/jobs",
+      "summary": "Lists all jobs for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/jobs/{id}",
+      "summary": "Gets a specific workflow job for a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/jobs/{id}/logs",
+      "summary": "Downloads the job logs for a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runners",
+      "summary": "Get repo-level runners",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runners/registration-token",
+      "summary": "Get a repository's actions runner registration token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runners/{id}",
+      "summary": "Get a repo-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runners/{id}",
+      "summary": "Delete a repo-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runners/{id}",
+      "summary": "Update a repo-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs",
+      "summary": "Lists all runs for a repository run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}",
+      "summary": "Gets a specific workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}",
+      "summary": "Delete a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}/artifacts",
+      "summary": "Lists all artifacts for a repository run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}/jobs",
+      "summary": "Lists all jobs for a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}/jobs/{id}/rerun",
+      "summary": "Reruns a specific workflow job in a run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}/rerun",
+      "summary": "Reruns an entire workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/runs/{id}/rerun-failed-jobs",
+      "summary": "Reruns all failed jobs in a workflow run",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/secrets",
+      "summary": "List an repo's actions secrets",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/secrets/{id}",
+      "summary": "Create or Update a secret value in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/secrets/{id}",
+      "summary": "Delete a secret in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/tasks",
+      "summary": "List a repository's action tasks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/variables",
+      "summary": "Get repo-level variables list",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/variables/{id}",
+      "summary": "Get a repo-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/variables/{id}",
+      "summary": "Update a repo-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/variables/{id}",
+      "summary": "Create a repo-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/variables/{id}",
+      "summary": "Delete a repo-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/workflows",
+      "summary": "List repository workflows",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/workflows/{id}",
+      "summary": "Get a workflow",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/workflows/{id}/disable",
+      "summary": "Disable a workflow",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/workflows/{id}/dispatches",
+      "summary": "Create a workflow dispatch event",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/actions/workflows/{id}/enable",
+      "summary": "Enable a workflow",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/activities/feeds",
+      "summary": "List a repository's activity feeds",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/archive/{id}",
+      "summary": "Get an archive of a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/assignees",
+      "summary": "Return all users that have write access and can be assigned to issues",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/avatar",
+      "summary": "Update avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/avatar",
+      "summary": "Delete avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections",
+      "summary": "List branch protections for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections",
+      "summary": "Create a branch protections for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections/priority",
+      "summary": "Update the priorities of branch protections for a repository.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections/{id}",
+      "summary": "Get a specific branch protection for the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections/{id}",
+      "summary": "Delete a specific branch protection for the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branch_protections/{id}",
+      "summary": "Edit a branch protections for a repository. Only fields that are set will be changed",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches",
+      "summary": "List a repository's branches",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches",
+      "summary": "Create a branch",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches/{id}",
+      "summary": "Retrieve a specific branch from a repository, including its effective branch protection",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches/{id}",
+      "summary": "Update a branch reference to a new commit",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches/{id}",
+      "summary": "Delete a specific branch from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/branches/{id}",
+      "summary": "Rename a branch",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/collaborators",
+      "summary": "List a repository's collaborators",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/collaborators/{id}",
+      "summary": "Check if a user is a collaborator of a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/collaborators/{id}",
+      "summary": "Add or Update a collaborator to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/collaborators/{id}",
+      "summary": "Delete a collaborator from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/collaborators/{id}/permission",
+      "summary": "Get repository permissions for a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/commits",
+      "summary": "Get a list of all commits from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/commits/{id}/status",
+      "summary": "Get a commit's combined status, by branch/tag/commit reference",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/commits/{id}/statuses",
+      "summary": "Get a commit's statuses, by branch/tag/commit reference",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/commits/{id}/pull",
+      "summary": "Get the merged pull request of the commit",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/compare/{id}",
+      "summary": "Get commit comparison information",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents",
+      "summary": "Gets the metadata of all the entries of the root dir.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents",
+      "summary": "Modify multiple files in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents-ext/{id}",
+      "summary": "The extended \"contents\" API, to get file metadata and/or content, or list a directory.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents/{id}",
+      "summary": "Gets the metadata and contents (if a file) of an entry in a repository, or a list of entries if a dir.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents/{id}",
+      "summary": "Update a file in a repository if SHA is set, or create the file if SHA is not set",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents/{id}",
+      "summary": "Create a file in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/contents/{id}",
+      "summary": "Delete a file in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/diffpatch",
+      "summary": "Apply diff patch to repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/editorconfig/{id}",
+      "summary": "Get the EditorConfig definitions of a file in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/file-contents",
+      "summary": "Get the metadata and contents of requested files",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/file-contents",
+      "summary": "Get the metadata and contents of requested files",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/forks",
+      "summary": "List a repository's forks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/forks",
+      "summary": "Fork a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/blobs/{id}",
+      "summary": "Gets the blob of a repository.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/commits/{id}",
+      "summary": "Get a single commit from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/commits/{id}.{id}",
+      "summary": "Get a commit's diff or patch",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/notes/{id}",
+      "summary": "Get a note corresponding to a single commit from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/refs",
+      "summary": "Get specified ref or filtered repository's refs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/refs/{id}",
+      "summary": "Get specified ref or filtered repository's refs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/tags/{id}",
+      "summary": "Gets the tag object of an annotated tag (not lightweight tags)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/git/trees/{id}",
+      "summary": "Gets the tree of a repository.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks",
+      "summary": "List the hooks in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks",
+      "summary": "Create a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/git",
+      "summary": "List the Git hooks in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/git/{id}",
+      "summary": "Get a Git hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/git/{id}",
+      "summary": "Delete a Git hook in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/git/{id}",
+      "summary": "Edit a Git hook in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/{id}",
+      "summary": "Get a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/{id}",
+      "summary": "Delete a hook in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/{id}",
+      "summary": "Edit a hook in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/hooks/{id}/tests",
+      "summary": "Test a push webhook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issue_config",
+      "summary": "Returns the issue config for a repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issue_config/validate",
+      "summary": "Returns the validation information for a issue config",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issue_templates",
+      "summary": "Get available issue templates for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues",
+      "summary": "List a repository's issues",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues",
+      "summary": "Create an issue. If using deadline only the date will be taken into account, and time of day ignored.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments",
+      "summary": "List all comments in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}",
+      "summary": "Get a comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}",
+      "summary": "Delete a comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}",
+      "summary": "Edit a comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/assets",
+      "summary": "List comment's attachments",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/assets",
+      "summary": "Create a comment attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/assets/{id}",
+      "summary": "Get a comment attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/assets/{id}",
+      "summary": "Delete a comment attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/assets/{id}",
+      "summary": "Edit a comment attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/reactions",
+      "summary": "Get a list of reactions from a comment of an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/reactions",
+      "summary": "Add a reaction to a comment of an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/comments/{id}/reactions",
+      "summary": "Remove a reaction from a comment of an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/pinned",
+      "summary": "List a repo's pinned issues",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}",
+      "summary": "Get an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}",
+      "summary": "Delete an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}",
+      "summary": "Edit an issue. If using deadline only the date will be taken into account, and time of day ignored.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/assets",
+      "summary": "List issue's attachments",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/assets",
+      "summary": "Create an issue attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/assets/{id}",
+      "summary": "Get an issue attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/assets/{id}",
+      "summary": "Delete an issue attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/assets/{id}",
+      "summary": "Edit an issue attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/blocks",
+      "summary": "List issues that are blocked by this issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/blocks",
+      "summary": "Block the issue given in the body by the issue in path",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/blocks",
+      "summary": "Unblock the issue given in the body by the issue in path",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/comments",
+      "summary": "List all comments on an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/comments",
+      "summary": "Add a comment to an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/comments/{id}",
+      "summary": "Delete a comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/comments/{id}",
+      "summary": "Edit a comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/deadline",
+      "summary": "Set an issue deadline. If set to null, the deadline is deleted. If using deadline only the date will be taken into account, and time of day ignored.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/dependencies",
+      "summary": "List an issue's dependencies, i.e all issues that block this issue.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/dependencies",
+      "summary": "Make the issue in the url depend on the issue in the form.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/dependencies",
+      "summary": "Remove an issue dependency",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/labels",
+      "summary": "Get an issue's labels",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/labels",
+      "summary": "Replace an issue's labels",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/labels",
+      "summary": "Add a label to an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/labels",
+      "summary": "Remove all labels from an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/labels/{id}",
+      "summary": "Remove a label from an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/lock",
+      "summary": "Lock an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/lock",
+      "summary": "Unlock an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/pin",
+      "summary": "Pin an Issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/pin",
+      "summary": "Unpin an Issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/pin/{id}",
+      "summary": "Moves the Pin to the given Position",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/reactions",
+      "summary": "Get a list reactions of an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/reactions",
+      "summary": "Add a reaction to an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/reactions",
+      "summary": "Remove a reaction from an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/stopwatch/delete",
+      "summary": "Delete an issue's existing stopwatch.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/stopwatch/start",
+      "summary": "Start stopwatch on an issue.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/stopwatch/stop",
+      "summary": "Stop an issue's existing stopwatch.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/subscriptions",
+      "summary": "Get users who subscribed on an issue.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/subscriptions/check",
+      "summary": "Check if user is subscribed to an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/subscriptions/{id}",
+      "summary": "Subscribe user to issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/subscriptions/{id}",
+      "summary": "Unsubscribe user from issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/timeline",
+      "summary": "List all comments and events on an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/times",
+      "summary": "List an issue's tracked times",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/times",
+      "summary": "Add tracked time to a issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/times",
+      "summary": "Reset a tracked time of an issue",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/issues/{id}/times/{id}",
+      "summary": "Delete specific tracked time",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/keys",
+      "summary": "List a repository's keys",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/keys",
+      "summary": "Add a key to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/keys/{id}",
+      "summary": "Get a repository's key by id",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/keys/{id}",
+      "summary": "Delete a key from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/labels",
+      "summary": "Get all of a repository's labels",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/labels",
+      "summary": "Create a label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/labels/{id}",
+      "summary": "Get a single label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/labels/{id}",
+      "summary": "Delete a label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/labels/{id}",
+      "summary": "Update a label",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/languages",
+      "summary": "Get languages and number of bytes of code written",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/licenses",
+      "summary": "Get repo licenses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/media/{id}",
+      "summary": "Get a file or it's LFS object from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/merge-upstream",
+      "summary": "Merge a branch from upstream",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/milestones",
+      "summary": "Get all of a repository's opened milestones",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/milestones",
+      "summary": "Create a milestone",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/milestones/{id}",
+      "summary": "Get a milestone",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/milestones/{id}",
+      "summary": "Delete a milestone",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/milestones/{id}",
+      "summary": "Update a milestone",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/mirror-sync",
+      "summary": "Sync a mirrored repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/new_pin_allowed",
+      "summary": "Returns if new Issue Pins are allowed",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/notifications",
+      "summary": "List users's notification threads on a specific repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/notifications",
+      "summary": "Mark notification threads as read, pinned or unread on a specific repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls",
+      "summary": "List a repo's pull requests",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls",
+      "summary": "Create a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/comments/{id}/resolve",
+      "summary": "Resolve a pull request review comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/comments/{id}/unresolve",
+      "summary": "Unresolve a pull request review comment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/pinned",
+      "summary": "List a repo's pinned pull requests",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/{id}",
+      "summary": "Get a pull request by base and head",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}",
+      "summary": "Get a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}",
+      "summary": "Update a pull request. If using deadline only the date will be taken into account, and time of day ignored.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}.{id}",
+      "summary": "Get a pull request diff or patch",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/commits",
+      "summary": "Get commits for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/files",
+      "summary": "Get changed files for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/merge",
+      "summary": "Check if a pull request has been merged",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/merge",
+      "summary": "Merge a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/merge",
+      "summary": "Cancel the scheduled auto merge for the given pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/requested_reviewers",
+      "summary": "create review requests for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/requested_reviewers",
+      "summary": "cancel review requests for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews",
+      "summary": "List all reviews for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews",
+      "summary": "Create a review to an pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}",
+      "summary": "Get a specific review for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}",
+      "summary": "Submit a pending review to an pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}",
+      "summary": "Delete a specific review from a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}/comments",
+      "summary": "Get a specific review for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}/dismissals",
+      "summary": "Dismiss a review for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/reviews/{id}/undismissals",
+      "summary": "Cancel to dismiss a review for a pull request",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/pulls/{id}/update",
+      "summary": "Merge PR's baseBranch into headBranch",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/push_mirrors",
+      "summary": "Get all push mirrors of the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/push_mirrors",
+      "summary": "add a push mirror to the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/push_mirrors-sync",
+      "summary": "Sync all push mirrored repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/push_mirrors/{id}",
+      "summary": "Get push mirror of the repository by remoteName",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/push_mirrors/{id}",
+      "summary": "deletes a push mirror from a repository by remoteName",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/raw/{id}",
+      "summary": "Get a file from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases",
+      "summary": "List a repo's releases",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases",
+      "summary": "Create a release",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/latest",
+      "summary": "Gets the most recent non-prerelease, non-draft release of a repository, sorted by created_at",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/tags/{id}",
+      "summary": "Get a release by tag name",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/tags/{id}",
+      "summary": "Delete a release by tag name",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}",
+      "summary": "Get a release",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}",
+      "summary": "Delete a release",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}",
+      "summary": "Update a release",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}/assets",
+      "summary": "List release's attachments",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}/assets",
+      "summary": "Create a release attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}/assets/{id}",
+      "summary": "Get a release attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}/assets/{id}",
+      "summary": "Delete a release attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/releases/{id}/assets/{id}",
+      "summary": "Edit a release attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/reviewers",
+      "summary": "Return all users that can be requested to review in this repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/signing-key.gpg",
+      "summary": "Get signing-key.gpg for given repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/signing-key.pub",
+      "summary": "Get signing-key.pub for given repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/stargazers",
+      "summary": "List a repo's stargazers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/statuses/{id}",
+      "summary": "Get a commit's statuses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/statuses/{id}",
+      "summary": "Create a commit status",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/subscribers",
+      "summary": "List a repo's watchers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/subscription",
+      "summary": "Check if the current user is watching a repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/subscription",
+      "summary": "Watch a repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/subscription",
+      "summary": "Unwatch a repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tag_protections",
+      "summary": "List tag protections for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tag_protections",
+      "summary": "Create a tag protections for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tag_protections/{id}",
+      "summary": "Get a specific tag protection for the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tag_protections/{id}",
+      "summary": "Delete a specific tag protection for the repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tag_protections/{id}",
+      "summary": "Edit a tag protections for a repository. Only fields that are set will be changed",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tags",
+      "summary": "List a repository's tags",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tags",
+      "summary": "Create a new git tag in a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tags/{id}",
+      "summary": "Get the tag of a repository by tag name",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/tags/{id}",
+      "summary": "Delete a repository's tag by name",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/teams",
+      "summary": "List a repository's teams",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/teams/{id}",
+      "summary": "Check if a team is assigned to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/teams/{id}",
+      "summary": "Add a team to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/teams/{id}",
+      "summary": "Delete a team from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/times",
+      "summary": "List a repo's tracked times",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/times/{id}",
+      "summary": "List a user's tracked times in a repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/topics",
+      "summary": "Get list of topics that a repository has",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/topics",
+      "summary": "Replace list of topics for a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/topics/{id}",
+      "summary": "Add a topic to a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/topics/{id}",
+      "summary": "Delete a topic from a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/transfer",
+      "summary": "Transfer a repo ownership",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/transfer/accept",
+      "summary": "Accept a repo transfer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/transfer/reject",
+      "summary": "Reject a repo transfer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/new",
+      "summary": "Create a wiki page",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/page/{id}",
+      "summary": "Get a wiki page",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/page/{id}",
+      "summary": "Delete a wiki page",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/page/{id}",
+      "summary": "Edit a wiki page",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/pages",
+      "summary": "Get all wiki pages",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/wiki/revisions/{id}",
+      "summary": "Get revisions of a wiki page",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repos/{id}/{id}/generate",
+      "summary": "Create a repository using a template",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/repositories/{id}",
+      "summary": "Get a repository by id",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/settings/api",
+      "summary": "Get instance's global settings for api",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/settings/attachment",
+      "summary": "Get instance's global settings for Attachment",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/settings/repository",
+      "summary": "Get instance's global settings for repositories",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/settings/ui",
+      "summary": "Get instance's global settings for ui",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/signing-key.gpg",
+      "summary": "Get default signing-key.gpg",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/signing-key.pub",
+      "summary": "Get default signing-key.pub",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}",
+      "summary": "Get a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}",
+      "summary": "Delete a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}",
+      "summary": "Edit a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/activities/feeds",
+      "summary": "List a team's activity feeds",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/members",
+      "summary": "List a team's members",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/members/{id}",
+      "summary": "List a particular member of team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/members/{id}",
+      "summary": "Add a team member",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/members/{id}",
+      "summary": "Remove a team member",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/repos",
+      "summary": "List a team's repos",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/repos/{id}/{id}",
+      "summary": "List a particular repo of team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/repos/{id}/{id}",
+      "summary": "Add a repository to a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/teams/{id}/repos/{id}/{id}",
+      "summary": "Remove a repository from a team",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/topics/search",
+      "summary": "search topics via keyword",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user",
+      "summary": "Get the authenticated user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/jobs",
+      "summary": "Get workflow jobs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runners",
+      "summary": "Get user-level runners",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runners/registration-token",
+      "summary": "Get an user's actions runner registration token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runners/{id}",
+      "summary": "Get a user-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runners/{id}",
+      "summary": "Delete a user-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runners/{id}",
+      "summary": "Update a user-level runner",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/runs",
+      "summary": "Get workflow runs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/secrets/{id}",
+      "summary": "Create or Update a secret value in a user scope",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/secrets/{id}",
+      "summary": "Delete a secret in a user scope",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/variables",
+      "summary": "Get the user-level list of variables which is created by current doer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/variables/{id}",
+      "summary": "Get a user-level variable which is created by current doer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/variables/{id}",
+      "summary": "Update a user-level variable which is created by current doer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/variables/{id}",
+      "summary": "Create a user-level variable",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/actions/variables/{id}",
+      "summary": "Delete a user-level variable which is created by current doer",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/applications/oauth2",
+      "summary": "List the authenticated user's oauth2 applications",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/applications/oauth2",
+      "summary": "creates a new OAuth2 application",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/applications/oauth2/{id}",
+      "summary": "get an OAuth2 Application",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/applications/oauth2/{id}",
+      "summary": "delete an OAuth2 Application",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/applications/oauth2/{id}",
+      "summary": "update an OAuth2 Application, this includes regenerating the client secret",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/avatar",
+      "summary": "Update Avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/avatar",
+      "summary": "Delete Avatar",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/blocks",
+      "summary": "List users blocked by the authenticated user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/blocks/{id}",
+      "summary": "Check if a user is blocked by the authenticated user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/blocks/{id}",
+      "summary": "Block a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/blocks/{id}",
+      "summary": "Unblock a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/emails",
+      "summary": "List the authenticated user's email addresses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/emails",
+      "summary": "Add email addresses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/emails",
+      "summary": "Delete email addresses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/followers",
+      "summary": "List the authenticated user's followers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/following",
+      "summary": "List the users that the authenticated user is following",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/following/{id}",
+      "summary": "Check whether a user is followed by the authenticated user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/following/{id}",
+      "summary": "Follow a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/following/{id}",
+      "summary": "Unfollow a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_key_token",
+      "summary": "Get a Token to verify",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_key_verify",
+      "summary": "Verify a GPG key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_keys",
+      "summary": "List the authenticated user's GPG keys",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_keys",
+      "summary": "Create a GPG key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_keys/{id}",
+      "summary": "Get a GPG key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/gpg_keys/{id}",
+      "summary": "Remove a GPG key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/hooks",
+      "summary": "List the authenticated user's webhooks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/hooks",
+      "summary": "Create a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/hooks/{id}",
+      "summary": "Get a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/hooks/{id}",
+      "summary": "Delete a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/hooks/{id}",
+      "summary": "Update a hook",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/keys",
+      "summary": "List the authenticated user's public keys",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/keys",
+      "summary": "Create a public key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/keys/{id}",
+      "summary": "Get a public key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/keys/{id}",
+      "summary": "Delete a public key",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/orgs",
+      "summary": "List the current user's organizations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/repos",
+      "summary": "List the repos that the authenticated user owns",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/repos",
+      "summary": "Create a repository",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/settings",
+      "summary": "Get user settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PATCH",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/settings",
+      "summary": "Update user settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/starred",
+      "summary": "The repos that the authenticated user has starred",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/starred/{id}/{id}",
+      "summary": "Whether the authenticated is starring the repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "PUT",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/starred/{id}/{id}",
+      "summary": "Star the given repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/starred/{id}/{id}",
+      "summary": "Unstar the given repo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/stopwatches",
+      "summary": "Get list of all existing stopwatches",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/subscriptions",
+      "summary": "List repositories watched by the authenticated user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/teams",
+      "summary": "List all the teams a user belongs to",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/user/times",
+      "summary": "List the current user's tracked times",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/search",
+      "summary": "Search for users",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}",
+      "summary": "Get a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/activities/feeds",
+      "summary": "List a user's activity feeds",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/followers",
+      "summary": "List the given user's followers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/following",
+      "summary": "List the users that the given user is following",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/following/{id}",
+      "summary": "Check if one user is following another user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/gpg_keys",
+      "summary": "List the given user's GPG keys",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/heatmap",
+      "summary": "Get a user's heatmap",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/keys",
+      "summary": "List the given user's public keys",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/orgs",
+      "summary": "List a user's organizations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/orgs/{id}/permissions",
+      "summary": "Get user permissions in organization",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/repos",
+      "summary": "List the repos owned by the given user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/starred",
+      "summary": "The repos that the given user has starred",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/subscriptions",
+      "summary": "List the repositories watched by a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/tokens",
+      "summary": "List the authenticated user's access tokens",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "POST",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/tokens",
+      "summary": "Create an access token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "DELETE",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/users/{id}/tokens/{id}",
+      "summary": "delete an access token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_by_orbis": false,
+      "method": "GET",
+      "miss_reason": "openapi_not_collected_or_not_parsed",
+      "path_template": "/api/v1/version",
+      "summary": "Returns the version of the Gitea application",
+      "v1_eligible": true
+    }
+  ],
+  "oracle_method_counts": {
+    "DELETE": 80,
+    "GET": 237,
+    "PATCH": 32,
+    "POST": 95,
+    "PUT": 27
+  },
+  "orbis_only": [],
+  "orbis_source_counts": {},
+  "summary": {
+    "found_total_oracle": 0,
+    "found_v1_eligible": 0,
+    "oracle_total": 471,
+    "oracle_v1_eligible": 471,
+    "orbis_found_for_host": 0,
+    "total_recall": 0.0,
+    "v1_eligible_recall": 0.0
+  }
+}

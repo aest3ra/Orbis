@@ -1,0 +1,1252 @@
+{
+  "excluded": [
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/assets/{id}",
+      "summary": "Get an Asset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/auth/logout",
+      "summary": "Log Out",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/auth/password/request",
+      "summary": "Request a Password Reset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/auth/password/reset",
+      "summary": "Reset a Password",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/auth/oauth/{id}",
+      "summary": "Authenticated using an OAuth provider",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/schema/snapshot",
+      "summary": "Retrieve Schema Snapshot",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/schema/apply",
+      "summary": "Apply Schema Difference",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/schema/diff",
+      "summary": "Retrieve Schema Difference",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/hash/generate",
+      "summary": "Hash a string",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/hash/verify",
+      "summary": "Hash a string",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/sort/{id}",
+      "summary": "Sort Items",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/import/{id}",
+      "summary": "Import Items",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/export/{id}",
+      "summary": "Export Items",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/utils/cache/clear",
+      "summary": "Clear Cache",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/utils/random/string",
+      "summary": "Get a Random String",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/folders",
+      "summary": "Create a Folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/folders",
+      "summary": "Update Multiple Folders",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/folders",
+      "summary": "Delete Multiple Folders",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/folders/{id}",
+      "summary": "Retrieve a Folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/folders/{id}",
+      "summary": "Update a Folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/folders/{id}",
+      "summary": "Delete a Folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/relations",
+      "summary": "Create a Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/relations/{id}",
+      "summary": "Retrieve a Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/relations/{id}",
+      "summary": "Update a Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/relations/{id}",
+      "summary": "Delete a Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/files",
+      "summary": "List Files",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/files",
+      "summary": "Create a File",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/files",
+      "summary": "Update Multiple Files",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/files",
+      "summary": "Delete Multiple Files",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/files/{id}",
+      "summary": "Retrieve a Files",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/files/{id}",
+      "summary": "Update a File",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/files/{id}",
+      "summary": "Delete a File",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/fields/{id}",
+      "summary": "List Fields in Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/fields/{id}",
+      "summary": "Create Field in Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/fields/{id}/{id}",
+      "summary": "Retrieve a Field",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/fields/{id}/{id}",
+      "summary": "Update a Field",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/fields/{id}/{id}",
+      "summary": "Delete a Field",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/operations",
+      "summary": "List Operations",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/operations",
+      "summary": "Create an Operation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/operations",
+      "summary": "Update Multiple Operations",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/operations",
+      "summary": "Delete Multiple Operations",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/operations/{id}",
+      "summary": "Retrieve an Operation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/operations/{id}",
+      "summary": "Update an Operation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/operations/{id}",
+      "summary": "Delete an Operation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/versions",
+      "summary": "Create Multiple Content Versions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/versions",
+      "summary": "Update Multiple Content Versions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/versions",
+      "summary": "Delete Multiple Content Versions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/versions/{id}",
+      "summary": "Retrieve a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/versions/{id}",
+      "summary": "Update a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/versions/{id}",
+      "summary": "Delete a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/versions/{id}/save",
+      "summary": "Save to a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/versions/{id}/compare",
+      "summary": "Compare a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/versions/{id}/promote",
+      "summary": "Promote a Content Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/revisions/{id}",
+      "summary": "Retrieve a Revision",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/users",
+      "summary": "Create a User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/users",
+      "summary": "Update Multiple Users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/users",
+      "summary": "Delete Multiple Users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/users/{id}",
+      "summary": "Update a User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/users/{id}",
+      "summary": "Delete a User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/users/invite",
+      "summary": "Invite User(s)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/users/invite/accept",
+      "summary": "Accept User Invite",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/users/me",
+      "summary": "Update Current User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/users/me/track/page",
+      "summary": "Update Last Page",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/users/me/tfa/enable",
+      "summary": "Enable 2FA",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/users/me/tfa/disable",
+      "summary": "Disable 2FA",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/extensions/{id}",
+      "summary": "Update an Extension",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/extensions/{id}/{id}",
+      "summary": "Update an Extension",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/webhooks",
+      "summary": "Create a Webhook",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/webhooks",
+      "summary": "Update Multiple Webhooks",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/webhooks",
+      "summary": "Delete Multiple Webhooks",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/webhooks/{id}",
+      "summary": "Retrieve a Webhook",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/webhooks/{id}",
+      "summary": "Update a Webhook",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/webhooks/{id}",
+      "summary": "Delete a Webhook",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/settings",
+      "summary": "Update Settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/permissions",
+      "summary": "List Permissions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/permissions",
+      "summary": "Create a Permission",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/permissions",
+      "summary": "Update Multiple Permissions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/permissions",
+      "summary": "Delete Multiple Permissions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/permissions/me",
+      "summary": "List My Permissions",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/permissions/{id}",
+      "summary": "Retrieve a Permission",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/permissions/{id}",
+      "summary": "Update a Permission",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/permissions/{id}",
+      "summary": "Delete a Permission",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/collections",
+      "summary": "Create a Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/collections/{id}",
+      "summary": "Retrieve a Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/collections/{id}",
+      "summary": "Update a Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/collections/{id}",
+      "summary": "Delete a Collection",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/flows",
+      "summary": "List Flows",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/flows",
+      "summary": "Create a Flow",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/flows",
+      "summary": "Update Multiple Flows",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/flows",
+      "summary": "Delete Multiple Flows",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/flows/{id}",
+      "summary": "Retrieve a Flow",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/flows/{id}",
+      "summary": "Update a Flow",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/flows/{id}",
+      "summary": "Delete a Flow",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/presets",
+      "summary": "Create a Preset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/presets",
+      "summary": "Update Multiple Presets",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/presets",
+      "summary": "Delete Multiple Presets",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/presets/{id}",
+      "summary": "Retrieve a Preset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/presets/{id}",
+      "summary": "Update a Preset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/presets/{id}",
+      "summary": "Delete a Preset",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/roles",
+      "summary": "List Roles",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/roles",
+      "summary": "Create a Role",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/roles",
+      "summary": "Update Multiple Roles",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/roles",
+      "summary": "Delete Multiple Roles",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_configuration_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/roles/{id}",
+      "summary": "Retrieve a Role",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/roles/{id}",
+      "summary": "Update a Role",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/roles/{id}",
+      "summary": "Delete a Role",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/comments",
+      "summary": "Create a Comment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/comments",
+      "summary": "Update Multiple Comments",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/comments",
+      "summary": "Delete Multiple Comments",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/comments/{id}",
+      "summary": "Retrieve a Comment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/comments/{id}",
+      "summary": "Update a Comment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/comments/{id}",
+      "summary": "Delete a Comment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/activity/{id}",
+      "summary": "Retrieve an Activity Action",
+      "v1_eligible": false
+    }
+  ],
+  "matched": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/auth/refresh",
+      "summary": "Refresh Token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/server/info",
+      "summary": "System Info",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/users/me",
+      "summary": "Retrieve Current User",
+      "v1_eligible": true
+    }
+  ],
+  "matching_policy": "Exact method+normalized path plus conservative shape matches from coverage report.",
+  "missed_v1_eligible": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/auth/login",
+      "summary": "Retrieve a Temporary Access Token",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/auth/oauth",
+      "summary": "List OAuth Providers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/server/ping",
+      "summary": "Ping",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/folders",
+      "summary": "List Folders",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/relations",
+      "summary": "List Relations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/fields",
+      "summary": "List All Fields",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/versions",
+      "summary": "List Content Versions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/revisions",
+      "summary": "List Revisions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/users",
+      "summary": "List Users",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/users/{id}",
+      "summary": "Retrieve a User",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/extensions",
+      "summary": "List Extensions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/webhooks",
+      "summary": "List Webhooks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/settings",
+      "summary": "Retrieve Settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/collections",
+      "summary": "List Collections",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/presets",
+      "summary": "List Presets",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/comments",
+      "summary": "List Comments",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/activity",
+      "summary": "List Activity Actions",
+      "v1_eligible": true
+    }
+  ],
+  "summary": {
+    "effective_shape_total_found": 3,
+    "effective_shape_total_recall": 0.0226,
+    "effective_shape_v1_found": 3,
+    "effective_shape_v1_recall": 0.15,
+    "excluded_reason_counts": {
+      "admin_configuration_surface": 11,
+      "file_or_download_surface": 6,
+      "mutating_method_not_safe_v1_action": 55,
+      "post_mutation_or_complex_body": 28,
+      "requires_seeded_resource_or_known_id": 13
+    },
+    "mode": "auth_default_js_analysis_completed",
+    "oracle_method_counts": {
+      "DELETE": 25,
+      "GET": 45,
+      "PATCH": 30,
+      "POST": 33
+    },
+    "oracle_normalized_total": 133,
+    "oracle_raw_operations": 133,
+    "orbis_observed_count": 5,
+    "strict_total_found": 3,
+    "strict_total_recall": 0.0226,
+    "strict_v1_found": 3,
+    "strict_v1_recall": 0.15,
+    "target": "directus",
+    "v1_eligible_count": 20
+  }
+}

@@ -1,0 +1,7 @@
+apps/*/data/
+results/**/*.db
+results/**/*.sqlite
+results/**/*.sqlite3
+results/**/auth-state.json
+results/**/*token*.txt
+results/**/raw/

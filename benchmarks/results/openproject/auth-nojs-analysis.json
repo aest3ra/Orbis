@@ -1,0 +1,2857 @@
+{
+  "excluded": [
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/actions/{id}",
+      "summary": "View action",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/activities/{id}",
+      "summary": "Get an activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/activities/{id}",
+      "summary": "Update activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/activities/{id}/attachments",
+      "summary": "List attachments by activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/activities/{id}/attachments",
+      "summary": "Add attachment to activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/activities/{id}/emoji_reactions",
+      "summary": "List emoji reactions by activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/activities/{id}/emoji_reactions",
+      "summary": "Toggle emoji reaction for an activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/attachments",
+      "summary": "Create Attachment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/attachments/{id}",
+      "summary": "Delete attachment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/attachments/{id}",
+      "summary": "View attachment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/budgets/{id}",
+      "summary": "view Budget",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/capabilities/{id}",
+      "summary": "View capabilities",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}",
+      "summary": "View Category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/custom_actions/{id}",
+      "summary": "Get a custom action",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/custom_actions/{id}/execute",
+      "summary": "Execute custom action",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/custom_field_items/{id}",
+      "summary": "Get a custom field hierarchy item",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/custom_field_items/{id}/branch",
+      "summary": "Get a custom field hierarchy item's branch",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/custom_fields/{id}/items",
+      "summary": "Get the custom field hierarchy items",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/custom_options/{id}",
+      "summary": "View Custom Option",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/days/non_working",
+      "summary": "Creates a non-working day (NOT IMPLEMENTED)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "summary": "Removes a non-working day (NOT IMPLEMENTED)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "summary": "View a non-working day",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "summary": "Update a non-working day attributes (NOT IMPLEMENTED)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/days/week",
+      "summary": "Update week days (NOT IMPLEMENTED)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/days/week/{id}",
+      "summary": "View a week day",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/days/week/{id}",
+      "summary": "Update a week day attributes (NOT IMPLEMENTED)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/days/{id}",
+      "summary": "View day",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/documents/{id}",
+      "summary": "View document",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/documents/{id}",
+      "summary": "Update document",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/file_links/{id}",
+      "summary": "Removes a file link.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/file_links/{id}",
+      "summary": "Gets a file link.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/file_links/{id}/download",
+      "summary": "Creates a download uri of the linked file.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/file_links/{id}/open",
+      "summary": "Creates an opening uri of the linked file.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "PATCH",
+      "path_template": "/api/v3/grids/{id}",
+      "summary": "Update a grid",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups",
+      "summary": "List groups",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/groups",
+      "summary": "Create group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "Delete group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "Get group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "Update group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/help_texts/{id}",
+      "summary": "Get help text",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/meetings",
+      "summary": "Create meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/meetings/{id}",
+      "summary": "Delete meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/meetings/{id}",
+      "summary": "Update meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/meetings/{id}/agenda_items",
+      "summary": "Create meeting agenda item",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/meetings/{id}/attachments",
+      "summary": "List attachments by meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/meetings/{id}/attachments",
+      "summary": "Add attachment to meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/meetings/{id}/sections",
+      "summary": "Create meeting section",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "summary": "Delete a meeting agenda item",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "summary": "Update a meeting agenda item",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "summary": "Delete a meeting section",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "summary": "Update a meeting section",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/memberships",
+      "summary": "List memberships",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/memberships",
+      "summary": "Create a membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/memberships/available_projects",
+      "summary": "Available projects for memberships",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/memberships/form",
+      "summary": "Form create membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/memberships/schema",
+      "summary": "Schema membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/memberships/{id}",
+      "summary": "Delete membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/memberships/{id}",
+      "summary": "Get a membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/memberships/{id}",
+      "summary": "Update membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/memberships/{id}/form",
+      "summary": "Form update membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/my_preferences",
+      "summary": "Update my preferences",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/news",
+      "summary": "Create News",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/news/{id}",
+      "summary": "Delete news",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/news/{id}",
+      "summary": "View news",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/news/{id}",
+      "summary": "Update news",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/notifications/read_ian",
+      "summary": "Read all notifications",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/notifications/unread_ian",
+      "summary": "Unread all notifications",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/notifications/{id}",
+      "summary": "Get the notification",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/notifications/{id}/read_ian",
+      "summary": "Read notification",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/notifications/{id}/unread_ian",
+      "summary": "Unread notification",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/notifications/{id}/details/{id}",
+      "summary": "Get a notification detail",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/oauth_applications/{id}",
+      "summary": "Get the oauth application.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/oauth_client_credentials/{id}",
+      "summary": "Get the oauth client credentials object.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/placeholder_users",
+      "summary": "Create placeholder user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "summary": "Delete placeholder user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "summary": "View placeholder user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "summary": "Update placeholder user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/portfolios/{id}",
+      "summary": "Delete Portfolio",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/portfolios/{id}",
+      "summary": "View portfolio",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/portfolios/{id}",
+      "summary": "Update Portfolio",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/portfolios/{id}/form",
+      "summary": "Portfolio update form",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}",
+      "summary": "View Post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/attachments",
+      "summary": "List attachments by post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/posts/{id}/attachments",
+      "summary": "Add attachment to post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/priorities/{id}",
+      "summary": "View Priority",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/programs/{id}",
+      "summary": "Delete Program",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/programs/{id}",
+      "summary": "View program",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/programs/{id}",
+      "summary": "Update Program",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/programs/{id}/form",
+      "summary": "Program update form",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/project_phase_definitions/{id}",
+      "summary": "Get a project phase definition",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/project_phases/{id}",
+      "summary": "Get a project phase",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/project_statuses/{id}",
+      "summary": "View project status",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/project_storages/{id}",
+      "summary": "Gets a project storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/project_storages/{id}/open",
+      "summary": "Open the project storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/projects",
+      "summary": "Create project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/projects/{id}",
+      "summary": "Delete Project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/projects/{id}",
+      "summary": "Update Project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/projects/{id}/copy",
+      "summary": "Create project copy",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/projects/{id}/favorite",
+      "summary": "Unfavorite Project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/projects/{id}/favorite",
+      "summary": "Favorite Project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/projects/{id}/work_packages",
+      "summary": "Create work package in project",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/queries/columns/{id}",
+      "summary": "View Query Column",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/queries/filter_instance_schemas/{id}",
+      "summary": "View Query Filter Instance Schema",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/queries/filters/{id}",
+      "summary": "View Query Filter",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/queries/operators/{id}",
+      "summary": "View Query Operator",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/queries/sort_bys/{id}",
+      "summary": "View Query Sort By",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/queries/{id}",
+      "summary": "Delete query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/queries/{id}",
+      "summary": "Edit Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/queries/{id}/star",
+      "summary": "Star query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/queries/{id}/unstar",
+      "summary": "Unstar query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/recurring_meetings",
+      "summary": "Create recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "summary": "Delete recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "summary": "Get a recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "summary": "Update recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/cancelled",
+      "summary": "List cancelled occurrences of a recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/open",
+      "summary": "List open occurrences of a recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/past",
+      "summary": "List past occurrences of a recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/upcoming",
+      "summary": "List upcoming occurrences of a recurring meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/{id}",
+      "summary": "Cancel an occurrence",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/{id}/init",
+      "summary": "Instantiate an occurrence",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/relations/{id}",
+      "summary": "Delete Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/relations/{id}",
+      "summary": "Get Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/relations/{id}",
+      "summary": "Update Relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/reminders/{id}",
+      "summary": "Delete a reminder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/reminders/{id}",
+      "summary": "Update a reminder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/render/markdown",
+      "summary": "Preview Markdown document",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/render/plain",
+      "summary": "Preview plain document",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/revisions/{id}",
+      "summary": "View revision",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/roles",
+      "summary": "List roles",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/roles/{id}",
+      "summary": "View role",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/sprints/{id}",
+      "summary": "Get sprint",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/storages",
+      "summary": "Creates a storage.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/storages/{id}",
+      "summary": "Delete a storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/storages/{id}",
+      "summary": "Get a storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/storages/{id}",
+      "summary": "Update a storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/storages/{id}/files",
+      "summary": "Gets files of a storage.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/storages/{id}/files/prepare_upload",
+      "summary": "Preparation of a direct upload of a file to the given storage.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/storages/{id}/folders",
+      "summary": "Creation of a new folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/storages/{id}/oauth_client_credentials",
+      "summary": "Creates an oauth client credentials object for a storage.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/storages/{id}/open",
+      "summary": "Open the storage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/time_entries",
+      "summary": "Create time entry",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/time_entries/activity/{id}",
+      "summary": "View time entries activity",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/time_entries/{id}",
+      "summary": "Delete time entry",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/time_entries/{id}",
+      "summary": "Get time entry",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/time_entries/{id}",
+      "summary": "update time entry",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/time_entries/{id}/form",
+      "summary": "Time entry update form",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/types/{id}",
+      "summary": "View Type",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users",
+      "summary": "List Users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users",
+      "summary": "Create User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/schema",
+      "summary": "View user schema",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "Delete user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "View user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "Update user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/form",
+      "summary": "User update form",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/lock",
+      "summary": "Unlock user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/lock",
+      "summary": "Lock user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/non_working_times",
+      "summary": "List personal non-working times for a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/non_working_times",
+      "summary": "Create a personal non-working day for a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "summary": "Delete a personal non-working time record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "summary": "View a personal non-working time record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "summary": "Update a personal non-working time record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/working_hours",
+      "summary": "List working hours for a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/working_hours",
+      "summary": "Create a working hours record for a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "summary": "Delete a working hours record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "admin_or_identity_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "summary": "View a working hours record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "summary": "Update a working hours record",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/values/schema/{id}",
+      "summary": "View Values schema",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/versions",
+      "summary": "Create version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/versions/{id}",
+      "summary": "Delete version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/versions/{id}",
+      "summary": "Get version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/versions/{id}",
+      "summary": "Update Version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/versions/{id}/form",
+      "summary": "Version update form",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/versions/{id}/projects",
+      "summary": "List projects having version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/versions/{id}/workspaces",
+      "summary": "List workspaces having version",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/views/{id}",
+      "summary": "View view",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/views/{id}",
+      "summary": "Create view",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/wiki_pages/{id}",
+      "summary": "View Wiki Page",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/wiki_pages/{id}/attachments",
+      "summary": "List attachments by wiki page",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/wiki_pages/{id}/attachments",
+      "summary": "Add attachment to wiki page",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages",
+      "summary": "Create Work Package",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/work_packages/{id}",
+      "summary": "Delete Work Package",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/work_packages/{id}",
+      "summary": "Update a Work Package",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/activities",
+      "summary": "Comment work package",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/work_packages/{id}/attachments",
+      "summary": "List attachments by work package",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/attachments",
+      "summary": "Create work package attachment",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/file_links",
+      "summary": "Creates file links.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/relations",
+      "summary": "Create relation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/watchers",
+      "summary": "Add watcher",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/work_packages/{id}/watchers/{id}",
+      "summary": "Remove watcher",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/{id}/reminders",
+      "summary": "Create a work package reminder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspace/{id}/queries/filter_instance_schemas",
+      "summary": "List Query Filter Instance Schemas for Workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspace/{id}/queries/schema",
+      "summary": "View schema for workspace queries",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/available_assignees",
+      "summary": "Workspace Available assignees",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/categories",
+      "summary": "List categories of a workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/workspaces/{id}/favorite",
+      "summary": "Unfavorite Workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/workspaces/{id}/favorite",
+      "summary": "Favorite Workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/queries/default",
+      "summary": "View default query for workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/types",
+      "summary": "List types available in a workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/versions",
+      "summary": "List versions available in a workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/{id}/work_packages",
+      "summary": "Get work packages of workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/workspaces/{id}/work_packages",
+      "summary": "Create work package in workspace",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/workspaces/{id}/work_packages/form",
+      "summary": "Form for creating Work Packages in a Workspace",
+      "v1_eligible": false
+    }
+  ],
+  "matched": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/days/non_working",
+      "summary": "Lists all non working days",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/days/week",
+      "summary": "Lists week days",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/grids",
+      "summary": "Create a grid",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/grids/form",
+      "summary": "Grid Create Form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "PATCH",
+      "path_template": "/api/v3/grids/{id}",
+      "summary": "Update a grid",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/grids/{id}/form",
+      "summary": "Grid Update Form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "file_or_download_surface",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/meetings/{id}/attachments",
+      "summary": "List attachments by meeting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/projects/available_parent_projects",
+      "summary": "List available parent project candidates",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/projects/{id}",
+      "summary": "View project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/projects/{id}/queries/default",
+      "summary": "View default query for project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/queries",
+      "summary": "Create query",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/queries/default",
+      "summary": "View default query",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/queries/form",
+      "summary": "Query Create Form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/queries/{id}",
+      "summary": "View query",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/statuses/{id}",
+      "summary": "Get a work package status",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/v3/work_packages/form",
+      "summary": "Form for creating a Work Package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/work_packages/schemas/{id}",
+      "summary": "View Work Package Schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/work_packages/{id}",
+      "summary": "View Work Package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/v3/workspaces/schema",
+      "summary": "View workspace schema",
+      "v1_eligible": true
+    }
+  ],
+  "matching_policy": "Exact method+normalized path plus conservative shape matches from coverage report.",
+  "missed_v1_eligible": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3",
+      "summary": "View root",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/actions",
+      "summary": "List actions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/capabilities",
+      "summary": "List capabilities",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/capabilities/context/global",
+      "summary": "View global context",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/configuration",
+      "summary": "View configuration",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/days",
+      "summary": "Lists days",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/documents",
+      "summary": "List Documents",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/example/form",
+      "summary": "show or validate form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/example/schema",
+      "summary": "view the schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/examples",
+      "summary": "view aggregated result",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/grids",
+      "summary": "List grids",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/grids/{id}",
+      "summary": "Get a grid",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/help_texts",
+      "summary": "List help texts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings",
+      "summary": "List all visible meetings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/form",
+      "summary": "Meeting create form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/schema",
+      "summary": "Get meeting schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}",
+      "summary": "Get a meeting",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}/agenda_items",
+      "summary": "List meeting agenda items",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}/form",
+      "summary": "Meeting update form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}/sections",
+      "summary": "List meeting sections",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "summary": "Get a meeting agenda item",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "summary": "Get a meeting section",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/my_preferences",
+      "summary": "Show my preferences",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/news",
+      "summary": "List News",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/notifications",
+      "summary": "Get notification collection",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/placeholder_users",
+      "summary": "List placehoder users",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/portfolios",
+      "summary": "List portfolios",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/principals",
+      "summary": "List principals",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/priorities",
+      "summary": "List all Priorities",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/programs",
+      "summary": "List programs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/project_phase_definitions",
+      "summary": "List project phase definitions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/project_storages",
+      "summary": "Gets a list of project storages",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects",
+      "summary": "List projects",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/form",
+      "summary": "Project create form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/schema",
+      "summary": "View project schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/available_assignees",
+      "summary": "Project Available assignees",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/budgets",
+      "summary": "view Budgets of a Project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/categories",
+      "summary": "List categories of a project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/configuration",
+      "summary": "View project configuration",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/copy/form",
+      "summary": "Project copy form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/form",
+      "summary": "Project update form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/queries/filter_instance_schemas",
+      "summary": "List Query Filter Instance Schemas for Project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/queries/schema",
+      "summary": "View schema for project queries",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/sprints",
+      "summary": "List sprints in project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/types",
+      "summary": "List types available in a project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/versions",
+      "summary": "List versions available in a project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/work_packages",
+      "summary": "Get work packages of project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/projects/{id}/work_packages/form",
+      "summary": "Form for creating Work Packages in a Project",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/queries",
+      "summary": "List queries",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/queries/available_projects",
+      "summary": "Available projects for query",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/queries/filter_instance_schemas",
+      "summary": "List Query Filter Instance Schemas",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/queries/schema",
+      "summary": "View schema for global queries",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/queries/{id}/form",
+      "summary": "Query Update Form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/recurring_meetings",
+      "summary": "List all visible recurring meetings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/relations",
+      "summary": "List Relations",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/reminders",
+      "summary": "List all active reminders",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/sprints",
+      "summary": "List sprints",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/statuses",
+      "summary": "List the collection of all statuses",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/storages",
+      "summary": "Get Storages",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/time_entries",
+      "summary": "List time entries",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/time_entries/available_projects",
+      "summary": "Available projects for time entries",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/time_entries/form",
+      "summary": "Time entry create form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/time_entries/schema",
+      "summary": "View time entry schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/types",
+      "summary": "List all Types",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/versions",
+      "summary": "List versions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/versions/available_projects",
+      "summary": "Available projects for versions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/versions/form",
+      "summary": "Version create form",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/versions/schema",
+      "summary": "View version schema",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/views",
+      "summary": "List views",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages",
+      "summary": "List work packages",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/schemas",
+      "summary": "List Work Package Schemas",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/activities",
+      "summary": "List work package activities",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/activities_emoji_reactions",
+      "summary": "List emoji reactions by work package activities",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/available_assignees",
+      "summary": "Work Package Available assignees",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/available_projects",
+      "summary": "Available projects for work package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/available_relation_candidates",
+      "summary": "Available relation candidates",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/available_watchers",
+      "summary": "Available watchers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/file_links",
+      "summary": "Gets all file links of a work package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/form",
+      "summary": "Form for editing a Work Package",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/revisions",
+      "summary": "Revisions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/watchers",
+      "summary": "List watchers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/work_packages/{id}/reminders",
+      "summary": "List work package reminders",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v3/workspaces",
+      "summary": "List workspace",
+      "v1_eligible": true
+    }
+  ],
+  "summary": {
+    "effective_shape_total_found": 19,
+    "effective_shape_total_recall": 0.0629,
+    "effective_shape_v1_found": 17,
+    "effective_shape_v1_recall": 0.17,
+    "excluded_reason_counts": {
+      "admin_or_identity_context": 18,
+      "file_or_download_surface": 13,
+      "mutating_method_not_safe_v1_action": 60,
+      "post_mutation_or_complex_body": 40,
+      "requires_seeded_resource_or_known_id": 71
+    },
+    "mode": "auth_nojs_diagnostic_default_js_analysis_stalled",
+    "oracle_method_counts": {
+      "DELETE": 29,
+      "GET": 171,
+      "PATCH": 31,
+      "POST": 71
+    },
+    "oracle_normalized_total": 302,
+    "oracle_raw_operations": 302,
+    "orbis_observed_count": 26,
+    "strict_total_found": 17,
+    "strict_total_recall": 0.0563,
+    "strict_v1_found": 15,
+    "strict_v1_recall": 0.15,
+    "target": "openproject",
+    "v1_eligible_count": 100
+  }
+}

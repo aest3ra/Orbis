@@ -1,0 +1,26 @@
+services:
+  nodebb:
+    image: ghcr.io/nodebb/nodebb:latest
+    container_name: orbis-bench-nodebb
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - "34567:4567"
+    volumes:
+      - ./data/build:/usr/src/app/build
+      - ./data/uploads:/usr/src/app/public/uploads
+      - ./data/config:/opt/config
+      - ./setup.json:/usr/src/app/setup.json
+
+  mongo:
+    image: mongo:7-jammy
+    container_name: orbis-bench-nodebb-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nodebb
+      MONGO_INITDB_ROOT_PASSWORD: nodebb
+      MONGO_INITDB_DATABASE: nodebb
+    volumes:
+      - ./data/mongo:/data/db
+      - ./mongodb-user-init.js:/docker-entrypoint-initdb.d/user-init.js

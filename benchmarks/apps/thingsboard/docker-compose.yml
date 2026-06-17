@@ -1,0 +1,13 @@
+services:
+  thingsboard:
+    image: thingsboard/tb-postgres:4.2.0
+    container_name: orbis-bench-thingsboard
+    restart: unless-stopped
+    ports:
+      - "39090:9090"
+    environment:
+      TB_QUEUE_TYPE: in-memory
+      SWAGGER_ENABLED: "${SWAGGER_ENABLED:-false}"
+    volumes:
+      - ./data:/data
+      - ./data/logs:/var/log/thingsboard

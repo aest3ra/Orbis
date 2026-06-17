@@ -1,0 +1,4449 @@
+{
+  "excluded": [
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/autoCommitSettings",
+      "summary": "Get auto commit settings (getAutoCommitSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/autoCommitSettings",
+      "summary": "Creates or Updates the auto commit settings (saveAutoCommitSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/admin/autoCommitSettings",
+      "summary": "Delete auto commit settings (deleteAutoCommitSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/autoCommitSettings/exists",
+      "summary": "Check auto commit settings exists (autoCommitSettingsExists)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/featuresInfo",
+      "summary": "Get features info (getFeaturesInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/jwtSettings",
+      "summary": "Get the JWT Settings object (getJwtSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/jwtSettings",
+      "summary": "Update JWT Settings (saveJwtSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/mail/oauth2/authorize",
+      "summary": "Redirect user to mail provider login page. ",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/mail/oauth2/code{",
+      "summary": "codeProcessingUrl",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/mail/oauth2/loginProcessingUrl",
+      "summary": "Get OAuth2 log in processing URL (getMailProcessingUrl)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/repositorySettings",
+      "summary": "Get repository settings (getRepositorySettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/repositorySettings",
+      "summary": "Creates or Updates the repository settings (saveRepositorySettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/admin/repositorySettings",
+      "summary": "Delete repository settings (deleteRepositorySettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/repositorySettings/checkAccess",
+      "summary": "Check repository access (checkRepositoryAccess)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/repositorySettings/exists",
+      "summary": "Check repository settings exists (repositorySettingsExists)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/repositorySettings/info",
+      "summary": "getRepositorySettingsInfo",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/securitySettings",
+      "summary": "Get the Security Settings object (getSecuritySettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/securitySettings",
+      "summary": "Update Security Settings (saveSecuritySettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/settings",
+      "summary": "Creates or Updates the Administration Settings (saveAdminSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/settings/testMail",
+      "summary": "Send test email (sendTestMail)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/settings/testSms",
+      "summary": "Send test sms (sendTestSms)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/{id}",
+      "summary": "Get the Administration Settings object using key (getAdminSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/systemInfo",
+      "summary": "Get system info (getSystemInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_sysadmin_not_tenant_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/updates",
+      "summary": "Check for new Platform Releases (checkUpdates)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ai/model",
+      "summary": "Create or update AI model (saveAiModel)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ai/model/chat",
+      "summary": "Send request to AI chat model (sendChatRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ai/model/{id}",
+      "summary": "Get AI model by ID (getAiModelById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/ai/model/{id}",
+      "summary": "Delete AI model by ID (deleteAiModelById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarm/{id}/comment",
+      "summary": "Create or update Alarm Comment ",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/alarm/{id}/comment/{id}",
+      "summary": "Delete Alarm comment (deleteAlarmComment)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/alarm/{id}/comment{",
+      "summary": "Get Alarm comments (getAlarmComments)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarm",
+      "summary": "Create or Update Alarm (saveAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/alarm/highestSeverity/{id}/{id}{",
+      "summary": "Get Highest Alarm Severity (getHighestAlarmSeverity)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/alarm/info/{id}",
+      "summary": "Get Alarm Info (getAlarmInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/alarm/{id}",
+      "summary": "Get Alarm (getAlarmById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/alarm/{id}",
+      "summary": "Delete Alarm (deleteAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarm/{id}/ack",
+      "summary": "Acknowledge Alarm (ackAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/alarm/{id}/assign",
+      "summary": "Unassign Alarm (unassignAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarm/{id}/assign/{id}",
+      "summary": "Assign/Reassign Alarm (assignAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarm/{id}/clear",
+      "summary": "Clear Alarm (clearAlarm)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/alarm/{id}/{id}{",
+      "summary": "Get Alarms (getAlarms)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v2/alarm/{id}/{id}{",
+      "summary": "Get Alarms (getAlarmsV2)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/asset",
+      "summary": "Create Or Update Asset (saveAsset)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/asset/bulk_import",
+      "summary": "Import the bulk of assets (processAssetsBulkImport)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/asset/info/{id}",
+      "summary": "Get Asset Info (getAssetInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/asset/{id}",
+      "summary": "Get Asset (getAssetById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/asset/{id}",
+      "summary": "Delete asset (deleteAsset)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/assets",
+      "summary": "Find related assets (findByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/asset/{id}",
+      "summary": "Unassign asset from customer (unassignAssetFromCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/public/asset/{id}",
+      "summary": "Make asset publicly available (assignAssetToPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/{id}/asset/{id}",
+      "summary": "Assign asset to customer (assignAssetToCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/assetInfos{",
+      "summary": "Get Customer Asset Infos (getCustomerAssetInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/assets{",
+      "summary": "Get Customer Assets (getCustomerAssets)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/asset/{id}",
+      "summary": "Assign asset to edge (assignAssetToEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}/asset/{id}",
+      "summary": "Unassign asset from edge (unassignAssetFromEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/assets{",
+      "summary": "Get assets assigned to edge (getEdgeAssets)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/assetProfile",
+      "summary": "Create Or Update Asset Profile (saveAssetProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfile/names{",
+      "summary": "Get Asset Profile names (getAssetProfileNames)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/assetProfile/{id}",
+      "summary": "Delete asset profile (deleteAssetProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/assetProfile/{id}/default",
+      "summary": "Make Asset Profile Default (setDefaultAssetProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfile/{id}{",
+      "summary": "Get Asset Profile (getAssetProfileById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfileInfo/default",
+      "summary": "Get Default Asset Profile (getDefaultAssetProfileInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfileInfo/{id}",
+      "summary": "Get Asset Profile Info (getAssetProfileInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfileInfos{",
+      "summary": "Get Asset Profile infos (getAssetProfileInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/assetProfiles{",
+      "summary": "Get Asset Profiles (getAssetProfiles)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/audit/logs/customer/{id}{",
+      "summary": "Get audit logs by customer id (getAuditLogsByCustomerId)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/audit/logs/entity/{id}/{id}{",
+      "summary": "Get audit logs by entity id (getAuditLogsByEntityId)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/audit/logs/user/{id}{",
+      "summary": "Get audit logs by user id (getAuditLogsByUserId)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/changePassword",
+      "summary": "Change password for current User (changePassword)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/logout",
+      "summary": "Logout (logout)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/noauth/activate{",
+      "summary": "Activate User",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/noauth/resetPassword",
+      "summary": "Reset password (resetPassword)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/noauth/resetPasswordByEmail",
+      "summary": "Request reset password email (requestResetPasswordByEmail)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/calculatedField",
+      "summary": "Create Or Update Calculated Field (saveCalculatedField)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/calculatedField/testScript",
+      "summary": "Test Script expression",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/calculatedField/{id}",
+      "summary": "Get Calculated Field (getCalculatedFieldById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/calculatedField/{id}",
+      "summary": "Delete Calculated Field (deleteCalculatedField)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/calculatedField/{id}/debug",
+      "summary": "Get latest calculated field debug event (getLatestCalculatedFieldDebugEvent)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/{id}/{id}/calculatedFields{",
+      "summary": "Get Calculated Fields by Entity Id (getCalculatedFieldsByEntityId)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/component/{id}",
+      "summary": "Get Component Descriptor (getComponentDescriptorByClazz)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/components/{id}{",
+      "summary": "Get Component Descriptors (getComponentDescriptorsByType)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer",
+      "summary": "Create or update Customer (saveCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}",
+      "summary": "Get Customer (getCustomerById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/{id}",
+      "summary": "Delete Customer (deleteCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/shortInfo",
+      "summary": "Get short Customer info (getShortCustomerInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/title",
+      "summary": "Get Customer Title (getCustomerTitleById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customers{",
+      "summary": "Get Tenant Customers (getCustomers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/public/dashboard/{id}",
+      "summary": "Assign the Dashboard to Public Customer (assignDashboardToPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/public/dashboard/{id}",
+      "summary": "Unassign the Dashboard from Public Customer (unassignDashboardFromPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/{id}/dashboard/{id}",
+      "summary": "Assign the Dashboard (assignDashboardToCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/{id}/dashboard/{id}",
+      "summary": "Unassign the Dashboard (unassignDashboardFromCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/dashboards{",
+      "summary": "Get Customer Dashboards (getCustomerDashboards)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/dashboard",
+      "summary": "Create Or Update Dashboard (saveDashboard)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/dashboard/info/{id}",
+      "summary": "Get Dashboard Info (getDashboardInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/dashboard/{id}",
+      "summary": "Delete the Dashboard (deleteDashboard)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/dashboard/{id}/customers",
+      "summary": "Update the Dashboard Customers (updateDashboardCustomers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/dashboard/{id}/customers/add",
+      "summary": "Adds the Dashboard Customers (addDashboardCustomers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/dashboard/{id}/customers/remove",
+      "summary": "Remove the Dashboard Customers (removeDashboardCustomers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/dashboard/{id}{",
+      "summary": "Get Dashboard (getDashboardById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/dashboard/{id}",
+      "summary": "Assign dashboard to edge (assignDashboardToEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}/dashboard/{id}",
+      "summary": "Unassign dashboard from edge (unassignDashboardFromEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/dashboards{",
+      "summary": "Get Edge Dashboards (getEdgeDashboards)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/tenant/dashboard/home/info",
+      "summary": "Update Tenant Home Dashboard Info (getTenantHomeDashboardInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/provision",
+      "summary": "Provision new device (provisionDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/{id}/attributes",
+      "summary": "Post attributes (postDeviceAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v1/{id}/attributes/updates{",
+      "summary": "Subscribe to attribute updates (subscribeToAttributes) (Deprecated)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v1/{id}/attributes{",
+      "summary": "Get attributes (getDeviceAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/{id}/claim",
+      "summary": "Save claiming information (claimDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v1/{id}/firmware{",
+      "summary": "Get Device Firmware (getFirmware)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/{id}/rpc",
+      "summary": "Send the RPC command (postRpcRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/{id}/rpc/{id}",
+      "summary": "Reply to RPC commands (replyToCommand)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v1/{id}/rpc{",
+      "summary": "Subscribe to RPC commands (subscribeToCommands) (Deprecated)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v1/{id}/software{",
+      "summary": "Get Device Software (getSoftware)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v1/{id}/telemetry",
+      "summary": "Post time series data (postTelemetry)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device-connectivity/gateway-launch/{id}/docker-compose/download",
+      "summary": "Download generated docker-compose.yml file for gateway (downloadGatewayDockerCompose)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device-connectivity/{id}",
+      "summary": "Get commands to publish device telemetry (getDevicePublishTelemetryCommands)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device-connectivity/{id}/certificate/download",
+      "summary": "Download server certificate using file path defined in device.connectivity properties (downloadServerCertificate)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/device/{id}",
+      "summary": "Unassign device from customer (unassignDeviceFromCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/device/{id}/claim",
+      "summary": "Claim device (claimDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/device/{id}/claim",
+      "summary": "Reclaim device (reClaimDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/public/device/{id}",
+      "summary": "Make device publicly available (assignDeviceToPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/{id}/device/{id}",
+      "summary": "Assign device to customer (assignDeviceToCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/deviceInfos{",
+      "summary": "Get Customer Device Infos (getCustomerDeviceInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/devices{",
+      "summary": "Get Customer Devices (getCustomerDevices)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/device-with-credentials",
+      "summary": "Create Device (saveDevice) with credentials ",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/device/bulk_import",
+      "summary": "Import the bulk of devices (processDevicesBulkImport)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/device/credentials",
+      "summary": "Update device credentials (updateDeviceCredentials)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device/info/{id}",
+      "summary": "Get Device Info (getDeviceInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device/{id}",
+      "summary": "Get Device (getDeviceById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/device/{id}",
+      "summary": "Delete device (deleteDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/device/{id}/credentials",
+      "summary": "Get Device Credentials (getDeviceCredentialsByDeviceId)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/devices",
+      "summary": "Find related devices (findByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/devices/count/{id}/{id}",
+      "summary": "Count devices by device profile  (countByDeviceProfileAndEmptyOtaPackage)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/device{",
+      "summary": "Create Or Update Device (saveDevice)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/device/{id}",
+      "summary": "Assign device to edge (assignDeviceToEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}/device/{id}",
+      "summary": "Unassign device from edge (unassignDeviceFromEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/devices{",
+      "summary": "Get devices assigned to edge (getEdgeDevices)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/tenant/{id}/device/{id}",
+      "summary": "Assign device to tenant (assignDeviceToTenant)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/deviceProfile",
+      "summary": "Create Or Update Device Profile (saveDeviceProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfile/devices/keys/attributes{",
+      "summary": "Get attribute keys (getAttributesKeys)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfile/devices/keys/timeseries{",
+      "summary": "Get time series keys (getTimeseriesKeys)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfile/names{",
+      "summary": "Get Device Profile names (getDeviceProfileNames)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/deviceProfile/{id}",
+      "summary": "Delete device profile (deleteDeviceProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/deviceProfile/{id}/default",
+      "summary": "Make Device Profile Default (setDefaultDeviceProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfile/{id}{",
+      "summary": "Get Device Profile (getDeviceProfileById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfileInfo/default",
+      "summary": "Get Default Device Profile (getDefaultDeviceProfileInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfileInfo/{id}",
+      "summary": "Get Device Profile Info (getDeviceProfileInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfileInfos{",
+      "summary": "Get Device Profiles for transport type (getDeviceProfileInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/deviceProfiles{",
+      "summary": "Get Device Profiles (getDeviceProfiles)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/domain/info/{id}",
+      "summary": "Get Domain info by Id (getDomainInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/domain/{id}",
+      "summary": "Delete Domain by ID (deleteDomain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/domain/{id}/oauth2Clients",
+      "summary": "Update oauth2 clients (updateOauth2Clients)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/domain{",
+      "summary": "Save or Update Domain (saveDomain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/edge/{id}",
+      "summary": "Unassign edge from customer (unassignEdgeFromCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/public/edge/{id}",
+      "summary": "Make edge publicly available (assignEdgeToPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/{id}/edge/{id}",
+      "summary": "Assign edge to customer (assignEdgeToCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/edgeInfos{",
+      "summary": "Get Customer Edge Infos (getCustomerEdgeInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/edges{",
+      "summary": "Get Customer Edges (getCustomerEdges)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge",
+      "summary": "Create Or Update Edge (saveEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/bulk_import",
+      "summary": "Import the bulk of edges (processEdgesBulkImport)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/info/{id}",
+      "summary": "Get Edge Info (getEdgeInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/instructions/install/{id}/{id}",
+      "summary": "Get Edge Install Instructions (getEdgeInstallInstructions)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/instructions/upgrade/{id}/{id}",
+      "summary": "Get Edge Upgrade Instructions (getEdgeUpgradeInstructions)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/missingToRelatedRuleChains/{id}",
+      "summary": "Find missing rule chains (findMissingToRelatedRuleChains)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/sync/{id}",
+      "summary": "Sync edge (syncEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}",
+      "summary": "Get Edge (getEdgeById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}",
+      "summary": "Delete edge (deleteEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/upgrade/available",
+      "summary": "Is edge upgrade enabled (isEdgeUpgradeAvailable)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/{id}/root",
+      "summary": "Set root rule chain for provided edge (setEdgeRootRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edges",
+      "summary": "Find related edges (findByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/events{",
+      "summary": "Get Edge Events (getEdgeEvents)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/diff/{id}/{id}{",
+      "summary": "Compare entity data to version (compareEntityDataToVersion)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entities/vc/entity",
+      "summary": "Load entities version (loadEntitiesVersion)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/entity/{id}/{id}",
+      "summary": "List entities at version (listEntitiesAtVersion)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/entity/{id}/status",
+      "summary": "Get version load request status (getVersionLoadRequestStatus)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/entity/{id}",
+      "summary": "List all entities at version (listAllEntitiesAtVersion)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/info/{id}/{id}/{id}",
+      "summary": "Get entity data info (getEntityDataInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entities/vc/version",
+      "summary": "Save entities version (saveEntitiesVersion)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/version/{id}/{id}{",
+      "summary": "List entity versions (listEntityVersions)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/version/{id}{",
+      "summary": "List entity type versions (listEntityTypeVersions)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entities/vc/version/{id}/status",
+      "summary": "Get version create request status (getVersionCreateRequestStatus)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarmsQuery/count",
+      "summary": "Count Alarms by Query (countAlarmsByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/alarmsQuery/find",
+      "summary": "Find Alarms by Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edqs/system/request",
+      "summary": "processSystemEdqsRequest",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entitiesQuery/count",
+      "summary": "Count Entities by Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/entitiesQuery/find",
+      "summary": "Find Entity Data by Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entitiesQuery/find/keys{",
+      "summary": "Find Entity Keys by Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/relation",
+      "summary": "Create Relation (saveRelation)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/relations",
+      "summary": "Find related entities (findByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/relations/info",
+      "summary": "Find related entity infos (findInfoByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/relations{",
+      "summary": "Delete common relations (deleteCommonRelations)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/relation{",
+      "summary": "Delete Relation (deleteRelation)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v2/relation",
+      "summary": "Create Relation (saveRelationV2)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v2/relation{",
+      "summary": "Delete Relation (deleteRelationV2)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/customer/entityView/{id}",
+      "summary": "Unassign Entity View from customer (unassignEntityViewFromCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/public/entityView/{id}",
+      "summary": "Make entity view publicly available (assignEntityViewToPublicCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/customer/{id}/entityView/{id}",
+      "summary": "Assign Entity View to customer (assignEntityViewToCustomer)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/entityViewInfos{",
+      "summary": "Get Customer Entity View info (getCustomerEntityViewInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/entityViews{",
+      "summary": "Get Customer Entity Views (getCustomerEntityViews)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/entityView/{id}",
+      "summary": "Assign entity view to edge (assignEntityViewToEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}/entityView/{id}",
+      "summary": "Unassign entity view from edge (unassignEntityViewFromEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/entityViews{",
+      "summary": "getEdgeEntityViews",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entityView",
+      "summary": "Save or update entity view (saveEntityView)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entityView/info/{id}",
+      "summary": "Get Entity View info (getEntityViewInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/entityView/{id}",
+      "summary": "Get entity view (getEntityViewById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/entityView/{id}",
+      "summary": "Delete entity view (deleteEntityView)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/entityViews",
+      "summary": "Find related entity views (findByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/events/{id}/{id}/clear{",
+      "summary": "Clear Events (clearEvents)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/events/{id}/{id}/{id}{",
+      "summary": "Get Events by type (getEvents)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/events/{id}/{id}{",
+      "summary": "Get Events (Deprecated)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/events/{id}/{id}{",
+      "summary": "Get Events by event filter (getEvents)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/image",
+      "summary": "uploadImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/image/import",
+      "summary": "importImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images/public/{id}",
+      "summary": "downloadPublicImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images/{id}/{id}",
+      "summary": "downloadImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/images/{id}/{id}",
+      "summary": "updateImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images/{id}/{id}/export",
+      "summary": "exportImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images/{id}/{id}/info",
+      "summary": "getImageInfo",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/images/{id}/{id}/info",
+      "summary": "updateImageInfo",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images/{id}/{id}/preview",
+      "summary": "downloadImagePreview",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/images/{id}/{id}/public/{id}",
+      "summary": "updateImagePublicStatus",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/images/{id}/{id}{",
+      "summary": "deleteImage",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/images{",
+      "summary": "getImages",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/job/{id}",
+      "summary": "getJobById",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/job/{id}",
+      "summary": "deleteJob",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/job/{id}/cancel",
+      "summary": "cancelJob",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/job/{id}/reprocess",
+      "summary": "reprocessJob",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/login",
+      "summary": "Login method to get user JWT token data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/token",
+      "summary": "Refresh user JWT token data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/lwm2m/device-credentials",
+      "summary": "Save device with credentials (Deprecated)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/lwm2m/deviceProfile/bootstrap/{id}",
+      "summary": "Get Lwm2m Bootstrap SecurityInfo (getLwm2mBootstrapSecurityInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/mobile/bundle/info/{id}",
+      "summary": "Get mobile app bundle info by id (getMobileAppBundleInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/mobile/bundle/{id}",
+      "summary": "Delete Mobile App Bundle by ID (deleteMobileAppBundle)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/mobile/bundle/{id}/oauth2Clients",
+      "summary": "Update oauth2 clients (updateOauth2Clients)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/mobile/bundle{",
+      "summary": "Save Or update Mobile app bundle (saveMobileAppBundle)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/mobile/app",
+      "summary": "Save Or update Mobile app (saveMobileApp)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/mobile/app/{id}",
+      "summary": "Get mobile info by id (getMobileAppInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/mobile/app/{id}",
+      "summary": "Delete Mobile App by ID (deleteMobileApp)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/request",
+      "summary": "Create notification request (createNotificationRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/request/preview{",
+      "summary": "Get notification request preview (getNotificationRequestPreview)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/notification/request/{id}",
+      "summary": "Get notification request by id (getNotificationRequestById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/notification/request/{id}",
+      "summary": "Delete notification request (deleteNotificationRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/settings",
+      "summary": "Save notification settings (saveNotificationSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/settings/user",
+      "summary": "saveUserNotificationSettings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/notification/{id}",
+      "summary": "Delete notification (deleteNotification)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/notification/{id}/read",
+      "summary": "Mark notification as read (markNotificationAsRead)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/notifications/read{",
+      "summary": "Mark all notifications as read (markAllNotificationsAsRead)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/rule",
+      "summary": "Save notification rule (saveNotificationRule)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/notification/rule/{id}",
+      "summary": "Get notification rule by id (getNotificationRuleById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/notification/rule/{id}",
+      "summary": "Delete notification rule (deleteNotificationRule)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/target",
+      "summary": "Save notification target (saveNotificationTarget)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/target/recipients{",
+      "summary": "Get recipients for notification target config (getRecipientsForNotificationTargetConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/notification/target/{id}",
+      "summary": "Get notification target by id (getNotificationTargetById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/notification/target/{id}",
+      "summary": "Delete notification target by id (deleteNotificationTargetById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/notification/template",
+      "summary": "Save notification template (saveNotificationTemplate)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/notification/template/{id}",
+      "summary": "Get notification template by id (getNotificationTemplateById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/notification/template/{id}",
+      "summary": "Delete notification template by id (deleteNotificationTemplateById",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/oauth2/config/template",
+      "summary": "Create or update OAuth2 client registration template (saveClientRegistrationTemplate)\n\nAvailable for users with 'SYS_ADMIN' authority.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/oauth2/config/template/{id}",
+      "summary": "Delete OAuth2 client registration template by id (deleteClientRegistrationTemplate)\n\nAvailable for users with 'SYS_ADMIN' authority.",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/noauth/oauth2Clients{",
+      "summary": "Get OAuth2 clients (getOAuth2Clients)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/oauth2/client",
+      "summary": "Save OAuth2 Client (saveOAuth2Client)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/oauth2/client/{id}",
+      "summary": "Get OAuth2 Client by id (getOAuth2ClientById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/oauth2/client/{id}",
+      "summary": "Delete oauth2 client (deleteOauth2Client)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/otaPackage",
+      "summary": "Create Or Update OTA Package Info (saveOtaPackageInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/otaPackage/info/{id}",
+      "summary": "Get OTA Package Info (getOtaPackageInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/otaPackage/{id}",
+      "summary": "Get OTA Package (getOtaPackageById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/otaPackage/{id}",
+      "summary": "Delete OTA Package (deleteOtaPackage)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/otaPackage/{id}/download",
+      "summary": "Download OTA Package (downloadOtaPackage)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/otaPackage/{id}{",
+      "summary": "Save OTA Package data (saveOtaPackageData)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/otaPackages/{id}/{id}{",
+      "summary": "Get OTA Package Infos (getOtaPackages)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/mobile/qr/settings",
+      "summary": "Create Or Update the Mobile application settings (saveMobileAppSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/noauth/qr/{id}",
+      "summary": "Get User Token (getUserTokenByMobileSecret)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/queues/name/{id}",
+      "summary": "Get Queue (getQueueByName)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/queues/{id}",
+      "summary": "Get Queue (getQueueById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/queues/{id}",
+      "summary": "Delete Queue (deleteQueue)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/queues{",
+      "summary": "Create Or Update Queue (saveQueue)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/queueStats/{id}",
+      "summary": "Get Queue stats entity by id (getQueueStatsById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/rpc/oneway/{id}",
+      "summary": "Send one-way RPC request (handleOneWayDeviceRPCRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/rpc/twoway/{id}",
+      "summary": "Send two-way RPC request (handleTwoWayDeviceRPCRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rpc/oneway/{id}",
+      "summary": "Send one-way RPC request",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/rpc/persistent/device/{id}{",
+      "summary": "Get persistent RPC requests",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/rpc/persistent/{id}",
+      "summary": "Get persistent RPC request",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/rpc/persistent/{id}",
+      "summary": "Delete persistent RPC",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rpc/twoway/{id}",
+      "summary": "Send two-way RPC request",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/edge/{id}/ruleChain/{id}",
+      "summary": "Assign rule chain to edge (assignRuleChainToEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/edge/{id}/ruleChain/{id}",
+      "summary": "Unassign rule chain from edge (unassignRuleChainFromEdge)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/edge/{id}/ruleChains{",
+      "summary": "Get Edge Rule Chains (getEdgeRuleChains)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain",
+      "summary": "Create Or Update Rule Chain (saveRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/device/default",
+      "summary": "Create Default Rule Chain",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/metadata{",
+      "summary": "Update Rule Chain Metadata",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/testScript{",
+      "summary": "Test Script function",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleChain/{id}",
+      "summary": "Get Rule Chain (getRuleChainById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/ruleChain/{id}",
+      "summary": "Delete rule chain (deleteRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/{id}/autoAssignToEdge",
+      "summary": "Set Auto Assign To Edge Rule Chain (setAutoAssignToEdgeRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/ruleChain/{id}/autoAssignToEdge",
+      "summary": "Unset Auto Assign To Edge Rule Chain (unsetAutoAssignToEdgeRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/{id}/edgeTemplateRoot",
+      "summary": "Set Edge Template Root Rule Chain (setEdgeTemplateRootRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleChain/{id}/metadata",
+      "summary": "Get Rule Chain (getRuleChainById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleChain/{id}/output/labels",
+      "summary": "Get Rule Chain output labels (getRuleChainOutputLabels)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleChain/{id}/output/labels/usage",
+      "summary": "Get output labels usage (getRuleChainOutputLabelsUsage)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChain/{id}/root",
+      "summary": "Set Root Rule Chain (setRootRuleChain)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleChains/export{",
+      "summary": "Export Rule Chains",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/ruleChains/import{",
+      "summary": "Import Rule Chains",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ruleNode/{id}/debugIn",
+      "summary": "Get latest input message (getLatestRuleNodeDebugInput)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rule-engine",
+      "summary": "Push user message to the rule engine (handleRuleEngineRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rule-engine/{id}/{id}",
+      "summary": "Push entity message to the rule engine (handleRuleEngineRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rule-engine/{id}/{id}/{id}/{id}",
+      "summary": "Push entity message with timeout and specified queue to the rule engine (handleRuleEngineRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/rule-engine/{id}/{id}/{id}",
+      "summary": "Push entity message with timeout to the rule engine (handleRuleEngineRequest)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/resource",
+      "summary": "Create Or Update Resource (saveResource)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/info/{id}",
+      "summary": "Get Resource Info (getResourceInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/jks/{id}/download",
+      "summary": "Download JKS Resource (downloadJksResourceIfChanged)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/js/{id}/download",
+      "summary": "Download JS Resource (downloadJsResourceIfChanged)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/lwm2m/{id}/download",
+      "summary": "Download LWM2M Resource (downloadLwm2mResourceIfChanged)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/pkcs12/{id}/download",
+      "summary": "Download PKCS_12 Resource (downloadPkcs12ResourceIfChanged)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/{id}",
+      "summary": "Get Resource (getResourceById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/{id}/download",
+      "summary": "Download Resource (downloadResource)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/resource/{id}{",
+      "summary": "Delete Resource (deleteResource)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/{id}/{id}/{id}",
+      "summary": "Download resource (downloadResource)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/{id}/{id}/{id}/info",
+      "summary": "Get resource info (getResourceInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/telemetry/{id}/{id}",
+      "summary": "Save device attributes (saveDeviceAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/plugins/telemetry/{id}/{id}{",
+      "summary": "Delete device attributes (deleteDeviceAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/attributes/{id}",
+      "summary": "Save entity attributes (saveEntityAttributesV2)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/attributes",
+      "summary": "Get all attribute keys (getAttributeKeys)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/attributes/{id}",
+      "summary": "Get all attribute keys by scope (getAttributeKeysByScope)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/keys/timeseries",
+      "summary": "Get time series keys (getTimeseriesKeys)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/delete{",
+      "summary": "Delete entity time series data (deleteEntityTimeseries)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/{id}",
+      "summary": "Save or update time series data (saveEntityTelemetry)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/timeseries/{id}/{id}",
+      "summary": "Save or update time series data with TTL (saveEntityTelemetryWithTTL)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/attributes/{id}{",
+      "summary": "Get attributes by scope (getAttributesByScope)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/attributes{",
+      "summary": "Get attributes (getAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/values/timeseries{",
+      "summary": "Get latest time series value (getLatestTimeseries)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/{id}",
+      "summary": "Save entity attributes (saveEntityAttributesV1)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/plugins/telemetry/{id}/{id}/{id}{",
+      "summary": "Delete entity attributes (deleteEntityAttributes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/tenant",
+      "summary": "Create Or update Tenant (saveTenant)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenant/info/{id}",
+      "summary": "Get Tenant Info (getTenantInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/tenant/{id}",
+      "summary": "Delete Tenant (deleteTenant)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/tenantProfile",
+      "summary": "Create Or update Tenant Profile (saveTenantProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenantProfile/{id}",
+      "summary": "Get Tenant Profile (getTenantProfileById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/tenantProfile/{id}",
+      "summary": "Delete Tenant Profile (deleteTenantProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/tenantProfile/{id}/default",
+      "summary": "Make tenant profile default (setDefaultTenantProfile)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenantProfileInfo/default",
+      "summary": "Get default Tenant Profile Info (getDefaultTenantProfileInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenantProfileInfo/{id}",
+      "summary": "Get Tenant Profile Info (getTenantProfileInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenantProfileInfos{",
+      "summary": "Get Tenant Profiles Info (getTenantProfileInfos)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "file_or_bulk_transfer",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tenantProfiles{",
+      "summary": "Get Tenant Profiles (getTenantProfiles)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/trendz/settings",
+      "summary": "Save Trendz settings (saveTrendzSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/2fa/account/config/generate{",
+      "summary": "Generate 2FA account config (generateTwoFaAccountConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/2fa/account/config/submit",
+      "summary": "Submit 2FA account config (submitTwoFaAccountConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/2fa/account/config{",
+      "summary": "Update 2FA account config (updateTwoFaAccountConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/2fa/account/config{",
+      "summary": "Delete 2FA account config (deleteTwoFaAccountConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/2fa/account/config{",
+      "summary": "Verify and save 2FA account config (verifyAndSaveTwoFaAccountConfig)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/2fa/settings",
+      "summary": "Save platform 2FA settings (savePlatformTwoFaSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/2fa/verification/check{",
+      "summary": "Check 2FA verification code (checkTwoFaVerificationCode)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/auth/2fa/verification/send{",
+      "summary": "Request 2FA verification code (requestTwoFaVerificationCode)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/customer/{id}/users{",
+      "summary": "Get Customer Users (getCustomerUsers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/dashboards/{id}/{id}",
+      "summary": "Report action of User over the dashboard (reportUserDashboardAction)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/mobile/session",
+      "summary": "getMobileSession",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/user/mobile/session",
+      "summary": "saveMobileSession",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/user/mobile/session",
+      "summary": "removeMobileSession",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/user/sendActivationMail{",
+      "summary": "Send or re-send the activation email",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/settings",
+      "summary": "Get user settings (getUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/user/settings",
+      "summary": "Update user settings (saveUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/user/settings",
+      "summary": "Save user settings (saveUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/user/settings/{id}",
+      "summary": "Delete user settings (deleteUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/user/settings/{id}",
+      "summary": "Update user settings (saveUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/user/settings/{id}/{id}",
+      "summary": "Delete user settings (deleteUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/tokenAccessEnabled",
+      "summary": "Check Token Access Enabled (isUserTokenAccessEnabled)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/user/{id}",
+      "summary": "Delete User (deleteUser)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/activationLink",
+      "summary": "Get activation link (getActivationLink)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/activationLinkInfo",
+      "summary": "Get activation link info (getActivationLinkInfo)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/token",
+      "summary": "Get User Token (getUserToken)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/user/{id}/userCredentialsEnabled{",
+      "summary": "Enable/Disable User credentials (setUserCredentialsEnabled)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/users/assign/{id}{",
+      "summary": "Get usersForAssign (getUsersForAssign)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/users/info{",
+      "summary": "Find users by query (findUsersByQuery)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/users{",
+      "summary": "Get Users (getUsers)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_specific_user_customer_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/user{",
+      "summary": "Save Or update User (saveUser)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/widgetType/{id}",
+      "summary": "Delete widget type (deleteWidgetType)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/widgetType/{id}{",
+      "summary": "Get Widget Type Details (getWidgetTypeById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/widgetTypeInfo/{id}",
+      "summary": "Get Widget Type Info (getWidgetTypeInfoById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/widgetType{",
+      "summary": "Create Or Update Widget Type (saveWidgetType)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/widgetsBundle",
+      "summary": "Create Or Update Widget Bundle (saveWidgetsBundle)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/widgetsBundle/{id}",
+      "summary": "Delete widgets bundle (deleteWidgetsBundle)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/widgetsBundle/{id}/widgetTypeFqns",
+      "summary": "Update widgets bundle widgets list from widget type FQNs list (updateWidgetsBundleWidgetFqns)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/widgetsBundle/{id}/widgetTypes",
+      "summary": "Update widgets bundle widgets types list (updateWidgetsBundleWidgetTypes)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/widgetsBundle/{id}{",
+      "summary": "Get Widget Bundle (getWidgetsBundleById)",
+      "v1_eligible": false
+    }
+  ],
+  "matched": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/dashboard/home",
+      "summary": "Get Home Dashboard (getHomeDashboard)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/dashboard/serverTime",
+      "summary": "Get server time (getServerTime)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/tenant/dashboard/home/info",
+      "summary": "Get Tenant Home Dashboard Info (getTenantHomeDashboardInfo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/edge/types",
+      "summary": "Get Edge Types (getEdgeTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "post_mutation_or_complex_body",
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "POST",
+      "path_template": "/api/entitiesQuery/find",
+      "summary": "Find Entity Data by Query",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/entityView/types",
+      "summary": "Get Entity View Types (getEntityViewTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/oauth2/config/template",
+      "summary": "Get the list of all OAuth2 client registration templates (getClientRegistrationTemplates)\n\nAvailable for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/oauth2/client/{id}",
+      "summary": "Get OAuth2 Client by id (getOAuth2ClientById)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/mobile/qr/deepLink",
+      "summary": "Get the deep link to the associated mobile application (getMobileAppDeepLink)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/mobile/qr/settings",
+      "summary": "Get Mobile application settings (getMobileAppSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/ruleChain/autoAssignToEdgeRuleChains",
+      "summary": "Get Auto Assign To Edge Rule Chains (getAutoAssignToEdgeRuleChains)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "requires_seeded_entity_or_known_id",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/resource/{id}/{id}/{id}",
+      "summary": "Download resource (downloadResource)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/tenant/{id}",
+      "summary": "Get Tenant (getTenantById)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/user/dashboards",
+      "summary": "Get information about last visited and starred dashboards (getLastVisitedDashboards)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/user/settings/{id}",
+      "summary": "Get user settings (getUserSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": "mutating_method_not_safe_v1_action",
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/user/settings/{id}",
+      "summary": "Update user settings (saveUserSettings)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/user/{id}",
+      "summary": "Get User (getUserById)",
+      "v1_eligible": true
+    }
+  ],
+  "matching_policy": "Exact method+normalized path plus conservative shape matches from coverage report.",
+  "missed_v1_eligible": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/ai/model{",
+      "summary": "Get AI models (getAiModels)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/alarm/types{",
+      "summary": "Get Alarm Types (getAlarmTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/alarms{",
+      "summary": "Get All Alarms (getAllAlarms)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/v2/alarms{",
+      "summary": "Get All Alarms (getAllAlarmsV2)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/asset/types",
+      "summary": "Get Asset Types (getAssetTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/assets{",
+      "summary": "Get Assets By Ids (getAssetsByIds)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/assetInfos{",
+      "summary": "Get Tenant Asset Infos (getTenantAssetInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/assets{",
+      "summary": "Get Tenant Assets (getTenantAssets)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/audit/logs{",
+      "summary": "Get all audit logs (getAuditLogs)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/auth/user",
+      "summary": "Get current User (getUser)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/noauth/activate{",
+      "summary": "Check Activate User Token (checkActivateToken)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/noauth/resetPassword{",
+      "summary": "Check password reset token (checkResetToken)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/noauth/userPasswordPolicy",
+      "summary": "Get the current User password policy (getUserPasswordPolicy)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/components{",
+      "summary": "Get Component Descriptors (getComponentDescriptorsByTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/customers{",
+      "summary": "Get Tenant Customer by Customer title (getTenantCustomer)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/dashboard/home/info",
+      "summary": "Get Home Dashboard Info (getHomeDashboardInfo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/dashboard/maxDatapointsLimit",
+      "summary": "Get max data points limit (getMaxDatapointsLimit)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/dashboards{",
+      "summary": "Get Tenant Dashboards (getTenantDashboards)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/{id}/dashboards{",
+      "summary": "Get Tenant Dashboards by System Administrator (getTenantDashboards)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/device/types",
+      "summary": "Get Device Types (getDeviceTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/devices{",
+      "summary": "Get Devices By Ids (getDevicesByIds)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/deviceInfos{",
+      "summary": "Get Tenant Device Infos (getTenantDeviceInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/devices{",
+      "summary": "Get Tenant Devices (getTenantDevices)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/domain/infos{",
+      "summary": "Get Domain infos (getTenantDomainInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/edges/enabled",
+      "summary": "Is edges support enabled (isEdgesSupportEnabled)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/edges{",
+      "summary": "Get Tenant Edges (getEdges)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/edgeInfos{",
+      "summary": "Get Tenant Edge Infos (getTenantEdgeInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/edges{",
+      "summary": "Get Tenant Edges (getTenantEdges)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/entities/vc/branches",
+      "summary": "List branches (listBranches)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/entities/vc/version{",
+      "summary": "List all versions (listVersions)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/edqs/state",
+      "summary": "getEdqsState",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/relations/info{",
+      "summary": "Get List of Relation Infos (findInfoByTo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/relations{",
+      "summary": "Get List of Relations (findByTo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/relation{",
+      "summary": "Get Relation (getRelation)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/entityViewInfos{",
+      "summary": "Get Tenant Entity Views (getTenantEntityViews)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/entityViews{",
+      "summary": "Get Tenant Entity Views (getTenantEntityViews)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/jobs{",
+      "summary": "getJobs",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/mail/config/template",
+      "summary": "Get the list of all OAuth2 client registration templates (getClientRegistrationTemplates)\n\nAvailable for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/mobile/bundle/infos{",
+      "summary": "Get mobile app bundle infos (getTenantMobileAppBundleInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/mobile/app{",
+      "summary": "Get mobile app infos (getTenantMobileAppInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/mobile{",
+      "summary": "Get user mobile app basic info (getUserMobileInfo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/noauth/mobile{",
+      "summary": "Get mobile app login info (getLoginMobileInfo)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/deliveryMethods",
+      "summary": "Get available delivery methods (getAvailableDeliveryMethods)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/requests{",
+      "summary": "Get notification requests (getNotificationRequests)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/settings",
+      "summary": "Get notification settings (getNotificationSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/settings/user",
+      "summary": "getUserNotificationSettings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notifications/unread/count{",
+      "summary": "Get unread notifications count (getUnreadNotificationsCount)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notifications{",
+      "summary": "Get notifications (getNotifications)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/rules{",
+      "summary": "Get notification rules (getNotificationRules)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/targets{",
+      "summary": "Get notification targets (getNotificationTargets)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/slack/conversations{",
+      "summary": "List Slack conversations (listSlackConversations)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/notification/templates{",
+      "summary": "Get notification templates (getNotificationTemplates)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/oauth2/client/infos{",
+      "summary": "Get OAuth2 Client infos (findTenantOAuth2ClientInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/oauth2/loginProcessingUrl",
+      "summary": "Get OAuth2 log in processing URL (getLoginProcessingUrl)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/otaPackages{",
+      "summary": "Get OTA Package Infos (getOtaPackages)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/noauth/qr",
+      "summary": "getApplicationRedirect",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/queues{",
+      "summary": "Get Queues (getTenantQueuesByServiceType)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/queueStats{",
+      "summary": "Get QueueStats By Ids (getQueueStatsByIds)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/ruleChain/tbelEnabled",
+      "summary": "Is TBEL script executor enabled",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/ruleChains{",
+      "summary": "Get Rule Chains (getRuleChains)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/resource/lwm2m/page{",
+      "summary": "Get LwM2M Objects (getLwm2mListObjectsPage)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/resource/lwm2m{",
+      "summary": "Get LwM2M Objects (getLwm2mListObjects)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/resource/tenant{",
+      "summary": "Get All Resource Infos (getAllResources)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/resource{",
+      "summary": "Get Resource Infos (getResources)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenantInfos{",
+      "summary": "Get Tenants Info (getTenants)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenants{",
+      "summary": "Get Tenants (getTenants)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/trendz/settings",
+      "summary": "Get Trendz Settings (getTrendzSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/2fa/account/settings",
+      "summary": "Get account 2FA settings (getAccountTwoFaSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/2fa/providers",
+      "summary": "Get available 2FA providers (getAvailableTwoFaProviders)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/2fa/settings",
+      "summary": "Get platform 2FA settings (getPlatformTwoFaSettings)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/auth/2fa/providers",
+      "summary": "Get available 2FA providers (getAvailableTwoFaProviders)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/uiSettings/helpBaseUrl",
+      "summary": "Get UI help base url (getHelpBaseUrl)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/usage",
+      "summary": "getTenantUsageInfo",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/tenant/{id}/users{",
+      "summary": "Get Tenant Users (getTenantAdmins)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetTypeFqns{",
+      "summary": "Get all Widget type fqns for specified Bundle (getBundleWidgetTypeFqns)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetTypesDetails{",
+      "summary": "Get all Widget types details for specified Bundle (getBundleWidgetTypesDetails)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetTypesInfos{",
+      "summary": "Get Widget Type Info objects (getBundleWidgetTypesInfos)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetTypes{",
+      "summary": "Get all Widget types for specified Bundle (getBundleWidgetTypes)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetType{",
+      "summary": "Get Widget Type (getWidgetTypeByBundleAliasAndTypeAlias) (Deprecated)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetsBundles",
+      "summary": "Get all Widget Bundles (getWidgetsBundles)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "miss_reason": "not_reached_by_current_frontier_or_safe_interactor",
+      "path_template": "/api/widgetsBundles{",
+      "summary": "Get Widget Bundles (getWidgetsBundles)",
+      "v1_eligible": true
+    }
+  ],
+  "summary": {
+    "effective_shape_total_found": 17,
+    "effective_shape_total_recall": 0.0356,
+    "effective_shape_v1_found": 13,
+    "effective_shape_v1_recall": 0.1383,
+    "excluded_reason_counts": {
+      "file_or_bulk_transfer": 46,
+      "mutating_method_not_safe_v1_action": 71,
+      "post_mutation_or_complex_body": 113,
+      "requires_seeded_entity_or_known_id": 90,
+      "requires_specific_user_customer_context": 41,
+      "requires_sysadmin_not_tenant_ui": 22
+    },
+    "mode": "auth_nojs_diagnostic_default_js_analysis_stalled",
+    "oracle_method_counts": {
+      "DELETE": 60,
+      "GET": 257,
+      "POST": 149,
+      "PUT": 11
+    },
+    "oracle_normalized_total": 477,
+    "oracle_raw_operations": 497,
+    "orbis_observed_count": 25,
+    "strict_total_found": 14,
+    "strict_total_recall": 0.0294,
+    "strict_v1_found": 13,
+    "strict_v1_recall": 0.1383,
+    "target": "thingsboard",
+    "v1_eligible_count": 94
+  }
+}

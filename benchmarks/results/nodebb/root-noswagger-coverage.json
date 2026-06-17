@@ -1,0 +1,2940 @@
+{
+  "exact_matches": [
+    {
+      "expected_path": "/api",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api",
+      "source": "static_js"
+    },
+    {
+      "expected_path": "/api/topic/pagination/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/topic/pagination/{id}",
+      "source": "static_js"
+    }
+  ],
+  "extra": [
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/{id}",
+      "route_kind": "application_api",
+      "seen_count": 152,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/assets/language/en-GB/{id}",
+      "route_kind": "application_api",
+      "seen_count": 210,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "POST",
+      "path_template": "/socket.io",
+      "route_kind": "application_api",
+      "seen_count": 69,
+      "source": "dynamic"
+    }
+  ],
+  "missing": [
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/session/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/relays/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/rules/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/chats/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/follow",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/follow/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/moderator/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/privileges/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/privileges/{id}/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/watch",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/watch/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}/pin",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/owners/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/state",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/users",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/users/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/watch",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/files",
+      "tags": [
+        "files"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}/notes/{id}",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}/report",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "tags": [
+        "group"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/membership/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/ownership/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/pending/{id}",
+      "tags": [
+        "group"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/notifications/{id}/read",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/queue/{id}",
+      "tags": [
+        "QueuedPosts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/bookmark",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/state",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/vote",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/tags/{id}/follow",
+      "tags": [
+        "tags"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/events/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/follow",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/ignore",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/lock",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/pin",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/read",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/state",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/tags",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/account",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/ban",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/content",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/follow",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/mute",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/sessions/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/tokens/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/cache",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/cache/dump",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/database",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/errors",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/errors/export",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/events",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/hooks",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/jobs",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/advanced/logs",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/analytics",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/appearance/customise",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/appearance/skins",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/appearance/themes",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/config",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/dashboard",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/dashboard/logins",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/dashboard/searches",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/dashboard/topics",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/dashboard/users",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/development/info",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/development/logger",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/extend/plugins",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/extend/rewards",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/extend/widgets",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/analytics",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/content",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/errors",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/general",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/pruning",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/relays",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/rules",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/federation/safety",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/groups/{id}/csv",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/admins-mods",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/categories",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/categories/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/categories/{id}/analytics",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/categories/{id}/federation",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/digest",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/groups",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/groups/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/privileges/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/registration",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/tags",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/uploads",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/users",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/users/custom-fields",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/manage/users/custom-reasons",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/advanced",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/api",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/chat",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/cookies",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/email",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/general",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/group",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/navigation",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/notifications",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/pagination",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/post",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/reputation",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/tags",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/uploads",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/user",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/settings/web-crawler",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/admin/users/csv",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/ap",
+      "tags": [
+        "activitypub"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/categories",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/categories/{id}/moderators",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/category/{id}/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/category/{id}/{id}/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/chats/{id}",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/chats/{id}/{id}",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/config",
+      "tags": [
+        "home"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/confirm/{id}",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/email/unsubscribe/{id}",
+      "tags": [
+        "emails"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/flags",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/flags/{id}",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/groups",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/groups/{id}/members",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/intents/{id}",
+      "tags": [
+        "intents"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/ip-blacklist",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/login",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/me",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/me/*",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/message/{id}",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/notifications",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/outgoing",
+      "tags": [
+        "other"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/popular",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/post-queue",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/post-queue/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/post/{id}",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/recent",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/recent/posts/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/register",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/register/complete",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/registration-queue",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/reset",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/reset/{id}",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/search",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/self",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/tags",
+      "tags": [
+        "tags"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/tags/{id}",
+      "tags": [
+        "tags"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/top",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/topic/teaser/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/topic/{id}/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/topic/{id}/{id}/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/tos",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/uid/{id}",
+      "tags": [
+        "shorthand"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/unread",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/unread/total",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/email/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/uid/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/username/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/best",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/blocks",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/bookmarks",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/categories",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/chats/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/chats/{id}/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/consent",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/controversial",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/downvoted",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/edit",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/edit/email",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/edit/password",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/edit/username",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/followers",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/following",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/groups",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/ignored",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/info",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/read",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/sessions",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/settings",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/shares",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/tags",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/topics",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/uploads",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/upvoted",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/user/{id}/watched",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/users",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/analytics",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/analytics/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/groups",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/children",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/count",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/posts",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/privileges",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/topics",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/search",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/unread",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/pinned",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}/ip",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}/raw",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/users",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/groups",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/invites",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/members",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/pending",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/notifications",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/notifications/count",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/notifications/{id}",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/ping",
+      "tags": [
+        "utilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/announcers",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/announcers/tooltip",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/diffs",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/index",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/raw",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/replies",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/summary",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/upvoters",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/voters",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/search/categories",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/search/chats/{id}/messages",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/search/chats/{id}/users",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/events",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/chat",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/emails",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/emails/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/invites/groups",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/status",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/api/world",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/ping",
+      "tags": [
+        "ping"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": null,
+      "path_template": "/sping",
+      "tags": [
+        "ping"
+      ]
+    },
+    {
+      "method": "HEAD",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "HEAD",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "HEAD",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "HEAD",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "HEAD",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/status/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/tags",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/category/uploadpicture",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/upload/file",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadDefaultAvatar",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadMaskableIcon",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadOgImage",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadTouchIcon",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadfavicon",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/admin/uploadlogo",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/email/unsubscribe/{id}",
+      "tags": [
+        "emails"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/post/upload",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/topic/thumb/upload",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/blocklists",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}/refresh",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/relays",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/rules",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/tokens",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/tokens/{id}/roll",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/categories",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/chats",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/users",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/flags",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}/notes",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/groups",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "tags": [
+        "group"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/ping",
+      "tags": [
+        "utilities"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/owner",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/queue/{id}",
+      "tags": [
+        "QueuedPosts"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/queue/{id}/notify",
+      "tags": [
+        "QueuedPosts"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/topics",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/emails",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/emails/{id}/confirm",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/invites",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/tokens",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": null,
+      "path_template": "/api/v3/utilities/login",
+      "tags": [
+        "utilities"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/activitypub/rules/order",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/settings/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "tags": [
+        "admin"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/follow",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/moderator/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/privileges/{id}",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/categories/{id}/watch",
+      "tags": [
+        "categories"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/sort",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/messages/{id}/pin",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/owners/{id}",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/state",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/typing",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/chats/{id}/watch",
+      "tags": [
+        "chats"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/files/folder",
+      "tags": [
+        "files"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/flags/{id}",
+      "tags": [
+        "flags"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "tags": [
+        "group"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/membership/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/ownership/{id}",
+      "tags": [
+        "groups"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/groups/{id}/pending/{id}",
+      "tags": [
+        "group"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/notifications/{id}/read",
+      "tags": [
+        "notifications"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/queue/{id}",
+      "tags": [
+        "QueuedPosts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/bookmark",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/move",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/owner",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/state",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/posts/{id}/vote",
+      "tags": [
+        "posts"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/tags/{id}/follow",
+      "tags": [
+        "tags"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/bump",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/follow",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/ignore",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/lock",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/move",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/pin",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/read",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/state",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/tags",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/topics/{id}/thumbs/order",
+      "tags": [
+        "topics"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/ban",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/follow",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/mute",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/password",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/picture",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "method": "PUT",
+      "operation_id": null,
+      "path_template": "/api/v3/users/{id}/settings",
+      "tags": [
+        "users"
+      ]
+    }
+  ],
+  "shape_matches": [
+    {
+      "expected_path": "/api/groups/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/groups/$",
+      "source": "static_js"
+    },
+    {
+      "expected_path": "/api/user/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/user/$",
+      "source": "static_js"
+    },
+    {
+      "expected_path": "/api/user/{id}/posts",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/user/orbis/posts",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/intents/query/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/v3/intents/query/$",
+      "source": "static_js"
+    }
+  ],
+  "summary": {
+    "effective_coverage": 0.016575,
+    "exact_coverage": 0.005525,
+    "exact_matches": 2,
+    "expected_count": 362,
+    "extra_count": 3,
+    "missing_count": 356,
+    "observed_count": 9,
+    "shape_matches": 4
+  }
+}

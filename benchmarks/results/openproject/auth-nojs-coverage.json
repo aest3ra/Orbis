@@ -1,0 +1,2508 @@
+{
+  "exact_matches": [
+    {
+      "expected_path": "/api/v3/days/non_working",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/days/non_working",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/days/week",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/days/week",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/meetings/{id}/attachments",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/meetings/{id}/attachments",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/projects/available_parent_projects",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/projects/available_parent_projects",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/projects/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/projects/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/queries/default",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/queries/default",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/queries/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/queries/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/statuses/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/statuses/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/work_packages/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/work_packages/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/workspaces/schema",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "exact",
+      "observed_path": "/api/v3/workspaces/schema",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/grids/{id}",
+      "host": "localhost",
+      "method": "PATCH",
+      "mode": "exact",
+      "observed_path": "/api/v3/grids/{id}",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/grids",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/grids",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/grids/form",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/grids/form",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/grids/{id}/form",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/grids/{id}/form",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/queries",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/queries",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/queries/form",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/queries/form",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/work_packages/form",
+      "host": "localhost",
+      "method": "POST",
+      "mode": "exact",
+      "observed_path": "/api/v3/work_packages/form",
+      "source": "dynamic"
+    }
+  ],
+  "extra": [
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/principals/{id}",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/projects/your-scrum-project/queries/default",
+      "route_kind": "application_api",
+      "seen_count": 2,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/work_packages/available_projects",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/work_packages/{id}/{id}",
+      "route_kind": "application_api",
+      "seen_count": 5,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/{id}",
+      "route_kind": "application_api",
+      "seen_count": 346,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/projects/{id}/work_packages/{id}/meetings/tab/count",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/work_packages/{id}/split_view/get_relations_counter",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    }
+  ],
+  "missing": [
+    {
+      "method": "DELETE",
+      "operation_id": "delete_attachment",
+      "path_template": "/api/v3/attachments/{id}",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_non_working_day",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_file_link",
+      "path_template": "/api/v3/file_links/{id}",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_group",
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "Groups"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_meeting",
+      "path_template": "/api/v3/meetings/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_meeting_agenda_item",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_meeting_section",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_membership",
+      "path_template": "/api/v3/memberships/{id}",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_news",
+      "path_template": "/api/v3/news/{id}",
+      "tags": [
+        "News"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_placeholder_user",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Delete_Portfolio",
+      "path_template": "/api/v3/portfolios/{id}",
+      "tags": [
+        "Portfolios"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Delete_Program",
+      "path_template": "/api/v3/programs/{id}",
+      "tags": [
+        "Programs"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Delete_Project",
+      "path_template": "/api/v3/projects/{id}",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Unfavorite_Project",
+      "path_template": "/api/v3/projects/{id}/favorite",
+      "tags": [
+        "Projects",
+        "Favorites"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Delete_query",
+      "path_template": "/api/v3/queries/{id}",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_recurring_meeting",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "cancel_recurring_meeting_occurrence",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/{id}",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_relation",
+      "path_template": "/api/v3/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_reminder",
+      "path_template": "/api/v3/reminders/{id}",
+      "tags": [
+        "Reminders"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_storage",
+      "path_template": "/api/v3/storages/{id}",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_time_entry",
+      "path_template": "/api/v3/time_entries/{id}",
+      "tags": [
+        "Time entries"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_user",
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "Users",
+        "Principals"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "unlock_user",
+      "path_template": "/api/v3/users/{id}/lock",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_user_non_working_time",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_user_working_hours_record",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_Version",
+      "path_template": "/api/v3/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "delete_work_package",
+      "path_template": "/api/v3/work_packages/{id}",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Remove_watcher",
+      "path_template": "/api/v3/work_packages/{id}/watchers/{id}",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "Unfavorite_Workspace",
+      "path_template": "/api/v3/workspaces/{id}/favorite",
+      "tags": [
+        "Workspaces",
+        "Favorites"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_root",
+      "path_template": "/api/v3",
+      "tags": [
+        "Root"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_actions",
+      "path_template": "/api/v3/actions",
+      "tags": [
+        "Actions & Capabilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_action",
+      "path_template": "/api/v3/actions/{id}",
+      "tags": [
+        "Actions & Capabilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_activity",
+      "path_template": "/api/v3/activities/{id}",
+      "tags": [
+        "Activities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_activity_attachments",
+      "path_template": "/api/v3/activities/{id}/attachments",
+      "tags": [
+        "Activities",
+        "Attachments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_activity_emoji_reactions",
+      "path_template": "/api/v3/activities/{id}/emoji_reactions",
+      "tags": [
+        "Activities",
+        "EmojiReactions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_attachment",
+      "path_template": "/api/v3/attachments/{id}",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_Budget",
+      "path_template": "/api/v3/budgets/{id}",
+      "tags": [
+        "Budgets"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_capabilities",
+      "path_template": "/api/v3/capabilities",
+      "tags": [
+        "Actions & Capabilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_global_context",
+      "path_template": "/api/v3/capabilities/context/global",
+      "tags": [
+        "Actions & Capabilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_capabilities",
+      "path_template": "/api/v3/capabilities/{id}",
+      "tags": [
+        "Actions & Capabilities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Category",
+      "path_template": "/api/v3/categories/{id}",
+      "tags": [
+        "Categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_configuration",
+      "path_template": "/api/v3/configuration",
+      "tags": [
+        "Configuration"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_custom_action",
+      "path_template": "/api/v3/custom_actions/{id}",
+      "tags": [
+        "Custom actions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_custom_field_item",
+      "path_template": "/api/v3/custom_field_items/{id}",
+      "tags": []
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_custom_field_item_branch",
+      "path_template": "/api/v3/custom_field_items/{id}/branch",
+      "tags": []
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_custom_field_items",
+      "path_template": "/api/v3/custom_fields/{id}/items",
+      "tags": []
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Custom_Option",
+      "path_template": "/api/v3/custom_options/{id}",
+      "tags": [
+        "Custom Options"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_days",
+      "path_template": "/api/v3/days",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_non_working_day",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_week_day",
+      "path_template": "/api/v3/days/week/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_day",
+      "path_template": "/api/v3/days/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_Documents",
+      "path_template": "/api/v3/documents",
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_document",
+      "path_template": "/api/v3/documents/{id}",
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_the_schema",
+      "path_template": "/api/v3/example/schema",
+      "tags": [
+        "Schemas"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_aggregated_result",
+      "path_template": "/api/v3/examples",
+      "tags": [
+        "Collections"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_file_link",
+      "path_template": "/api/v3/file_links/{id}",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "download_file_link",
+      "path_template": "/api/v3/file_links/{id}/download",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "open_file_link",
+      "path_template": "/api/v3/file_links/{id}/open",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_grids",
+      "path_template": "/api/v3/grids",
+      "tags": [
+        "Grids"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_grid",
+      "path_template": "/api/v3/grids/{id}",
+      "tags": [
+        "Grids"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_groups",
+      "path_template": "/api/v3/groups",
+      "tags": [
+        "Groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_group",
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "Groups"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_help_texts",
+      "path_template": "/api/v3/help_texts",
+      "tags": [
+        "Help texts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_help_text",
+      "path_template": "/api/v3/help_texts/{id}",
+      "tags": [
+        "Help texts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_meetings",
+      "path_template": "/api/v3/meetings",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_meeting_schema",
+      "path_template": "/api/v3/meetings/schema",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_meeting",
+      "path_template": "/api/v3/meetings/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_meeting_agenda_items",
+      "path_template": "/api/v3/meetings/{id}/agenda_items",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_meeting_agenda_item",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_meeting_sections",
+      "path_template": "/api/v3/meetings/{id}/sections",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_meeting_section",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_memberships",
+      "path_template": "/api/v3/memberships",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_memberships_available_projects",
+      "path_template": "/api/v3/memberships/available_projects",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_membership_schema",
+      "path_template": "/api/v3/memberships/schema",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_membership",
+      "path_template": "/api/v3/memberships/{id}",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Show_my_preferences",
+      "path_template": "/api/v3/my_preferences",
+      "tags": [
+        "UserPreferences"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_News",
+      "path_template": "/api/v3/news",
+      "tags": [
+        "News"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_news",
+      "path_template": "/api/v3/news/{id}",
+      "tags": [
+        "News"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_notifications",
+      "path_template": "/api/v3/notifications",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_notification",
+      "path_template": "/api/v3/notifications/{id}",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_notification_detail",
+      "path_template": "/api/v3/notifications/{id}/details/{id}",
+      "tags": [
+        "Notifications",
+        "Values::Property"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_oauth_application",
+      "path_template": "/api/v3/oauth_applications/{id}",
+      "tags": [
+        "OAuth 2"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_oauth_client_credentials",
+      "path_template": "/api/v3/oauth_client_credentials/{id}",
+      "tags": [
+        "OAuth 2"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_placeholder_users",
+      "path_template": "/api/v3/placeholder_users",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_placeholder_user",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_portfolios",
+      "path_template": "/api/v3/portfolios",
+      "tags": [
+        "Portfolios"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_portfolio",
+      "path_template": "/api/v3/portfolios/{id}",
+      "tags": [
+        "Portfolios"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Post",
+      "path_template": "/api/v3/posts/{id}",
+      "tags": [
+        "Posts"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_attachments_by_post",
+      "path_template": "/api/v3/posts/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_principals",
+      "path_template": "/api/v3/principals",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_all_Priorities",
+      "path_template": "/api/v3/priorities",
+      "tags": [
+        "Priorities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Priority",
+      "path_template": "/api/v3/priorities/{id}",
+      "tags": [
+        "Priorities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_programs",
+      "path_template": "/api/v3/programs",
+      "tags": [
+        "Programs"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_program",
+      "path_template": "/api/v3/programs/{id}",
+      "tags": [
+        "Programs"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_project_phase_definitions",
+      "path_template": "/api/v3/project_phase_definitions",
+      "tags": [
+        "Project Phase Definitions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_project_phase_definition",
+      "path_template": "/api/v3/project_phase_definitions/{id}",
+      "tags": [
+        "Project Phase Definitions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_project_phase",
+      "path_template": "/api/v3/project_phases/{id}",
+      "tags": [
+        "Project Phases"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_project_status",
+      "path_template": "/api/v3/project_statuses/{id}",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_project_storages",
+      "path_template": "/api/v3/project_storages",
+      "tags": [
+        "File Links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_project_storage",
+      "path_template": "/api/v3/project_storages/{id}",
+      "tags": [
+        "File Links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "open_project_storage",
+      "path_template": "/api/v3/project_storages/{id}/open",
+      "tags": [
+        "File Links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_projects",
+      "path_template": "/api/v3/projects",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_project_schema",
+      "path_template": "/api/v3/projects/schema",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Project_Available_assignees",
+      "path_template": "/api/v3/projects/{id}/available_assignees",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_Budgets_of_a_Project",
+      "path_template": "/api/v3/projects/{id}/budgets",
+      "tags": [
+        "Budgets"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_categories_of_a_project",
+      "path_template": "/api/v3/projects/{id}/categories",
+      "tags": [
+        "Categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_project_configuration",
+      "path_template": "/api/v3/projects/{id}/configuration",
+      "tags": [
+        "Configuration",
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_Query_Filter_Instance_Schemas_for_Project",
+      "path_template": "/api/v3/projects/{id}/queries/filter_instance_schemas",
+      "tags": [
+        "Query Filter Instance Schema"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_schema_for_project_queries",
+      "path_template": "/api/v3/projects/{id}/queries/schema",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_sprints_in_project",
+      "path_template": "/api/v3/projects/{id}/sprints",
+      "tags": [
+        "Sprints"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_types_available_in_a_project",
+      "path_template": "/api/v3/projects/{id}/types",
+      "tags": [
+        "Types"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_versions_available_in_a_project",
+      "path_template": "/api/v3/projects/{id}/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Get_Project_Work_Package_Collection",
+      "path_template": "/api/v3/projects/{id}/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_queries",
+      "path_template": "/api/v3/queries",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Available_projects_for_query",
+      "path_template": "/api/v3/queries/available_projects",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Query_Column",
+      "path_template": "/api/v3/queries/columns/{id}",
+      "tags": [
+        "Query Columns"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_Query_Filter_Instance_Schemas",
+      "path_template": "/api/v3/queries/filter_instance_schemas",
+      "tags": [
+        "Query Filter Instance Schema"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Query_Filter_Instance_Schema",
+      "path_template": "/api/v3/queries/filter_instance_schemas/{id}",
+      "tags": [
+        "Query Filter Instance Schema"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Query_Filter",
+      "path_template": "/api/v3/queries/filters/{id}",
+      "tags": [
+        "Query Filters"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Query_Operator",
+      "path_template": "/api/v3/queries/operators/{id}",
+      "tags": [
+        "Query Operators"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_schema_for_global_queries",
+      "path_template": "/api/v3/queries/schema",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Query_Sort_By",
+      "path_template": "/api/v3/queries/sort_bys/{id}",
+      "tags": [
+        "Query Sort Bys"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_recurring_meetings",
+      "path_template": "/api/v3/recurring_meetings",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_recurring_meeting",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_recurring_meeting_occurrences_cancelled",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/cancelled",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_recurring_meeting_occurrences_open",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/open",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_recurring_meeting_occurrences_past",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/past",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_recurring_meeting_occurrences_upcoming",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/upcoming",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_relations",
+      "path_template": "/api/v3/relations",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_relation",
+      "path_template": "/api/v3/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_reminders",
+      "path_template": "/api/v3/reminders",
+      "tags": [
+        "Reminders"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_revision",
+      "path_template": "/api/v3/revisions/{id}",
+      "tags": [
+        "Revisions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_roles",
+      "path_template": "/api/v3/roles",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_role",
+      "path_template": "/api/v3/roles/{id}",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_sprints",
+      "path_template": "/api/v3/sprints",
+      "tags": [
+        "Sprints"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_sprint",
+      "path_template": "/api/v3/sprints/{id}",
+      "tags": [
+        "Sprints"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_statuses",
+      "path_template": "/api/v3/statuses",
+      "tags": [
+        "Statuses"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_storages",
+      "path_template": "/api/v3/storages",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_storage",
+      "path_template": "/api/v3/storages/{id}",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_storage_files",
+      "path_template": "/api/v3/storages/{id}/files",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "open_storage",
+      "path_template": "/api/v3/storages/{id}/open",
+      "tags": [
+        "File Links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_time_entries",
+      "path_template": "/api/v3/time_entries",
+      "tags": [
+        "Time entries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_time_entries_activity",
+      "path_template": "/api/v3/time_entries/activity/{id}",
+      "tags": [
+        "Time entry activities"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Available_projects_for_time_entries",
+      "path_template": "/api/v3/time_entries/available_projects",
+      "tags": [
+        "Time Entries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_time_entry_schema",
+      "path_template": "/api/v3/time_entries/schema",
+      "tags": [
+        "Time Entries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_time_entry",
+      "path_template": "/api/v3/time_entries/{id}",
+      "tags": [
+        "Time entries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_all_Types",
+      "path_template": "/api/v3/types",
+      "tags": [
+        "Types"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Type",
+      "path_template": "/api/v3/types/{id}",
+      "tags": [
+        "Types"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_Users",
+      "path_template": "/api/v3/users",
+      "tags": [
+        "Users",
+        "Principals"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_user_schema",
+      "path_template": "/api/v3/users/schema",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_user",
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "Users",
+        "Principals"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_user_non_working_times",
+      "path_template": "/api/v3/users/{id}/non_working_times",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_user_non_working_time",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_user_working_hours",
+      "path_template": "/api/v3/users/{id}/working_hours",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "view_user_working_hours_record",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_values_schema",
+      "path_template": "/api/v3/values/schema/{id}",
+      "tags": [
+        "Values::Property"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_versions",
+      "path_template": "/api/v3/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Available_projects_for_versions",
+      "path_template": "/api/v3/versions/available_projects",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_version_schema",
+      "path_template": "/api/v3/versions/schema",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "get_version",
+      "path_template": "/api/v3/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_projects_with_version",
+      "path_template": "/api/v3/versions/{id}/projects",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_workspaces_with_version",
+      "path_template": "/api/v3/versions/{id}/workspaces",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_views",
+      "path_template": "/api/v3/views",
+      "tags": [
+        "Views"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_view",
+      "path_template": "/api/v3/views/{id}",
+      "tags": [
+        "Views"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_Wiki_Page",
+      "path_template": "/api/v3/wiki_pages/{id}",
+      "tags": [
+        "Wiki Pages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_attachments_by_wiki_page",
+      "path_template": "/api/v3/wiki_pages/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_packages",
+      "path_template": "/api/v3/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_package_schemas",
+      "path_template": "/api/v3/work_packages/schemas",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_work_package_activities",
+      "path_template": "/api/v3/work_packages/{id}/activities",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_package_activities_emoji_reactions",
+      "path_template": "/api/v3/work_packages/{id}/activities_emoji_reactions",
+      "tags": [
+        "WorkPackages",
+        "Activities",
+        "EmojiReactions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_package_attachments",
+      "path_template": "/api/v3/work_packages/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Work_Package_Available_assignees",
+      "path_template": "/api/v3/work_packages/{id}/available_assignees",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Available_projects_for_work_package",
+      "path_template": "/api/v3/work_packages/{id}/available_projects",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_available_relation_candidates",
+      "path_template": "/api/v3/work_packages/{id}/available_relation_candidates",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Available_watchers",
+      "path_template": "/api/v3/work_packages/{id}/available_watchers",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_package_file_links",
+      "path_template": "/api/v3/work_packages/{id}/file_links",
+      "tags": [
+        "Work Packages",
+        "File links"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_work_package_reminders",
+      "path_template": "/api/v3/work_packages/{id}/reminders",
+      "tags": [
+        "Work Packages",
+        "Reminders"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Revisions",
+      "path_template": "/api/v3/work_packages/{id}/revisions",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_watchers",
+      "path_template": "/api/v3/work_packages/{id}/watchers",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_Query_Filter_Instance_Schemas_for_Workspace",
+      "path_template": "/api/v3/workspace/{id}/queries/filter_instance_schemas",
+      "tags": [
+        "Query Filter Instance Schema"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_schema_for_workspace_queries",
+      "path_template": "/api/v3/workspace/{id}/queries/schema",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "list_workspace",
+      "path_template": "/api/v3/workspaces",
+      "tags": [
+        "Workspace"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Workspace_Available_assignees",
+      "path_template": "/api/v3/workspaces/{id}/available_assignees",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_categories_of_a_workspace",
+      "path_template": "/api/v3/workspaces/{id}/categories",
+      "tags": [
+        "Categories"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "View_default_query_for_workspace",
+      "path_template": "/api/v3/workspaces/{id}/queries/default",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_types_available_in_a_workspace",
+      "path_template": "/api/v3/workspaces/{id}/types",
+      "tags": [
+        "Types",
+        "Workspaces"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "List_versions_available_in_a_workspace",
+      "path_template": "/api/v3/workspaces/{id}/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "GET",
+      "operation_id": "Get_Workspace_Work_Package_Collection",
+      "path_template": "/api/v3/workspaces/{id}/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_activity",
+      "path_template": "/api/v3/activities/{id}",
+      "tags": [
+        "Activities"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "toggle_activity_emoji_reaction",
+      "path_template": "/api/v3/activities/{id}/emoji_reactions",
+      "tags": [
+        "Activities",
+        "EmojiReactions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_non_working_day",
+      "path_template": "/api/v3/days/non_working/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_week_days",
+      "path_template": "/api/v3/days/week",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_week_day",
+      "path_template": "/api/v3/days/week/{id}",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Update_document",
+      "path_template": "/api/v3/documents/{id}",
+      "tags": [
+        "Documents"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_group",
+      "path_template": "/api/v3/groups/{id}",
+      "tags": [
+        "Groups"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_meeting",
+      "path_template": "/api/v3/meetings/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_meeting_agenda_item",
+      "path_template": "/api/v3/meetings/{id}/agenda_items/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_meeting_section",
+      "path_template": "/api/v3/meetings/{id}/sections/{id}",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_membership",
+      "path_template": "/api/v3/memberships/{id}",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Update_UserPreferences",
+      "path_template": "/api/v3/my_preferences",
+      "tags": [
+        "UserPreferences"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_news",
+      "path_template": "/api/v3/news/{id}",
+      "tags": [
+        "News"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_placeholder_user",
+      "path_template": "/api/v3/placeholder_users/{id}",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Update_Portfolio",
+      "path_template": "/api/v3/portfolios/{id}",
+      "tags": [
+        "Portfolios"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Update_Program",
+      "path_template": "/api/v3/programs/{id}",
+      "tags": [
+        "Programs"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Update_Project",
+      "path_template": "/api/v3/projects/{id}",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Edit_Query",
+      "path_template": "/api/v3/queries/{id}",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Star_query",
+      "path_template": "/api/v3/queries/{id}/star",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "Unstar_query",
+      "path_template": "/api/v3/queries/{id}/unstar",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_recurring_meeting",
+      "path_template": "/api/v3/recurring_meetings/{id}",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_relation",
+      "path_template": "/api/v3/relations/{id}",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_reminder",
+      "path_template": "/api/v3/reminders/{id}",
+      "tags": [
+        "Reminders"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_storage",
+      "path_template": "/api/v3/storages/{id}",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_time_entry",
+      "path_template": "/api/v3/time_entries/{id}",
+      "tags": [
+        "Time Entries"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_user",
+      "path_template": "/api/v3/users/{id}",
+      "tags": [
+        "Users",
+        "Principals"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_user_non_working_time",
+      "path_template": "/api/v3/users/{id}/non_working_times/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_user_working_hours_record",
+      "path_template": "/api/v3/users/{id}/working_hours/{id}",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_Version",
+      "path_template": "/api/v3/versions/{id}",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "operation_id": "update_work_package",
+      "path_template": "/api/v3/work_packages/{id}",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_activity_attachment",
+      "path_template": "/api/v3/activities/{id}/attachments",
+      "tags": [
+        "Activities",
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_attachment",
+      "path_template": "/api/v3/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Execute_custom_action",
+      "path_template": "/api/v3/custom_actions/{id}/execute",
+      "tags": [
+        "Custom actions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_non_working_day",
+      "path_template": "/api/v3/days/non_working",
+      "tags": [
+        "Work Schedule"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "show_or_validate_form",
+      "path_template": "/api/v3/example/form",
+      "tags": [
+        "Forms"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_group",
+      "path_template": "/api/v3/groups",
+      "tags": [
+        "Groups"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_meeting",
+      "path_template": "/api/v3/meetings",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "meeting_create_form",
+      "path_template": "/api/v3/meetings/form",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_meeting_agenda_item",
+      "path_template": "/api/v3/meetings/{id}/agenda_items",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Add_attachment_to_meeting",
+      "path_template": "/api/v3/meetings/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "meeting_update_form",
+      "path_template": "/api/v3/meetings/{id}/form",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_meeting_section",
+      "path_template": "/api/v3/meetings/{id}/sections",
+      "tags": [
+        "Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_membership",
+      "path_template": "/api/v3/memberships",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "form_create_membership",
+      "path_template": "/api/v3/memberships/form",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "form_update_membership",
+      "path_template": "/api/v3/memberships/{id}/form",
+      "tags": [
+        "Memberships"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_news",
+      "path_template": "/api/v3/news",
+      "tags": [
+        "News"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "read_notifications",
+      "path_template": "/api/v3/notifications/read_ian",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "unread_notifications",
+      "path_template": "/api/v3/notifications/unread_ian",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "read_notification",
+      "path_template": "/api/v3/notifications/{id}/read_ian",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "unread_notification",
+      "path_template": "/api/v3/notifications/{id}/unread_ian",
+      "tags": [
+        "Notifications"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_placeholder_user",
+      "path_template": "/api/v3/placeholder_users",
+      "tags": [
+        "Principals"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Portfolio_update_form",
+      "path_template": "/api/v3/portfolios/{id}/form",
+      "tags": [
+        "Portfolios"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Add_attachment_to_post",
+      "path_template": "/api/v3/posts/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Program_update_form",
+      "path_template": "/api/v3/programs/{id}/form",
+      "tags": [
+        "Programs"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_project",
+      "path_template": "/api/v3/projects",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Project_create_form",
+      "path_template": "/api/v3/projects/form",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Create_project_copy",
+      "path_template": "/api/v3/projects/{id}/copy",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Project_copy_form",
+      "path_template": "/api/v3/projects/{id}/copy/form",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Favorite_Project",
+      "path_template": "/api/v3/projects/{id}/favorite",
+      "tags": [
+        "Projects",
+        "Favorites"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Project_update_form",
+      "path_template": "/api/v3/projects/{id}/form",
+      "tags": [
+        "Projects"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Create_Project_Work_Package",
+      "path_template": "/api/v3/projects/{id}/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "form_create_work_package_in_project",
+      "path_template": "/api/v3/projects/{id}/work_packages/form",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Query_Update_Form",
+      "path_template": "/api/v3/queries/{id}/form",
+      "tags": [
+        "Queries"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_recurring_meeting",
+      "path_template": "/api/v3/recurring_meetings",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "init_recurring_meeting_occurrence",
+      "path_template": "/api/v3/recurring_meetings/{id}/occurrences/{id}/init",
+      "tags": [
+        "Recurring Meetings"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Preview_Markdown_document",
+      "path_template": "/api/v3/render/markdown",
+      "tags": [
+        "Previewing"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Preview_plain_document",
+      "path_template": "/api/v3/render/plain",
+      "tags": [
+        "Previewing"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_storage",
+      "path_template": "/api/v3/storages",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "prepare_storage_file_upload",
+      "path_template": "/api/v3/storages/{id}/files/prepare_upload",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_storage_folder",
+      "path_template": "/api/v3/storages/{id}/folders",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_storage_oauth_credentials",
+      "path_template": "/api/v3/storages/{id}/oauth_client_credentials",
+      "tags": [
+        "File links"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_time_entry",
+      "path_template": "/api/v3/time_entries",
+      "tags": [
+        "Time entries"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Time_entry_create_form",
+      "path_template": "/api/v3/time_entries/form",
+      "tags": [
+        "Time Entries"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Time_entry_update_form",
+      "path_template": "/api/v3/time_entries/{id}/form",
+      "tags": [
+        "Time Entries"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_user",
+      "path_template": "/api/v3/users",
+      "tags": [
+        "Users",
+        "Principals"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "User_update_form",
+      "path_template": "/api/v3/users/{id}/form",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "lock_user",
+      "path_template": "/api/v3/users/{id}/lock",
+      "tags": [
+        "Users"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_user_non_working_time",
+      "path_template": "/api/v3/users/{id}/non_working_times",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_user_working_hours",
+      "path_template": "/api/v3/users/{id}/working_hours",
+      "tags": [
+        "User Working Times"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_version",
+      "path_template": "/api/v3/versions",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Version_create_form",
+      "path_template": "/api/v3/versions/form",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Version_update_form",
+      "path_template": "/api/v3/versions/{id}/form",
+      "tags": [
+        "Versions"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Create_views",
+      "path_template": "/api/v3/views/{id}",
+      "tags": [
+        "Views"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Add_attachment_to_wiki_page",
+      "path_template": "/api/v3/wiki_pages/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_work_package",
+      "path_template": "/api/v3/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Comment_work_package",
+      "path_template": "/api/v3/work_packages/{id}/activities",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_work_package_attachment",
+      "path_template": "/api/v3/work_packages/{id}/attachments",
+      "tags": [
+        "Attachments"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_work_package_file_link",
+      "path_template": "/api/v3/work_packages/{id}/file_links",
+      "tags": [
+        "Work Packages",
+        "File links"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "form_edit_work_package",
+      "path_template": "/api/v3/work_packages/{id}/form",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_relation",
+      "path_template": "/api/v3/work_packages/{id}/relations",
+      "tags": [
+        "Relations"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "create_work_package_reminder",
+      "path_template": "/api/v3/work_packages/{id}/reminders",
+      "tags": [
+        "Work Packages",
+        "Reminders"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Add_watcher",
+      "path_template": "/api/v3/work_packages/{id}/watchers",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Favorite_Workspace",
+      "path_template": "/api/v3/workspaces/{id}/favorite",
+      "tags": [
+        "Workspaces",
+        "Favorites"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "Create_Workspace_Work_Package",
+      "path_template": "/api/v3/workspaces/{id}/work_packages",
+      "tags": [
+        "Work Packages"
+      ]
+    },
+    {
+      "method": "POST",
+      "operation_id": "form_create_work_package_in_workspace",
+      "path_template": "/api/v3/workspaces/{id}/work_packages/form",
+      "tags": [
+        "Work Packages"
+      ]
+    }
+  ],
+  "shape_matches": [
+    {
+      "expected_path": "/api/v3/projects/{id}/queries/default",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/v3/projects/demo-project/queries/default",
+      "source": "dynamic"
+    },
+    {
+      "expected_path": "/api/v3/work_packages/schemas/{id}",
+      "host": "localhost",
+      "method": "GET",
+      "mode": "shape",
+      "observed_path": "/api/v3/work_packages/schemas/1-3",
+      "source": "dynamic"
+    }
+  ],
+  "summary": {
+    "effective_coverage": 0.062914,
+    "exact_coverage": 0.056291,
+    "exact_matches": 17,
+    "expected_count": 302,
+    "extra_count": 7,
+    "missing_count": 283,
+    "observed_count": 26,
+    "shape_matches": 2
+  }
+}

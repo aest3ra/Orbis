@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://orbis.local/benchmarks/oracles/gitea_swagger_oracle.schema.json",
+  "title": "Gitea Swagger Endpoint Oracle",
+  "description": "Proposal for a normalized oracle generated from Gitea Swagger/OpenAPI JSON and used to score Orbis SQLite endpoint discovery.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "target",
+    "source",
+    "normalization",
+    "coverage_policy",
+    "expected_endpoints"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "examples": ["gitea-swagger-api"]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product"],
+      "properties": {
+        "product": {
+          "const": "gitea"
+        },
+        "version": {
+          "type": "string"
+        },
+        "base_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path"],
+      "properties": {
+        "kind": {
+          "const": "swagger_json"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to the Swagger/OpenAPI JSON file used to generate this oracle."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "include_swagger_base_path",
+        "path_parameter_token",
+        "strip_trailing_slash",
+        "match_key"
+      ],
+      "properties": {
+        "include_swagger_base_path": {
+          "type": "boolean",
+          "default": true
+        },
+        "path_parameter_token": {
+          "const": "{id}"
+        },
+        "strip_trailing_slash": {
+          "type": "boolean",
+          "default": true
+        },
+        "match_key": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "method"
+            },
+            {
+              "const": "path_template"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "coverage_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["denominator", "match_modes"],
+      "properties": {
+        "denominator": {
+          "const": "expected_endpoints_minus_exclusions"
+        },
+        "match_modes": {
+          "type": "array",
+          "items": {
+            "enum": ["exact", "shape"]
+          },
+          "default": ["exact", "shape"],
+          "description": "exact compares normalized method+path_template; shape lets expected path parameters match one observed concrete segment."
+        },
+        "observed_filters": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "route_kind": {
+              "type": "string",
+              "default": "application_api"
+            },
+            "host": {
+              "type": "string"
+            },
+            "scan_id": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "expected_endpoints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/endpoint"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/exclusion"
+      },
+      "default": []
+    }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "path_template"],
+      "properties": {
+        "method": {
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+        },
+        "path_template": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "operation_id": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/parameter"
+          },
+          "default": []
+        },
+        "auth_required": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["location", "name"],
+      "properties": {
+        "location": {
+          "enum": ["path", "query", "header", "cookie", "body", "formData"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "default": "string"
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "path_template", "reason"],
+      "properties": {
+        "method": {
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+        },
+        "path_template": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why this documented operation is outside the crawl benchmark denominator."
+        }
+      }
+    }
+  }
+}

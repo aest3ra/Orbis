@@ -1,0 +1,3382 @@
+{
+  "effective_shape_matches": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/groups/{id}",
+      "summary": "Get user group details",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}",
+      "summary": "Get user profile",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/posts",
+      "summary": "Get a user's posts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/intents/query/{id}",
+      "summary": "Query supported intents for a handle",
+      "v1_eligible": true
+    }
+  ],
+  "exact_matches": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api",
+      "summary": "Get forum index data",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": true,
+      "found_exact": true,
+      "method": "GET",
+      "path_template": "/api/topic/pagination/{id}",
+      "summary": "Get topic pagination data",
+      "v1_eligible": true
+    }
+  ],
+  "excluded": [
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin",
+      "summary": "Get administrative index",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/cache",
+      "summary": "Get system cache info",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/cache/dump",
+      "summary": "Get system cache info",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/database",
+      "summary": "Get database information",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/errors",
+      "summary": "Get server-side errors",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/errors/export",
+      "summary": "Export errors (.csv)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/events",
+      "summary": "Get event log",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/hooks",
+      "summary": "Get active plugin hooks",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/jobs",
+      "summary": "Get cron job info",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/advanced/logs",
+      "summary": "Get server-side log output",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/analytics",
+      "summary": "Get site analytics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/appearance/customise",
+      "summary": "Get appearance settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/appearance/skins",
+      "summary": "Get appearance settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/appearance/themes",
+      "summary": "Get appearance settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/category/uploadpicture",
+      "summary": "Update category picture (via image upload)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/config",
+      "summary": "Get forum settings and admin only settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/dashboard",
+      "summary": "Get administrative dashboard",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/dashboard/logins",
+      "summary": "Get detailed login analytics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/dashboard/searches",
+      "summary": "Get detailed search analytics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/dashboard/topics",
+      "summary": "Get detailed topic creation analytics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/dashboard/users",
+      "summary": "Get detailed user registration analytics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/development/info",
+      "summary": "Get process/system information",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/development/logger",
+      "summary": "Get system logger settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/extend/plugins",
+      "summary": "Get system plugin settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/extend/rewards",
+      "summary": "Get rewards settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/extend/widgets",
+      "summary": "Get widget settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/analytics",
+      "summary": "Get federation analytics data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/content",
+      "summary": "Get federation settings pertaining to content",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/errors",
+      "summary": "Get federation error data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/general",
+      "summary": "Get general federation settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/pruning",
+      "summary": "Get federation content pruning settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/relays",
+      "summary": "Get federation settings pertaining to relays",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/rules",
+      "summary": "Get federation settings pertaining to auto-categorization rules",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/federation/safety",
+      "summary": "Get federation settings pertaining to trust and safety",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/groups/{id}/csv",
+      "summary": "Get members of a group (.csv)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/admins-mods",
+      "summary": "Get administrators and moderators",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/categories",
+      "summary": "Get category management settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/categories/{id}",
+      "summary": "Get category settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/categories/{id}/analytics",
+      "summary": "Get category anayltics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/categories/{id}/federation",
+      "summary": "Get category anayltics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/digest",
+      "summary": "Get system digest info/settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/groups",
+      "summary": "Get user groups",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/groups/{id}",
+      "summary": "Get user group details",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/privileges/{id}",
+      "summary": "Get category privileges",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/registration",
+      "summary": "Get registration queue/invites",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/tags",
+      "summary": "Get tag settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/uploads",
+      "summary": "Get uploaded files",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/users",
+      "summary": "Get users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/users/custom-fields",
+      "summary": "Manage custom fields for users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/manage/users/custom-reasons",
+      "summary": "Manage ban reasons for users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/advanced",
+      "summary": "Get advanced settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/api",
+      "summary": "Get API token settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/chat",
+      "summary": "Get chat settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/cookies",
+      "summary": "Get cookie settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/email",
+      "summary": "Get emailer settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/general",
+      "summary": "Get system settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/group",
+      "summary": "Get group settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/navigation",
+      "summary": "Get navigation bar settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/notifications",
+      "summary": "Get notification settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/pagination",
+      "summary": "Get pagination settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/post",
+      "summary": "Get post settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/reputation",
+      "summary": "Get reputation settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/tags",
+      "summary": "Get tag settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/uploads",
+      "summary": "Get upload settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/user",
+      "summary": "Get user settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/settings/web-crawler",
+      "summary": "Get web crawler settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/upload/file",
+      "summary": "Upload a file",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadDefaultAvatar",
+      "summary": "Upload default avatar",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadMaskableIcon",
+      "summary": "Upload Maskable Icon",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadOgImage",
+      "summary": "Upload site-wide Open Graph Image",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadTouchIcon",
+      "summary": "Upload Touch Icon",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadfavicon",
+      "summary": "Upload favicon",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/admin/uploadlogo",
+      "summary": "Upload site logo",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/admin/users/csv",
+      "summary": "Get users export (.csv)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/chats/{id}",
+      "summary": "Access a chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/chats/{id}/{id}",
+      "summary": "Access a chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/confirm/{id}",
+      "summary": "Verify an email address",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/email/unsubscribe/{id}",
+      "summary": "Unsubscribe user from email type (user variant)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/email/unsubscribe/{id}",
+      "summary": "Unsubscribe user from email type (auto variant)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/flags",
+      "summary": "Get flags list",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/flags/{id}",
+      "summary": "/api/flags/{flagId}",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/intents/{id}",
+      "summary": "Handle ActivityPub intent redirect",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ip-blacklist",
+      "summary": "Get IP blacklist settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/me",
+      "summary": "Access your own profile's sub-pages",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/me/*",
+      "summary": "Access your own profile's sub-pages",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/message/{id}",
+      "summary": "Access a specific chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/notifications",
+      "summary": "Get notifications",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/post-queue",
+      "summary": "Get post queue",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/post-queue/{id}",
+      "summary": "Get post queue",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/post/upload",
+      "summary": "Upload a file to a specific post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/registration-queue",
+      "summary": "Get registration queue",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_seeded_resource_or_known_id",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/reset/{id}",
+      "summary": "Get user password reset (step 2)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/topic/thumb/upload",
+      "summary": "Upload topic thumb",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/unread",
+      "summary": "Get unread topics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/unread/total",
+      "summary": "Get number of unread topics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/email/{id}",
+      "summary": "Get user by email",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/uid/{id}",
+      "summary": "Get user by uid",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_auth_or_private_context",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/username/{id}",
+      "summary": "Get user by username",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/user/{id}/session/{id}",
+      "summary": "Revoke a user session",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/uploads",
+      "summary": "Get user's uploads",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/activitypub/blocklists",
+      "summary": "add blocklist",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}",
+      "summary": "delete blocklist",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}",
+      "summary": "view blocklist",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/activitypub/blocklists/{id}/refresh",
+      "summary": "refresh blocklist",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/activitypub/relays",
+      "summary": "add relay",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/admin/activitypub/relays/{id}",
+      "summary": "remove relay",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/activitypub/rules",
+      "summary": "create auto-categorization rule",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/admin/activitypub/rules/order",
+      "summary": "re-order auto-categorization rules",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/admin/activitypub/rules/{id}",
+      "summary": "delete auto-categorization rule",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/admin/analytics",
+      "summary": "get analytics keys",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/admin/analytics/{id}",
+      "summary": "get analytics data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/admin/chats/{id}",
+      "summary": "delete chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/admin/groups",
+      "summary": "list all groups",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/admin/settings/{id}",
+      "summary": "update configuration setting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/tokens",
+      "summary": "create token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "summary": "revoke token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "requires_admin_or_auth",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "summary": "get token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/admin/tokens/{id}",
+      "summary": "update token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/admin/tokens/{id}/roll",
+      "summary": "regenerate token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories",
+      "summary": "list categories",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/categories",
+      "summary": "create a category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}",
+      "summary": "delete a category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}",
+      "summary": "get a category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/categories/{id}",
+      "summary": "update a category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}/children",
+      "summary": "get subcategories",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}/count",
+      "summary": "get topic count",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/follow",
+      "summary": "unsynchronize category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/categories/{id}/follow",
+      "summary": "synchronize category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/follow/{id}",
+      "summary": "unsynchronize category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/moderator/{id}",
+      "summary": "Remove a category moderator",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/categories/{id}/moderator/{id}",
+      "summary": "Make a user moderator of category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}/posts",
+      "summary": "get topic posts",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}/privileges",
+      "summary": "get a category's privilege set",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/privileges/{id}",
+      "summary": "Rescinds category privilege for user/group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/categories/{id}/privileges/{id}",
+      "summary": "Grant category privilege for user/group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/privileges/{id}/{id}",
+      "summary": "Rescinds category privilege for user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/categories/{id}/topics",
+      "summary": "get topics",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/watch",
+      "summary": "update watch state",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/categories/{id}/watch",
+      "summary": "update watch state",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/categories/{id}/watch/{id}",
+      "summary": "update watch state for specific user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats",
+      "summary": "list recent chat rooms",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/chats",
+      "summary": "create a chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/search",
+      "summary": "search recent chat rooms",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/sort",
+      "summary": "sort public chat rooms",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/unread",
+      "summary": "get unread count",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}",
+      "summary": "get a chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "HEAD",
+      "path_template": "/api/v3/chats/{id}",
+      "summary": "check if a chat room exists",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/chats/{id}",
+      "summary": "send a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}",
+      "summary": "rename a chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/messages",
+      "summary": "get chat room messages",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/messages/pinned",
+      "summary": "get pinned messages",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "summary": "delete a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "summary": "get a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "summary": "restore a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/messages/{id}",
+      "summary": "edit a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/messages/{id}/ip",
+      "summary": "get message ip address",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/messages/{id}/pin",
+      "summary": "unpin a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/messages/{id}/pin",
+      "summary": "pin a chat message",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/messages/{id}/raw",
+      "summary": "get raw message content",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/owners/{id}",
+      "summary": "remove owner from room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/owners/{id}",
+      "summary": "add owner to room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/state",
+      "summary": "mark chat room as read",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/state",
+      "summary": "mark chat room as unread",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/typing",
+      "summary": "update typing state in chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/users",
+      "summary": "leave/remove users from chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/chats/{id}/users",
+      "summary": "get chat room users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/chats/{id}/users",
+      "summary": "add users to chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/users/{id}",
+      "summary": "leave/remove one user from chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/chats/{id}/watch",
+      "summary": "restore default chat room notification setting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/chats/{id}/watch",
+      "summary": "set chat room notification setting",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/files",
+      "summary": "delete uploaded file",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/files/folder",
+      "summary": "create a new folder",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/flags",
+      "summary": "create a flag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/flags/{id}",
+      "summary": "delete a flag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/flags/{id}",
+      "summary": "get a flag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/flags/{id}",
+      "summary": "update a flag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/flags/{id}/notes",
+      "summary": "append a flag note",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/flags/{id}/notes/{id}",
+      "summary": "delete a flag note",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/flags/{id}/report",
+      "summary": "rescind a flag report",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups",
+      "summary": "list groups",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/groups",
+      "summary": "create a new group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "Delete an existing group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "HEAD",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "check if a group exists",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/groups/{id}",
+      "summary": "update group data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups/{id}/invites",
+      "summary": "get invited users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "summary": "reject group invitation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "summary": "issue group invitation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/groups/{id}/invites/{id}",
+      "summary": "accept group invitation",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups/{id}/members",
+      "summary": "list group members",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}/membership/{id}",
+      "summary": "leave a group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/groups/{id}/membership/{id}",
+      "summary": "join a group",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}/ownership/{id}",
+      "summary": "rescind group ownership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/groups/{id}/ownership/{id}",
+      "summary": "grant group ownership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/groups/{id}/pending",
+      "summary": "get pending users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/groups/{id}/pending/{id}",
+      "summary": "reject pending membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/groups/{id}/pending/{id}",
+      "summary": "approve pending membership",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/notifications",
+      "summary": "list notifications",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/notifications/count",
+      "summary": "get unread notification count",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/notifications/{id}",
+      "summary": "get notification",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/notifications/{id}/read",
+      "summary": "mark notification unread",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/notifications/{id}/read",
+      "summary": "mark notification read",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "healthcheck_not_linked_from_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/ping",
+      "summary": "test route",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/ping",
+      "summary": "test route",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/posts/owner",
+      "summary": "Change owner of one or more posts",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/queue/{id}",
+      "summary": "Remove a queued post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/posts/queue/{id}",
+      "summary": "Accept a queued post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/queue/{id}",
+      "summary": "Edit a queued post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/posts/queue/{id}/notify",
+      "summary": "Notify the owner of a queued post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/{id}",
+      "summary": "purge a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}",
+      "summary": "get a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}",
+      "summary": "edit a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/announcers",
+      "summary": "get announcers of a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/announcers/tooltip",
+      "summary": "get announcers of a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/{id}/bookmark",
+      "summary": "unbookmark a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/bookmark",
+      "summary": "bookmark a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/diffs",
+      "summary": "get post edit history",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "summary": "get single post edit history",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "summary": "revert a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/{id}/diffs/{id}",
+      "summary": "delete a post diff",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/index",
+      "summary": "get post index",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/move",
+      "summary": "move a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/owner",
+      "summary": "Change owner of a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/raw",
+      "summary": "get post's raw content",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/replies",
+      "summary": "get post replies",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/{id}/state",
+      "summary": "deletes a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/state",
+      "summary": "restore a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/summary",
+      "summary": "get post summary",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/upvoters",
+      "summary": "get upvoter usernames of a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/posts/{id}/vote",
+      "summary": "unvote a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/posts/{id}/vote",
+      "summary": "vote on a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/posts/{id}/voters",
+      "summary": "get voters of a post",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/search/categories",
+      "summary": "find categories by keyword",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/search/chats/{id}/messages",
+      "summary": "find chat messages by keyword",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/search/chats/{id}/users",
+      "summary": "find room users by keyword",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/tags/{id}/follow",
+      "summary": "unfollow a tag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/tags/{id}/follow",
+      "summary": "follow a tag",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/topics",
+      "summary": "create a new topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}",
+      "summary": "delete a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/topics/{id}",
+      "summary": "get a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/topics/{id}",
+      "summary": "reply to a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/bump",
+      "summary": "mark topic unread for all",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "summary": "uncrossposts a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "summary": "get topic crossposts",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/topics/{id}/crossposts",
+      "summary": "crosspost a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/topics/{id}/events",
+      "summary": "get topic events",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/events/{id}",
+      "summary": "Delete a topic event",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/follow",
+      "summary": "unfollow a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/follow",
+      "summary": "follow a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/ignore",
+      "summary": "unignore a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/ignore",
+      "summary": "ignore a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/lock",
+      "summary": "unlock a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/lock",
+      "summary": "lock a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/move",
+      "summary": "move topic to another category",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/pin",
+      "summary": "unpin a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/pin",
+      "summary": "pin a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/read",
+      "summary": "mark topic unread",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/read",
+      "summary": "mark topic read",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/state",
+      "summary": "delete a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/state",
+      "summary": "restore a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/tags",
+      "summary": "Removes all tags from a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PATCH",
+      "path_template": "/api/v3/topics/{id}/tags",
+      "summary": "adds tags to a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/tags",
+      "summary": "update the tags of a topic",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "summary": "remove topic thumbnail",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "summary": "get topic thumbnails",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/topics/{id}/thumbs",
+      "summary": "add topic thumbnail",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/topics/{id}/thumbs/order",
+      "summary": "reorder topic thumbnail",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users",
+      "summary": "delete one or more users",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users",
+      "summary": "create a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "delete a single user account",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "get a single user account",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "HEAD",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "check if a user exists",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}",
+      "summary": "update a user account",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/account",
+      "summary": "delete a single user account (preserve content)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/ban",
+      "summary": "unbans a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/ban",
+      "summary": "ban a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/chat",
+      "summary": "get chat room",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/content",
+      "summary": "delete a single user account's content (preserve account)",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/emails",
+      "summary": "get user emails",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/emails",
+      "summary": "add email to user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/emails/{id}",
+      "summary": "get user's email data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/emails/{id}/confirm",
+      "summary": "validate a user's email address",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "summary": "Download a user's exported data",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "HEAD",
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "summary": "Check if a user's export exists",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/exports/{id}",
+      "summary": "Generate a user export",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/follow",
+      "summary": "unfollows a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/follow",
+      "summary": "follow a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/invites",
+      "summary": "invite users with email by email",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/invites/groups",
+      "summary": "Get group names that the user can invite",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/mute",
+      "summary": "unmute a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/mute",
+      "summary": "mute a user",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/password",
+      "summary": "change a user's password",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "download_or_file_content",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/picture",
+      "summary": "update user picture or icon background colour",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/sessions/{id}",
+      "summary": "revoke a user session",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "PUT",
+      "path_template": "/api/v3/users/{id}/settings",
+      "summary": "update user settings",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "write_api_or_token_or_not_public_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/v3/users/{id}/status",
+      "summary": "get user status",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "HEAD",
+      "path_template": "/api/v3/users/{id}/status/{id}",
+      "summary": "verify user status",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/users/{id}/tokens",
+      "summary": "generate a user token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "DELETE",
+      "path_template": "/api/v3/users/{id}/tokens/{id}",
+      "summary": "delete user token",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "non_get_or_not_v1_safe_action",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "POST",
+      "path_template": "/api/v3/utilities/login",
+      "summary": "verify login credentials",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "healthcheck_not_linked_from_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/ping",
+      "summary": "Check if NodeBB is up",
+      "v1_eligible": false
+    },
+    {
+      "excluded_reason": "healthcheck_not_linked_from_ui",
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/sping",
+      "summary": "Check if NodeBB is up",
+      "v1_eligible": false
+    }
+  ],
+  "matching_policy": "Strict exact uses literal Orbis templates. Effective shape additionally credits expected templated paths, but ignores over-generic observed templates like /api/{id} and does not reuse observed paths that already exactly match another oracle endpoint.",
+  "missed_v1_eligible": [
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/ap",
+      "summary": "Fetch URL for in-app processing",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/categories",
+      "summary": "Get a list of categories",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/categories/{id}/moderators",
+      "summary": "Get mods for a category",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/category/{id}/{id}",
+      "summary": "Get a single category",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/category/{id}/{id}/{id}",
+      "summary": "Get a single category",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/config",
+      "summary": "Get forum settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/groups",
+      "summary": "Get user groups",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/groups/{id}/members",
+      "summary": "Get user group members",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/login",
+      "summary": "Log in a user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/outgoing",
+      "summary": "Warn before navigating externally",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/popular",
+      "summary": "Get popular topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/post/{id}",
+      "summary": "Access a specific post",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/recent",
+      "summary": "Get recent topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/recent/posts/{id}",
+      "summary": "Get recent posts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/register",
+      "summary": "Register a new user",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/register/complete",
+      "summary": "Complete a user's registration",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/reset",
+      "summary": "Get user password reset (step 1)",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/search",
+      "summary": "Get search results",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/self",
+      "summary": "Access your profile data",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tags",
+      "summary": "Get tags",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tags/{id}",
+      "summary": "Get tag data",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/top",
+      "summary": "Get top topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/topic/teaser/{id}",
+      "summary": "Get a topic's teaser post",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/topic/{id}/{id}",
+      "summary": "Get topic data",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/topic/{id}/{id}/{id}",
+      "summary": "Get topic data",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/tos",
+      "summary": "Get forum terms of service",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/uid/{id}",
+      "summary": "Access a user's profile pages",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/best",
+      "summary": "Get a user's best performing posts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/blocks",
+      "summary": "Get user's blocks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/bookmarks",
+      "summary": "Get user's bookmarks",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/categories",
+      "summary": "Get user's watched categories",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/chats/{id}",
+      "summary": "Get chat room",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/chats/{id}/{id}",
+      "summary": "Get chat room",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/consent",
+      "summary": "Get user's GDPR consent settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/controversial",
+      "summary": "Get a user's worse performing posts (\"controversial\")",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/downvoted",
+      "summary": "Get user's downvoted posts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/edit",
+      "summary": "Get user profile for editing",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/edit/email",
+      "summary": "Get configs for email editing",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/edit/password",
+      "summary": "Get configs for password editing",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/edit/username",
+      "summary": "Get configs for username editing",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/followers",
+      "summary": "Get followers",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/following",
+      "summary": "Get followed users",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/groups",
+      "summary": "Get user's groups",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/ignored",
+      "summary": "Get user's ignored topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/info",
+      "summary": "Get user moderation info",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/read",
+      "summary": "Get a user's read topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/sessions",
+      "summary": "Get user's active sessions",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/settings",
+      "summary": "Get user's settings",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/shares",
+      "summary": "Get a user's shared topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/tags",
+      "summary": "Get user's watched tags",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/topics",
+      "summary": "Get a user's topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/upvoted",
+      "summary": "Get user's upvoted posts",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/user/{id}/watched",
+      "summary": "Get user's watched topics",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/users",
+      "summary": "Get users",
+      "v1_eligible": true
+    },
+    {
+      "excluded_reason": null,
+      "found_effective_shape": false,
+      "found_exact": false,
+      "method": "GET",
+      "path_template": "/api/world",
+      "summary": "Get external topics",
+      "v1_eligible": true
+    }
+  ],
+  "orbis_observed": [
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/assets/language/en-GB/{slug}",
+      "route_kind": "application_api",
+      "seen_count": 210,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "POST",
+      "path_template": "/socket.io",
+      "route_kind": "application_api",
+      "seen_count": 69,
+      "source": "dynamic"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/{id}",
+      "route_kind": "application_api",
+      "seen_count": 69,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/{slug}",
+      "route_kind": "application_api",
+      "seen_count": 152,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api",
+      "route_kind": "application_api",
+      "seen_count": 33,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/topic/pagination/{id}",
+      "route_kind": "application_api",
+      "seen_count": 29,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/v3/intents/query/$",
+      "route_kind": "application_api",
+      "seen_count": 17,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/user/$",
+      "route_kind": "application_api",
+      "seen_count": 8,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/groups/$",
+      "route_kind": "application_api",
+      "seen_count": 2,
+      "source": "static_js"
+    },
+    {
+      "host": "localhost",
+      "method": "GET",
+      "path_template": "/api/user/orbis/posts",
+      "route_kind": "application_api",
+      "seen_count": 1,
+      "source": "dynamic"
+    }
+  ],
+  "summary": {
+    "effective_shape_total_found": 6,
+    "effective_shape_total_recall": 0.0166,
+    "effective_shape_v1_found": 6,
+    "effective_shape_v1_recall": 0.0984,
+    "excluded_reason_counts": {
+      "download_or_file_content": 21,
+      "healthcheck_not_linked_from_ui": 3,
+      "non_get_or_not_v1_safe_action": 140,
+      "requires_admin_or_auth": 67,
+      "requires_auth_or_private_context": 17,
+      "requires_seeded_resource_or_known_id": 4,
+      "write_api_or_token_or_not_public_ui": 49
+    },
+    "oracle_method_counts": {
+      "DELETE": 58,
+      "GET": 207,
+      "HEAD": 5,
+      "PATCH": 1,
+      "POST": 41,
+      "PUT": 50
+    },
+    "oracle_total": 362,
+    "orbis_apiish_for_oracle_match": 8,
+    "orbis_found_for_host": 10,
+    "strict_total_found": 2,
+    "strict_total_recall": 0.0055,
+    "strict_v1_found": 2,
+    "strict_v1_recall": 0.0328,
+    "v1_eligible_count": 61
+  }
+}

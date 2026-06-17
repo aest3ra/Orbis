@@ -1,0 +1,19 @@
+services:
+  gitea:
+    image: gitea/gitea:1.26.2
+    container_name: orbis-bench-gitea
+    environment:
+      USER_UID: "1000"
+      USER_GID: "1000"
+      GITEA__database__DB_TYPE: sqlite3
+      GITEA__server__DOMAIN: localhost
+      GITEA__server__HTTP_PORT: "3000"
+      GITEA__server__ROOT_URL: http://localhost:33000/
+      GITEA__server__DISABLE_SSH: "true"
+      GITEA__security__INSTALL_LOCK: "true"
+      GITEA__service__DISABLE_REGISTRATION: "false"
+      GITEA__api__ENABLE_SWAGGER: "false"
+    ports:
+      - "33000:3000"
+    volumes:
+      - ./data:/data
