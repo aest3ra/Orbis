@@ -13,7 +13,9 @@ from playwright.async_api import Page
 from orbis.crawler.scope import Scope
 from orbis.safety import is_safe_url, text_has_danger_keyword
 
-MAX_ACTIONS_PER_PAGE = 12
+MAX_ACTIONS_PER_PAGE = 20     # total actions across all re-discovery rounds
+MAX_ROUNDS = 4                # re-discovery passes: click → new UI appears → collect again
+MAX_PAGINATION_REPEATS = 4    # repeat clicks on one "load more"/"next" while it keeps firing
 __all__ = ["run_safe_interactions"]
 
 _VALUE = "test"
@@ -24,6 +26,11 @@ _BUTTON_RE = re.compile(
     r"(tab|modal|accordion|collapse|load[\s_-]*more|show[\s_-]*more|"
     r"next|search|filter|더보기|다음|검색|필터)",
     re.I,
+)
+# Buttons worth clicking repeatedly to walk through pages of results.
+# Strict subset of _BUTTON_RE (tabs/modals are one-shot, paginators repeat).
+_PAGINATION_RE = re.compile(
+    r"(load[\s_-]*more|show[\s_-]*more|next|더보기|다음)", re.I,
 )
 _NAV_RE = re.compile(
     r"(window\.open|location(?:\.href|\.assign|\.replace)?|"
@@ -79,8 +86,14 @@ _COLLECT_JS = """
     } : {};
     const mark = (kind, el, extra = {}) => {
         if (!visible(el) || seen.has(el) || el.closest("a[href]")) return;
-        const key = `orbis-${out.length}-${Math.random().toString(36).slice(2)}`;
-        el.setAttribute("data-orbis-interaction", key);
+        // Reuse an existing mark so the same surviving element keeps a stable
+        // selector across re-collections — that is what lets the caller skip
+        // elements it already acted on while still picking up newly-revealed ones.
+        let key = el.getAttribute("data-orbis-interaction");
+        if (!key) {
+            key = `orbis-${out.length}-${Math.random().toString(36).slice(2)}`;
+            el.setAttribute("data-orbis-interaction", key);
+        }
         seen.add(el);
         out.push({kind, selector: `[data-orbis-interaction="${key}"]`, text: textOf(el), label: labelOf(el), ...extra});
     };
@@ -145,30 +158,79 @@ _FORM_JS = """
 async def run_safe_interactions(
     page: Page, scope: Scope, *, tracker: Any = None,
 ) -> int:
+    """Drive safe interactions, re-discovering UI revealed by earlier clicks.
+
+    Each round re-collects candidates and acts only on ones not seen before;
+    a click that opens a modal/tab surfaces new candidates the next round.
+    The loop ends when a round reveals nothing new (or a cap is hit).
+    """
     if not scope.allows(page.url):
         return 0
-    candidates = await _collect_candidates(page)
+    acted: set[str] = set()
     count = 0
-    for candidate in candidates:
-        if count >= MAX_ACTIONS_PER_PAGE:
+    for _round in range(MAX_ROUNDS):
+        if count >= MAX_ACTIONS_PER_PAGE or not scope.allows(page.url):
             break
-        if not scope.allows(page.url):
-            break
-        if not _is_candidate_safe(candidate, scope, page.url):
-            continue
+        fresh = [
+            c
+            for c in await _collect_candidates(page)
+            if str(c.get("selector") or "") not in acted
+            and _is_candidate_safe(c, scope, page.url)
+        ]
+        if not fresh:
+            break  # nothing new revealed → page is exhausted
+        for candidate in fresh:
+            if count >= MAX_ACTIONS_PER_PAGE or not scope.allows(page.url):
+                break
+            acted.add(str(candidate.get("selector") or ""))
+            count += await _act(
+                page, candidate, scope, tracker, MAX_ACTIONS_PER_PAGE - count,
+            )
+    return count
+
+
+async def _act(
+    page: Page, candidate: dict[str, Any], scope: Scope, tracker: Any, budget: int,
+) -> int:
+    """Perform one candidate, returning the number of actions taken.
+
+    Pagination buttons ("load more"/"next") are clicked repeatedly while the
+    tracker confirms each click drained new requests; everything else fires
+    once. Without a tracker there is no productivity signal, so even a
+    paginator is clicked a single time.
+    """
+    paginate = tracker is not None and _is_pagination(candidate)
+    repeats = min(MAX_PAGINATION_REPEATS if paginate else 1, budget)
+    done = 0
+    for _ in range(repeats):
         if tracker is not None:
             tracker.begin()
-        if await _perform(page, candidate):
-            count += 1
-            await _settle(page)
-            if tracker is not None:
-                tracker.commit(
-                    str(candidate.get("kind") or ""),
-                    str(candidate.get("selector") or ""),
-                    # clean human label; fall back to broad safety text
-                    str(candidate.get("label") or candidate.get("text") or ""),
-                )
-    return count
+        if not await _perform(page, candidate):
+            break
+        done += 1
+        await _settle(page)
+        fired = None
+        if tracker is not None:
+            fired = tracker.commit(
+                str(candidate.get("kind") or ""),
+                str(candidate.get("selector") or ""),
+                # clean human label; fall back to broad safety text
+                str(candidate.get("label") or candidate.get("text") or ""),
+            )
+        if not scope.allows(page.url):
+            break
+        if paginate and not fired:
+            break  # paginator produced no new traffic → stop walking it
+    return done
+
+
+def _is_pagination(candidate: dict[str, Any]) -> bool:
+    if candidate.get("kind") != "button":
+        return False
+    text = " ".join(
+        str(candidate.get(key) or "") for key in ("text", "label", "role")
+    )
+    return bool(_PAGINATION_RE.search(text))
 
 
 async def _collect_candidates(page: Page) -> list[dict[str, Any]]:
