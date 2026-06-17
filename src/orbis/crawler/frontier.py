@@ -6,8 +6,8 @@ import heapq
 from itertools import count
 from urllib.parse import urlparse
 
-from orbis.analysis.url import templatize_path
 from orbis.crawler.scope import Scope
+from orbis.crawler.slug import DEFAULT_SLUG_THRESHOLD, SlugDetector
 from orbis.safety import is_safe_url
 
 
@@ -25,6 +25,7 @@ class Frontier:
         scope: Scope,
         max_per_template: int = 5,
         max_depth: int | None = None,
+        slug_threshold: int = DEFAULT_SLUG_THRESHOLD,
     ) -> None:
         self._heap: list[tuple[int, int, FrontierItem]] = []
         self._counter = count()
@@ -33,6 +34,9 @@ class Frontier:
         self._scope = scope
         self._cap = max_per_template
         self._max_depth = max_depth
+        self._detector = SlugDetector(slug_threshold)
+        # Templates frozen by diminishing returns — further members are dropped.
+        self._saturated: set[tuple[str, str]] = set()
 
     def enqueue(self, url: str, depth: int = 0) -> bool:
         url = _normalize(url)
@@ -42,7 +46,15 @@ class Frontier:
             return False
         if not self._scope.allows(url) or not is_safe_url(url):
             return False
-        tkey = _template_key(url)
+        parsed = urlparse(url)
+        host = parsed.hostname or ""
+        path = parsed.path or "/"
+        # Feed cardinality detection even if this URL ends up rejected — seeing
+        # the value still counts toward "this position is high-cardinality".
+        self._detector.observe(host, path)
+        tkey = (host, self._detector.template(host, path))
+        if tkey in self._saturated:
+            return False
         if self._template_visits.get(tkey, 0) >= self._cap:
             return False
         self._seen.add(url)
@@ -58,6 +70,25 @@ class Frontier:
             return None
         _, _, item = heapq.heappop(self._heap)
         return item
+
+    def template_key(self, url: str) -> tuple[str, str]:
+        """Current (host, template) for a URL — used by the crawler to track
+        per-template novelty for diminishing-returns saturation."""
+        parsed = urlparse(_normalize(url))
+        host = parsed.hostname or ""
+        return host, self._detector.template(host, parsed.path or "/")
+
+    def saturate(self, tkey: tuple[str, str]) -> None:
+        """Freeze a template: drop its queued members and reject future ones.
+
+        Called when extra visits to this template stopped yielding new
+        endpoints — the remaining siblings are assumed redundant.
+        """
+        self._saturated.add(tkey)
+        kept = [e for e in self._heap if self.template_key(e[2].url) != tkey]
+        if len(kept) != len(self._heap):
+            self._heap = kept
+            heapq.heapify(self._heap)
 
     @property
     def size(self) -> int:
@@ -92,8 +123,3 @@ def _normalize(url: str) -> str:
     if fragment and not fragment.startswith("/") and not fragment.startswith("!/"):
         parsed = parsed._replace(fragment="")
     return parsed.geturl()
-
-
-def _template_key(url: str) -> tuple[str, str]:
-    parsed = urlparse(url)
-    return parsed.hostname or "", templatize_path(parsed.path or "/")
