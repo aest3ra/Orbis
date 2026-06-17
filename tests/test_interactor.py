@@ -178,14 +178,14 @@ def test_safe_buttons_are_clicked() -> None:
 
 def test_action_cap_is_fixed() -> None:
     page = FakePage([
-        {"kind": "button", "selector": f"#b{i}", "text": "Load more"}
-        for i in range(20)
+        {"kind": "button", "selector": f"#b{i}", "text": "Open modal"}
+        for i in range(30)
     ])
 
     count = asyncio.run(run_safe_interactions(page, _scope()))
 
-    assert count == 12
-    assert len(page.actions) == 12
+    assert count == interactor.MAX_ACTIONS_PER_PAGE
+    assert len(page.actions) == interactor.MAX_ACTIONS_PER_PAGE
 
 
 class FakeTracker:
@@ -244,3 +244,84 @@ def test_out_of_scope_after_action_stops(monkeypatch) -> None:
 
     assert count == 1
     assert page.actions == [("click", "#one")]
+
+
+def test_rediscovery_acts_on_ui_revealed_by_earlier_clicks(monkeypatch) -> None:
+    """A modal that only appears after a tab click is acted on next round."""
+    rounds = [
+        [{"kind": "button", "selector": "#tab", "text": "Results tab"}],
+        [
+            {"kind": "button", "selector": "#tab", "text": "Results tab"},
+            {"kind": "button", "selector": "#modal", "text": "Open modal"},
+        ],
+    ]
+    calls = {"n": 0}
+
+    async def staged_collect(_page):
+        idx = min(calls["n"], len(rounds) - 1)
+        calls["n"] += 1
+        return rounds[idx]
+
+    monkeypatch.setattr(interactor, "_collect_candidates", staged_collect)
+    page = FakePage([])
+
+    count = asyncio.run(run_safe_interactions(page, _scope()))
+
+    # #tab clicked round 1; #modal (revealed afterwards) clicked round 2;
+    # #tab is skipped the second round because its selector is already acted on.
+    assert count == 2
+    assert page.actions == [("click", "#tab"), ("click", "#modal")]
+
+
+class FakePaginationTracker:
+    """Reports a fixed sequence of "requests fired" counts per commit."""
+
+    def __init__(self, fired_sequence: list[int]) -> None:
+        self.fired = list(fired_sequence)
+        self.begins = 0
+        self.commits: list[tuple] = []
+
+    def begin(self) -> None:
+        self.begins += 1
+
+    def commit(self, action: str, selector: str, label: str) -> int:
+        self.commits.append((action, selector, label))
+        return self.fired.pop(0) if self.fired else 0
+
+
+def test_pagination_repeats_while_requests_keep_firing() -> None:
+    page = FakePage([
+        {"kind": "button", "selector": "#more", "text": "Load more"},
+    ])
+    # two productive clicks, then a dry one → walking stops at the third.
+    tracker = FakePaginationTracker([3, 2, 0])
+
+    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
+
+    assert count == 3
+    assert page.actions == [("click", "#more")] * 3
+    assert len(tracker.commits) == 3
+
+
+def test_pagination_capped_by_max_repeats() -> None:
+    page = FakePage([
+        {"kind": "button", "selector": "#more", "text": "Load more"},
+    ])
+    # always productive — bounded only by MAX_PAGINATION_REPEATS.
+    tracker = FakePaginationTracker([9] * 10)
+
+    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
+
+    assert count == interactor.MAX_PAGINATION_REPEATS
+
+
+def test_non_paginator_clicked_once_even_with_tracker() -> None:
+    page = FakePage([
+        {"kind": "button", "selector": "#tab", "text": "Results tab"},
+    ])
+    tracker = FakePaginationTracker([5] * 10)
+
+    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
+
+    assert count == 1
+    assert page.actions == [("click", "#tab")]

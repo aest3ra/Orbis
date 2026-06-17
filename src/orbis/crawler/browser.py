@@ -274,7 +274,12 @@ class _DeltaTracker:
     def begin(self) -> None:
         self._before = set(self._captured)
 
-    def commit(self, action: str, selector: str, label: str) -> None:
+    def commit(self, action: str, selector: str, label: str) -> int:
+        """Tag requests that appeared since begin(); return how many fired.
+
+        The count lets the interactor decide whether a pagination button is
+        still productive (keep clicking) or has run dry (stop).
+        """
         tag = label.strip() or action
         triggered: list[tuple[str, str]] = []
         for rid in set(self._captured) - self._before:
@@ -285,6 +290,7 @@ class _DeltaTracker:
             self.records.append(
                 InteractionRecord(action, selector, label, triggered)
             )
+        return len(triggered)
 
 
 async def _collect_dom(page: Page) -> list[DomElement]:
