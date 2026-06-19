@@ -40,8 +40,13 @@ MAX_REFS_PER_FILE = 200
 # --- HTTP call pattern regexes ---
 
 _ASSIGNMENT_RE = re.compile(
+    # The string alternatives exclude backslash from the "other char" branch
+    # ([^"\\] not [^"]) so a backslash is consumed ONLY by \\. — without this,
+    # \\.|[^"] is ambiguous and a run of backslashes in an unclosed string
+    # causes catastrophic backtracking (a 45-char input hangs for seconds; a
+    # real minified bundle hangs for many minutes, GIL-held, uninterruptible).
     r"""(?<![\w${?&])(?P<name>(?:this\.)?[A-Za-z_$][\w$]*)\s*=\s*(?![>/])"""
-    r"""(?P<expr>(?:`(?:\\.|[^`])*`|'(?:\\.|[^'])*'|"(?:\\.|[^"])*"|[^;,\n]){1,500})""",
+    r"""(?P<expr>(?:`(?:\\.|[^`\\])*`|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|[^;,\n]){1,500})""",
     re.DOTALL,
 )
 _OBJECT_ASSIGNMENT_RE = re.compile(

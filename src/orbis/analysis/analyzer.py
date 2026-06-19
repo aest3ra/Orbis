@@ -22,7 +22,8 @@ MAX_SAMPLES = 5
 
 # --- Inline URL noise filters (classification belongs in Analyzer, not Capture) ---
 _INLINE_NOISE = re.compile(
-    r"\.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?|ttf|eot|map|webp|avif)(\?|$)", re.I,
+    r"\.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?|ttf|eot|map|webp|avif|webmanifest)(\?|$)",
+    re.I,
 )
 _INLINE_SKIP = re.compile(r"^/(_next/static|static/|__webpack|node_modules)")
 
@@ -94,6 +95,8 @@ def analyze(capture: PageCapture, scope: Scope) -> AnalysisResult:
         url = _extract_url(elem)
         if url is None:
             continue
+        if _INLINE_NOISE.search(url) or _INLINE_SKIP.search(url):
+            continue  # images/fonts/css/js/manifests are assets, never crawlable pages
         absolute = urljoin(base_url, url)
         parsed = urlparse(absolute)
         if parsed.scheme in ("http", "https") and scope.allows(absolute):
