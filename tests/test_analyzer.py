@@ -201,6 +201,47 @@ class TestAnalyzeInlineUrls:
 
 
 # ---------------------------------------------------------------------------
+# analyze(): DOM <img>/<link> hrefs must NOT leak assets into the frontier.
+# Regression: previously only inline_urls were noise-filtered; DOM hrefs were
+# enqueued raw, so /logo.png and /site.webmanifest got crawled as "pages".
+# ---------------------------------------------------------------------------
+
+class TestAnalyzeDomAssetFiltering:
+    def _capture(self, elems: list[DomElement]) -> PageCapture:
+        return PageCapture(
+            page_url="https://example.com",
+            final_url="https://example.com",
+            dom_elements=elems,
+        )
+
+    def test_img_png_not_enqueued(self) -> None:
+        cap = self._capture([DomElement(tag="img", attributes={"src": "/assets/logo.png"})])
+        assert analyze(cap, _scope()).frontier_urls == []
+
+    def test_link_webmanifest_not_enqueued(self) -> None:
+        cap = self._capture([DomElement(tag="link", attributes={"href": "/site.webmanifest"})])
+        assert analyze(cap, _scope()).frontier_urls == []
+
+    def test_image_variants_not_enqueued(self) -> None:
+        for path in ("/a.webp", "/b.svg", "/c.jpeg", "/d.jpg?v=2", "/e.gif", "/f.ico"):
+            cap = self._capture([DomElement(tag="a", attributes={"href": path})])
+            assert analyze(cap, _scope()).frontier_urls == [], path
+
+    def test_real_page_link_still_enqueued(self) -> None:
+        cap = self._capture([DomElement(tag="a", attributes={"href": "/wargame/challenges"})])
+        assert "https://example.com/wargame/challenges" in analyze(cap, _scope()).frontier_urls
+
+    def test_page_then_asset_mixed(self) -> None:
+        cap = self._capture([
+            DomElement(tag="a", attributes={"href": "/forum"}),
+            DomElement(tag="img", attributes={"src": "/banner.png"}),
+        ])
+        frontier = analyze(cap, _scope()).frontier_urls
+        assert "https://example.com/forum" in frontier
+        assert not any(".png" in u for u in frontier)
+
+
+# ---------------------------------------------------------------------------
 # _extract_url: hidden input — segment-based matching (no \b)
 # ---------------------------------------------------------------------------
 
