@@ -35,6 +35,9 @@ class LimitsConfig(BaseModel):
     template_saturation: int = 3
     # Max archived URLs to pull per host from passive sources (Wayback).
     passive_max_urls: int = 5000
+    # Max active probe requests actually sent after safety skips.
+    probe_max_requests: int = 500
+    probe_timeout_sec: int = 10
 
 
 class ScanConfig(BaseModel):

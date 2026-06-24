@@ -32,6 +32,29 @@ def finish_scan(session: Session, scan_id: int, pages: int, endpoints: int) -> N
         session.commit()
 
 
+def set_probe_result(
+    session: Session,
+    endpoint_id: int,
+    status: str,
+    code: int | None,
+) -> None:
+    ep = session.get(Endpoint, endpoint_id)
+    if ep:
+        ep.probe_status = status
+        ep.probe_code = code
+
+
+def list_unverified_endpoints(session: Session, scan_id: int) -> list[Endpoint]:
+    return list(session.exec(
+        select(Endpoint)
+        .where(
+            Endpoint.scan_id == scan_id,
+            Endpoint.probe_status == "unverified",
+        )
+        .order_by(Endpoint.id)
+    ).all())
+
+
 def save_endpoints(
     session: Session,
     scan_id: int,
@@ -58,6 +81,7 @@ def save_endpoints(
             if _SOURCE_PRIORITY.get(ep.source, 99) < _SOURCE_PRIORITY.get(row.source, 99):
                 row.source = ep.source
                 row.probe_status = probe_status
+                row.probe_code = None
                 row.sample_url = ep.sample_url
             # Passive reachability wins: a plain-load sighting on any page
             # clears the interaction tag.

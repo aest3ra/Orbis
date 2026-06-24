@@ -68,7 +68,7 @@ orbis login https://example.com -o auth.json
 orbis scan https://example.com --auth auth.json
 
 # Toggle layers
-orbis scan https://example.com --no-passive --no-js-analysis
+orbis scan https://example.com --no-passive --no-js-analysis --no-probe
 
 # Inspect results
 orbis list runs/orbis-...db
@@ -79,7 +79,11 @@ orbis inspect runs/orbis-...db 42
 Key `scan` options: `--max-pages`, `--max-depth`, `--max-duration`,
 `--per-template`, `--max-scrolls`, `--crawl-mode`, `--auth`,
 `--passive/--no-passive`, `--js-analysis/--no-js-analysis`,
-`--headless/--no-headless`.
+`--probe/--no-probe`, `--headless/--no-headless`.
+
+Active probing is on by default and only sends safe in-scope GET requests for
+unverified endpoints. With `--auth`, probe requests share browser cookies from
+the Playwright storage state; localStorage-only bearer tokens are not replayed.
 
 ## Architecture
 
@@ -112,10 +116,12 @@ src/orbis/
 
 - Endpoints are persisted per scan with source, route kind, params, and
   `discovered_via` provenance.
+- Unobserved static/passive endpoints can be actively verified with safe GET
+  requests; Orbis records `probe_status` and the actual HTTP `probe_code`.
 - Validated against a logged-out manual browse of dreamhack.io: the tool's
   dynamic set was a **strict superset** of everything found by hand (0 misses),
   and roughly 6× the total once passive + static layers are included.
-- 344 unit tests pass.
+- 384 unit tests pass.
 
 ## Roadmap / next
 
@@ -128,10 +134,7 @@ src/orbis/
 3. **Write-method discovery** — current dynamic capture is GET-dominated;
    exercise forms/buttons that trigger POST/PUT/DELETE to broaden method
    coverage.
-4. **Active probing layer** — optionally verify passive/static endpoints with
-   safe requests to mark them reachable (`probe_status`), completing the triad
-   (live + passive + active).
-5. **Third-party noise control** — `static_js` can surface off-target SDK
+4. **Third-party noise control** — `static_js` can surface off-target SDK
    endpoints (e.g. analytics, social SDKs); add an optional same-host filter
    while keeping them available when full collection is the goal.
 
