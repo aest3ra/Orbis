@@ -14,13 +14,16 @@ from orbis.config import ScanConfig
 from orbis.crawler.browser import capture_page
 from orbis.crawler.frontier import Frontier
 from orbis.crawler.passive import fetch_wayback_urls
+from orbis.crawler.probe import probe_candidates
 from orbis.crawler.scope import Scope
 from orbis.storage.db import open_db
 from orbis.storage.repo import (
     collapse_scan_endpoints,
     create_scan,
     finish_scan,
+    list_unverified_endpoints,
     save_endpoints,
+    set_probe_result,
 )
 
 log = logging.getLogger("orbis.crawler")
@@ -33,6 +36,7 @@ async def run_scan(
     headless: bool = True,
     js_analysis: bool = True,
     passive: bool = True,
+    probe: bool = True,
 ) -> int:
     scope = Scope(config.scope)
     engine = open_db(db_path)
@@ -150,6 +154,35 @@ async def run_scan(
                 pages, limits.max_pages, item.url,
                 api_n, link_n, frontier.size, err,
             )
+
+        if probe:
+            try:
+                with Session(engine) as session:
+                    rows = list_unverified_endpoints(session, scan_id)
+                    candidates = [(ep.id, ep.sample_url) for ep in rows if ep.id is not None]
+
+                results = await probe_candidates(
+                    context,
+                    candidates,
+                    scope=scope,
+                    limits=limits,
+                )
+
+                if results:
+                    with Session(engine) as session:
+                        for endpoint_id, status, code in results:
+                            set_probe_result(session, endpoint_id, status, code)
+                        session.commit()
+
+                verified = sum(1 for _id, status, _code in results if status == "verified")
+                failed = sum(1 for _id, status, _code in results if status == "failed")
+                untouched = max(0, len(candidates) - len(results))
+                log.info(
+                    "probe: %d verified, %d failed (of %d, %d skipped/left)",
+                    verified, failed, len(candidates), untouched,
+                )
+            except Exception as exc:
+                log.warning("probe non-fatal: %s", type(exc).__name__)
 
         await browser.close()
 

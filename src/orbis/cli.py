@@ -54,6 +54,8 @@ def scan(
                                      help="Enable external JS static analysis."),
     passive: bool = typer.Option(True, "--passive/--no-passive",
                                  help="Pull archived URLs (Wayback) as a passive layer."),
+    probe: bool = typer.Option(True, "--probe/--no-probe",
+                               help="Actively verify unobserved endpoints with safe GETs."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Crawl target and collect API endpoints."""
@@ -85,12 +87,13 @@ def scan(
     depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"
     js_str = "on" if js_analysis else "off"
     passive_str = "on" if passive else "off"
+    probe_str = "on" if probe else "off"
     print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}")
-    print(f"  static: js_analysis={js_str}  passive={passive_str}\n")
+    print(f"  static: js_analysis={js_str}  passive={passive_str}  probe={probe_str}\n")
 
     scan_id = asyncio.run(run_scan(
         config, db_path=str(db_path), headless=headless,
-        js_analysis=js_analysis, passive=passive,
+        js_analysis=js_analysis, passive=passive, probe=probe,
     ))
 
     engine = open_db(db_path)
@@ -156,7 +159,8 @@ def inspect(
     print(f"[bold cyan]#{ep.id}[/bold cyan] [bold]{ep.method}[/bold] {ep.host}{ep.path_template}")
     print(f"  kind:   {ep.route_kind}")
     print(f"  source: {ep.source}")
-    print(f"  probe:  {ep.probe_status or 'n/a'}")
+    probe_code = f" ({ep.probe_code})" if ep.probe_code is not None else ""
+    print(f"  probe:  {ep.probe_status or 'n/a'}{probe_code}")
     print(f"  via:    {ep.discovered_via or 'passive load'}")
     print(f"  sample: {ep.sample_url}")
     print(f"  seen:   {ep.seen_count}")
