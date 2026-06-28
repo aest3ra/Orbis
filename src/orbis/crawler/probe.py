@@ -59,6 +59,35 @@ class ProbeResult:
     error: str | None = None
 
 
+class ProbeResults(list[tuple[int, str, int | None]]):
+    def __init__(
+        self,
+        rows: list[tuple[int, str, int | None]] | None = None,
+        *,
+        total: int = 0,
+        sent: int = 0,
+        skipped: int = 0,
+        remaining: int = 0,
+        budget: int = 0,
+        stop_reason: str = "completed",
+    ) -> None:
+        super().__init__(rows or [])
+        self.total = total
+        self.sent = sent
+        self.skipped = skipped
+        self.remaining = remaining
+        self.budget = budget
+        self.stop_reason = stop_reason
+
+    @property
+    def verified(self) -> int:
+        return sum(1 for _id, status, _code in self if status == "verified")
+
+    @property
+    def failed(self) -> int:
+        return sum(1 for _id, status, _code in self if status == "failed")
+
+
 def _has_unresolved_placeholder(url: str) -> bool:
     return bool(_UNRESOLVED_PLACEHOLDER.search(url))
 
@@ -155,8 +184,9 @@ async def probe_candidates(
     *,
     scope: Scope,
     limits: Any,
-) -> list[tuple[int, str, int | None]]:
+) -> ProbeResults:
     results: list[tuple[int, str, int | None]] = []
+    total = len(candidates)
     budget = max(0, int(getattr(limits, "probe_max_requests", 0)))
     timeout_sec = float(getattr(limits, "probe_timeout_sec", 10))
     rps = float(getattr(limits, "rate_limit_rps", 0.0))
@@ -164,12 +194,18 @@ async def probe_candidates(
     last_req_at = 0.0
     sent = 0
     skipped = 0
+    processed = 0
+    stop_reason = "completed"
 
-    for endpoint_id, url in candidates:
+    for idx, (endpoint_id, url) in enumerate(candidates):
         if not probe_target_ok(url, scope):
             skipped += 1
+            processed = idx + 1
+            log.debug("probe skip endpoint=%s url=%s", endpoint_id, url)
             continue
         if sent >= budget:
+            stop_reason = "budget"
+            processed = idx
             break
 
         wait = (last_req_at + rate_delay) - time.monotonic()
@@ -183,14 +219,31 @@ async def probe_candidates(
         except Exception as exc:
             if _is_target_closed(exc):
                 log.warning("probe stopped: browser context closed")
+                stop_reason = "context_closed"
+                processed = idx + 1
                 break
             result = ProbeResult(None, error=type(exc).__name__)
 
         status = classify_probe(result.status)
         results.append((endpoint_id, status, result.status))
+        processed = idx + 1
+        log.debug(
+            "probe result endpoint=%s status=%s code=%s error=%s",
+            endpoint_id, status, result.status, result.error,
+        )
 
+    remaining = max(0, total - processed)
     log.info(
-        "probe candidates: sent=%d skipped=%d budget=%d results=%d",
-        sent, skipped, budget, len(results),
+        "probe candidates: total=%d sent=%d skipped=%d remaining=%d "
+        "budget=%d stop=%s",
+        total, sent, skipped, remaining, budget, stop_reason,
     )
-    return results
+    return ProbeResults(
+        results,
+        total=total,
+        sent=sent,
+        skipped=skipped,
+        remaining=remaining,
+        budget=budget,
+        stop_reason=stop_reason,
+    )

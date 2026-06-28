@@ -193,12 +193,15 @@ def _print_table(endpoints, title: str = "Endpoints") -> None:
     table.add_column("kind")
     table.add_column("source")
     table.add_column("probe")
+    table.add_column("code", justify="right")
     table.add_column("seen", justify="right")
     for ep in endpoints:
+        probe_code = str(ep.probe_code) if ep.probe_code is not None else "-"
         table.add_row(
             str(ep.id), ep.method, ep.host,
             ep.path_template, ep.route_kind,
             ep.source, ep.probe_status or "-",
+            probe_code,
             str(ep.seen_count),
         )
     print(table)

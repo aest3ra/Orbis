@@ -172,6 +172,10 @@ class TestProbeCandidates:
         )
 
         assert results == [(3, "verified", 200)]
+        assert results.sent == 1
+        assert results.skipped == 2
+        assert results.remaining == 0
+        assert results.stop_reason == "completed"
         assert [call[0] for call in context.request.calls] == [
             "https://example.com/api/users"
         ]
@@ -199,6 +203,10 @@ class TestProbeCandidates:
             (3, "verified", 200),
             (4, "failed", 404),
         ]
+        assert results.sent == 2
+        assert results.skipped == 2
+        assert results.remaining == 1
+        assert results.stop_reason == "budget"
         assert [call[0] for call in context.request.calls] == [
             "https://example.com/api/a",
             "https://example.com/api/b",
@@ -224,6 +232,9 @@ class TestProbeCandidates:
             (1, "failed", None),
             (2, "verified", 503),
         ]
+        assert results.verified == 1
+        assert results.failed == 1
+        assert results.stop_reason == "completed"
 
     def test_target_closed_stops_loop_and_leaves_remaining_unreported(self) -> None:
         context = FakeContext([200, TargetClosedError("closed"), 500])
@@ -243,6 +254,10 @@ class TestProbeCandidates:
         )
 
         assert results == [(1, "verified", 200)]
+        assert results.sent == 2
+        assert results.skipped == 0
+        assert results.remaining == 1
+        assert results.stop_reason == "context_closed"
         assert [call[0] for call in context.request.calls] == [
             "https://example.com/api/a",
             "https://example.com/api/b",

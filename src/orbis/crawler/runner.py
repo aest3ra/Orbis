@@ -174,12 +174,16 @@ async def run_scan(
                             set_probe_result(session, endpoint_id, status, code)
                         session.commit()
 
-                verified = sum(1 for _id, status, _code in results if status == "verified")
-                failed = sum(1 for _id, status, _code in results if status == "failed")
-                untouched = max(0, len(candidates) - len(results))
                 log.info(
-                    "probe: %d verified, %d failed (of %d, %d skipped/left)",
-                    verified, failed, len(candidates), untouched,
+                    "probe: %d verified, %d failed "
+                    "(total=%d sent=%d skipped=%d remaining=%d stop=%s)",
+                    getattr(results, "verified", 0),
+                    getattr(results, "failed", 0),
+                    len(candidates),
+                    getattr(results, "sent", len(results)),
+                    getattr(results, "skipped", 0),
+                    getattr(results, "remaining", 0),
+                    getattr(results, "stop_reason", "completed"),
                 )
             except Exception as exc:
                 log.warning("probe non-fatal: %s", type(exc).__name__)
