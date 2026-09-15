@@ -33,8 +33,8 @@ class LimitsConfig(BaseModel):
     # Diminishing-returns stop: after this many consecutive visits to one
     # template yield no new endpoints, stop visiting that template.
     template_saturation: int = 3
-    # Max archived URLs to pull per host from passive sources (Wayback).
-    passive_max_urls: int = 5000
+    # Max archived URLs to pull per host from Wayback.
+    wayback_max_urls: int = 5000
     # Max active probe requests actually sent after safety skips.
     probe_max_requests: int = 500
     probe_timeout_sec: int = 10
@@ -51,29 +51,6 @@ class ScanConfig(BaseModel):
             host = urlparse(self.target).hostname
             if host:
                 self.scope.include_domains = [host]
-
-
-CRAWL_PRESETS: dict[str, dict[str, int]] = {
-    "quick": {
-        "max_pages": 50,
-        "max_duration_sec": 300,
-        "max_visits_per_template": 3,
-        "max_scrolls_per_page": 2,
-    },
-    "deep": {
-        "max_pages": 200,
-        "max_duration_sec": 900,
-        "max_visits_per_template": 10,
-        "max_scrolls_per_page": 5,
-    },
-    "exhaustive": {
-        "max_pages": 1000,
-        "max_duration_sec": 3600,
-        "max_visits_per_template": 30,
-        "max_scrolls_per_page": 5,
-    },
-}
-
 
 def load_config(path: Path) -> ScanConfig:
     with open(path) as f:

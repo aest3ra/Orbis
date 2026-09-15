@@ -9,7 +9,6 @@ import logging
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Literal
 from urllib.parse import urlparse
 
 import typer
@@ -17,13 +16,12 @@ from rich import print
 from rich.table import Table
 from sqlmodel import Session
 
-from orbis.config import CRAWL_PRESETS, AuthConfig, ScanConfig, load_config
+from orbis.config import AuthConfig, ScanConfig, load_config
 from orbis.crawler.runner import run_scan
 from orbis.storage.db import open_db
 from orbis.storage.repo import get_endpoint_with_params, list_endpoints
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
-CrawlMode = Literal["quick", "deep", "exhaustive"]
 
 
 def _setup_logging(verbose: bool = False) -> None:
@@ -44,18 +42,8 @@ def scan(
     db: Path | None = typer.Option(None, "--db"),
     auth: Path | None = typer.Option(None, "--auth", exists=True),
     headless: bool = typer.Option(True, "--headless/--no-headless"),
-    max_pages: int | None = typer.Option(None, "--max-pages", min=1),
-    max_depth: int | None = typer.Option(None, "--max-depth", min=0),
-    max_duration: int | None = typer.Option(None, "--max-duration", min=1),
-    per_template: int | None = typer.Option(None, "--per-template", min=1),
-    max_scrolls: int | None = typer.Option(None, "--max-scrolls", min=0),
-    crawl_mode: CrawlMode | None = typer.Option(None, "--crawl-mode"),
-    js_analysis: bool = typer.Option(True, "--js-analysis/--no-js-analysis",
-                                     help="Enable external JS static analysis."),
-    passive: bool = typer.Option(True, "--passive/--no-passive",
-                                 help="Pull archived URLs (Wayback) as a passive layer."),
-    probe: bool = typer.Option(True, "--probe/--no-probe",
-                               help="Actively verify unobserved endpoints with safe GETs."),
+    wayback: bool = typer.Option(True, "--wayback/--no-wayback",
+                                 help="Pull archived URLs from Wayback."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Crawl target and collect API endpoints."""
@@ -64,19 +52,6 @@ def scan(
 
     if auth:
         config.auth = AuthConfig(type="storage_state", storage_state_path=auth)
-    if crawl_mode:
-        for k, v in CRAWL_PRESETS[crawl_mode].items():
-            setattr(config.limits, k, v)
-    if max_pages is not None:
-        config.limits.max_pages = max_pages
-    if max_depth is not None:
-        config.limits.max_depth = max_depth
-    if max_duration is not None:
-        config.limits.max_duration_sec = max_duration
-    if per_template is not None:
-        config.limits.max_visits_per_template = per_template
-    if max_scrolls is not None:
-        config.limits.max_scrolls_per_page = max_scrolls
 
     db_path = db or _default_db(config.target)
     db_path.parent.mkdir(parents=True, exist_ok=True)
@@ -85,15 +60,13 @@ def scan(
     print(f"  db:     {db_path}")
     print(f"  scope:  {config.scope.include_domains}")
     depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"
-    js_str = "on" if js_analysis else "off"
-    passive_str = "on" if passive else "off"
-    probe_str = "on" if probe else "off"
+    wayback_str = "on" if wayback else "off"
     print(f"  limits: {config.limits.max_pages} pages, {config.limits.max_duration_sec}s, depth={depth_str}")
-    print(f"  static: js_analysis={js_str}  passive={passive_str}  probe={probe_str}\n")
+    print(f"  layers: static=on  wayback={wayback_str}  probe=auto\n")
 
     scan_id = asyncio.run(run_scan(
         config, db_path=str(db_path), headless=headless,
-        js_analysis=js_analysis, passive=passive, probe=probe,
+        wayback=wayback,
     ))
 
     engine = open_db(db_path)
@@ -120,22 +93,11 @@ def login(
 @app.command(name="list")
 def list_cmd(
     db_path: Path = typer.Argument(..., exists=True, help="orbis DB path."),
-    kind: str | None = typer.Option(None, "--kind", help="Filter by route_kind."),
-    source: str | None = typer.Option(None, "--source",
-                                      help="Filter by source (dynamic|static_js|static_openapi|static_docs)."),
-    probe_status: str | None = typer.Option(None, "--probe-status",
-                                            help="Filter by probe_status (unverified|verified|failed)."),
 ) -> None:
     """List all endpoints in the DB."""
     engine = open_db(db_path)
     with Session(engine) as session:
         endpoints = list_endpoints(session)
-    if kind:
-        endpoints = [e for e in endpoints if e.route_kind == kind]
-    if source:
-        endpoints = [e for e in endpoints if e.source == source]
-    if probe_status:
-        endpoints = [e for e in endpoints if e.probe_status == probe_status]
     if not endpoints:
         print("[dim]no endpoints found[/dim]")
         return
@@ -161,7 +123,7 @@ def inspect(
     print(f"  source: {ep.source}")
     probe_code = f" ({ep.probe_code})" if ep.probe_code is not None else ""
     print(f"  probe:  {ep.probe_status or 'n/a'}{probe_code}")
-    print(f"  via:    {ep.discovered_via or 'passive load'}")
+    print(f"  via:    {ep.discovered_via or 'page load'}")
     print(f"  sample: {ep.sample_url}")
     print(f"  seen:   {ep.seen_count}")
 

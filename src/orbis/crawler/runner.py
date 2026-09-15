@@ -9,11 +9,11 @@ import time
 from playwright.async_api import async_playwright
 from sqlmodel import Session
 
-from orbis.analysis.analyzer import analyze, build_passive_results
+from orbis.analysis.analyzer import analyze, build_wayback_results
 from orbis.config import ScanConfig
 from orbis.crawler.browser import capture_page
 from orbis.crawler.frontier import Frontier
-from orbis.crawler.passive import fetch_wayback_urls
+from orbis.crawler.wayback import fetch_wayback_urls
 from orbis.crawler.probe import probe_candidates
 from orbis.crawler.scope import Scope
 from orbis.storage.db import open_db
@@ -34,9 +34,7 @@ async def run_scan(
     *,
     db_path: str,
     headless: bool = True,
-    js_analysis: bool = True,
-    passive: bool = True,
-    probe: bool = True,
+    wayback: bool = True,
 ) -> int:
     scope = Scope(config.scope)
     engine = open_db(db_path)
@@ -58,31 +56,34 @@ async def run_scan(
 
     limits = config.limits
     deadline = time.monotonic() + limits.max_duration_sec
-    rate_delay = 1.0 / limits.rate_limit_rps
+    rate_delay = 0.0 if limits.rate_limit_rps <= 0 else 1.0 / limits.rate_limit_rps
     pages = 0
     total_added = 0
     last_req_at = 0.0
     # Per-template count of consecutive visits that produced no new endpoint.
     zero_streak: dict[tuple[str, str], int] = {}
+    wayback_seeds: list[str] = []
+    wayback_seed_idx = 0
 
-    # Passive layer: pull archived URLs and record API-marked ones as unverified
-    # endpoints (the recon "passive" coverage layer). This is budget-free — they
-    # are stored directly, not crawled — so it never starves live discovery.
-    # (Page-like archived URLs are intentionally NOT seeded into the frontier:
-    # measured on a real SPA, seeding them crowded out live crawling for no clear
-    # gain. Low-priority seeding is a possible future refinement.) Failures here
-    # are non-fatal — passive is a bonus, never a reason to abort.
-    if passive:
-        passive_eps = []
+    # Wayback layer: pull archived URLs and record API-marked ones as unverified
+    # endpoints. Page-like archived URLs are kept as backfill: only one is
+    # admitted when the live frontier is empty, so archived pages cannot crowd
+    # out live discovery or consume template caps before live links appear.
+    if wayback:
+        wayback_eps = []
         for host in config.scope.include_domains:
-            urls = fetch_wayback_urls(host, limit=limits.passive_max_urls)
-            eps, _seeds = build_passive_results(urls, scope)
-            passive_eps.extend(eps)
-        if passive_eps:
+            urls = fetch_wayback_urls(host, limit=limits.wayback_max_urls)
+            eps, seeds = build_wayback_results(urls, scope)
+            wayback_eps.extend(eps)
+            wayback_seeds.extend(seeds)
+        if wayback_eps:
             with Session(engine) as session:
-                added, _ = save_endpoints(session, scan_id, passive_eps)
+                added, _ = save_endpoints(session, scan_id, wayback_eps)
                 total_added += added
-        log.info("passive: %d API endpoints recorded", len(passive_eps))
+        log.info(
+            "wayback: %d API endpoints recorded, %d page seeds available",
+            len(wayback_eps), len(wayback_seeds),
+        )
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=headless)
@@ -91,7 +92,13 @@ async def run_scan(
             ctx_kw["storage_state"] = auth_path
         context = await browser.new_context(**ctx_kw)
 
-        while frontier.size > 0 and pages < limits.max_pages:
+        while pages < limits.max_pages:
+            wayback_seed_idx = _enqueue_wayback_backfill(
+                frontier, wayback_seeds, wayback_seed_idx,
+            )
+            if frontier.size == 0:
+                break
+
             if time.monotonic() > deadline:
                 log.warning("timeout: %ds limit reached", limits.max_duration_sec)
                 break
@@ -111,7 +118,6 @@ async def run_scan(
                     item.url,
                     scope=scope,
                     max_scrolls=limits.max_scrolls_per_page,
-                    js_analysis=js_analysis,
                 )
             except Exception as exc:
                 pages += 1
@@ -155,38 +161,37 @@ async def run_scan(
                 api_n, link_n, frontier.size, err,
             )
 
-        if probe:
-            try:
+        try:
+            with Session(engine) as session:
+                rows = list_unverified_endpoints(session, scan_id)
+                candidates = [(ep.id, ep.sample_url) for ep in rows if ep.id is not None]
+
+            results = await probe_candidates(
+                context,
+                candidates,
+                scope=scope,
+                limits=limits,
+            )
+
+            if results:
                 with Session(engine) as session:
-                    rows = list_unverified_endpoints(session, scan_id)
-                    candidates = [(ep.id, ep.sample_url) for ep in rows if ep.id is not None]
+                    for endpoint_id, status, code in results:
+                        set_probe_result(session, endpoint_id, status, code)
+                    session.commit()
 
-                results = await probe_candidates(
-                    context,
-                    candidates,
-                    scope=scope,
-                    limits=limits,
-                )
-
-                if results:
-                    with Session(engine) as session:
-                        for endpoint_id, status, code in results:
-                            set_probe_result(session, endpoint_id, status, code)
-                        session.commit()
-
-                log.info(
-                    "probe: %d verified, %d failed "
-                    "(total=%d sent=%d skipped=%d remaining=%d stop=%s)",
-                    getattr(results, "verified", 0),
-                    getattr(results, "failed", 0),
-                    len(candidates),
-                    getattr(results, "sent", len(results)),
-                    getattr(results, "skipped", 0),
-                    getattr(results, "remaining", 0),
-                    getattr(results, "stop_reason", "completed"),
-                )
-            except Exception as exc:
-                log.warning("probe non-fatal: %s", type(exc).__name__)
+            log.info(
+                "probe: %d verified, %d failed "
+                "(total=%d sent=%d skipped=%d remaining=%d stop=%s)",
+                getattr(results, "verified", 0),
+                getattr(results, "failed", 0),
+                len(candidates),
+                getattr(results, "sent", len(results)),
+                getattr(results, "skipped", 0),
+                getattr(results, "remaining", 0),
+                getattr(results, "stop_reason", "completed"),
+            )
+        except Exception as exc:
+            log.warning("probe non-fatal: %s", type(exc).__name__)
 
         await browser.close()
 
@@ -200,3 +205,19 @@ async def run_scan(
         finish_scan(session, scan_id, pages, total_added - collapsed)
 
     return scan_id
+
+
+def _enqueue_wayback_backfill(
+    frontier: Frontier,
+    seeds: list[str],
+    start_idx: int,
+) -> int:
+    """Admit one archived page only after the live frontier is empty."""
+    idx = start_idx
+    while frontier.size == 0 and idx < len(seeds):
+        seed = seeds[idx]
+        idx += 1
+        if frontier.enqueue(seed, depth=0):
+            log.debug("wayback seed admitted: %s", seed)
+            break
+    return idx

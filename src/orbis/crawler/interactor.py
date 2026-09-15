@@ -95,7 +95,14 @@ _COLLECT_JS = """
             el.setAttribute("data-orbis-interaction", key);
         }
         seen.add(el);
-        out.push({kind, selector: `[data-orbis-interaction="${key}"]`, text: textOf(el), label: labelOf(el), ...extra});
+        out.push({
+            kind,
+            selector: `[data-orbis-interaction="${key}"]`,
+            tag: el.tagName.toLowerCase(),
+            text: textOf(el),
+            label: labelOf(el),
+            ...extra
+        });
     };
 
     for (const form of document.querySelectorAll("form")) {
@@ -129,6 +136,8 @@ _COLLECT_JS = """
             method,
             role: el.getAttribute("role") || "",
             toggle: el.getAttribute("data-bs-toggle") || el.getAttribute("data-toggle") || "",
+            controls: el.getAttribute("aria-controls") || "",
+            expanded: el.getAttribute("aria-expanded") || "",
             ...formMeta(form)
         });
     }
@@ -233,6 +242,17 @@ def _is_pagination(candidate: dict[str, Any]) -> bool:
     return bool(_PAGINATION_RE.search(text))
 
 
+def _has_structural_button_signal(candidate: dict[str, Any]) -> bool:
+    role = str(candidate.get("role") or "").lower()
+    tag = str(candidate.get("tag") or "").lower()
+    if role == "tab" or tag == "summary":
+        return True
+    return any(
+        str(candidate.get(key) or "")
+        for key in ("toggle", "controls", "expanded")
+    )
+
+
 async def _collect_candidates(page: Page) -> list[dict[str, Any]]:
     try:
         raw = await page.evaluate(_COLLECT_JS)
@@ -268,7 +288,7 @@ def _is_candidate_safe(candidate: dict[str, Any], scope: Scope, base_url: str) -
             _method(candidate, "form_method") == "GET" and _safe_url(form_action, scope)
         )
     if kind == "button":
-        if not _BUTTON_RE.search(text):
+        if not _BUTTON_RE.search(text) and not _has_structural_button_signal(candidate):
             return False
         if candidate.get("nav_url") or _NAV_RE.search(text):
             return False

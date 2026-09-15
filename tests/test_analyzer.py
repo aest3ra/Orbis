@@ -405,7 +405,7 @@ class TestAnalyzeIntegration:
         ep = next(e for e in result.endpoints if e.path_template == "/api/more")
         assert ep.discovered_via == "Load more"
 
-    def test_passive_sighting_clears_interaction_tag(self) -> None:
+    def test_page_load_sighting_clears_interaction_tag(self) -> None:
         from orbis.crawler.browser import NetworkEvent
 
         # Same endpoint reached once via a click and once on plain load.

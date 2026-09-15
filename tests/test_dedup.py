@@ -231,7 +231,7 @@ class TestSaveDiscoveredVia:
         ).first()
         assert row.discovered_via == "Load more"
 
-    def test_passive_load_wins_across_pages(self, session) -> None:
+    def test_page_load_wins_across_pages(self, session) -> None:
         """First page reaches it via a click; a later page sees it on load."""
         scan_id = create_scan(session, "https://ex.com")
         save_endpoints(session, scan_id, [

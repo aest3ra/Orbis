@@ -1,14 +1,10 @@
-"""Tests for Phase 1-B: static analysis integration in analyzer.py.
+"""Tests for static JavaScript analysis integration in analyzer.py.
 
 Tests _resolve_static_url, _merge_endpoint, and full analyze() with
-selective_bodies (JS, OpenAPI JSON, doc HTML).
+selective JavaScript bodies.
 """
 
-import json
-import pytest
-
 from orbis.analysis.analyzer import (
-    NormalizedEndpoint,
     _merge_endpoint,
     _resolve_static_url,
     analyze,
@@ -80,18 +76,6 @@ class TestMergeEndpoint:
         assert len(eps) == 1
         assert list(eps.values())[0].source == "dynamic"
 
-    def test_static_openapi_wins_over_static_js(self) -> None:
-        eps: dict = {}
-        _merge_endpoint(eps, "GET", "https://example.com/api/users", source="static_js")
-        _merge_endpoint(eps, "GET", "https://example.com/api/users", source="static_openapi")
-        assert list(eps.values())[0].source == "static_openapi"
-
-    def test_static_js_doesnt_overwrite_openapi(self) -> None:
-        eps: dict = {}
-        _merge_endpoint(eps, "GET", "https://example.com/api/users", source="static_openapi")
-        _merge_endpoint(eps, "GET", "https://example.com/api/users", source="static_js")
-        assert list(eps.values())[0].source == "static_openapi"
-
     def test_parameter_union(self) -> None:
         eps: dict = {}
         _merge_endpoint(
@@ -100,7 +84,7 @@ class TestMergeEndpoint:
         )
         _merge_endpoint(
             eps, "GET", "https://example.com/api/users",
-            source="static_openapi",
+            source="static_js",
             params=[("query", "page", "integer"), ("query", "limit", "integer")],
         )
         ep = list(eps.values())[0]
@@ -117,7 +101,7 @@ class TestMergeEndpoint:
         )
         _merge_endpoint(
             eps, "GET", "https://example.com/api/users",
-            source="static_openapi",
+            source="static_js",
             params=[("query", "page", "integer"), ("query", "new", "string")],
         )
         ep = list(eps.values())[0]
@@ -203,115 +187,6 @@ class TestAnalyzeJsStatic:
 
 
 # ---------------------------------------------------------------------------
-# analyze() with OpenAPI selective bodies
-# ---------------------------------------------------------------------------
-
-class TestAnalyzeOpenApi:
-    def _capture_with_openapi(self, spec: dict) -> PageCapture:
-        return PageCapture(
-            page_url="https://example.com",
-            final_url="https://example.com",
-            selective_bodies=[
-                CapturedBody(
-                    url="https://example.com/swagger.json",
-                    body=json.dumps(spec),
-                    mime="application/json",
-                    kind="openapi_json",
-                    truncated=False,
-                ),
-            ],
-        )
-
-    def test_openapi_endpoints_discovered(self) -> None:
-        spec = {
-            "openapi": "3.0.0",
-            "paths": {
-                "/api/users": {
-                    "get": {"summary": "List users"},
-                    "post": {"summary": "Create user"},
-                },
-            },
-        }
-        result = analyze(self._capture_with_openapi(spec), _scope())
-        sources = {(ep.method, ep.path_template, ep.source) for ep in result.endpoints}
-        assert ("GET", "/api/users", "static_openapi") in sources
-        assert ("POST", "/api/users", "static_openapi") in sources
-
-    def test_openapi_with_params(self) -> None:
-        spec = {
-            "openapi": "3.0.0",
-            "paths": {
-                "/api/users": {
-                    "get": {
-                        "parameters": [
-                            {"name": "page", "in": "query", "schema": {"type": "integer"}},
-                        ],
-                    },
-                },
-            },
-        }
-        result = analyze(self._capture_with_openapi(spec), _scope())
-        ep = result.endpoints[0]
-        assert ("query", "page") in ep.params
-
-    def test_invalid_openapi_ignored(self) -> None:
-        cap = PageCapture(
-            page_url="https://example.com",
-            final_url="https://example.com",
-            selective_bodies=[
-                CapturedBody(
-                    url="https://example.com/swagger.json",
-                    body="not json at all",
-                    mime="application/json",
-                    kind="openapi_json",
-                    truncated=False,
-                ),
-            ],
-        )
-        result = analyze(cap, _scope())
-        assert len(result.endpoints) == 0
-
-
-# ---------------------------------------------------------------------------
-# analyze() with doc HTML selective bodies
-# ---------------------------------------------------------------------------
-
-class TestAnalyzeDocHtml:
-    def _capture_with_doc(self, html: str) -> PageCapture:
-        return PageCapture(
-            page_url="https://example.com",
-            final_url="https://example.com",
-            selective_bodies=[
-                CapturedBody(
-                    url="https://example.com/api-docs",
-                    body=html,
-                    mime="text/html",
-                    kind="doc_html",
-                    truncated=False,
-                ),
-            ],
-        )
-
-    def test_doc_endpoints_discovered(self) -> None:
-        html = """
-        <html><body>
-        <h1>API Documentation</h1>
-        <p>GET /api/users</p>
-        <p>POST /api/users</p>
-        </body></html>
-        """
-        result = analyze(self._capture_with_doc(html), _scope())
-        sources = {(ep.method, ep.path_template, ep.source) for ep in result.endpoints}
-        assert ("GET", "/api/users", "static_docs") in sources
-        assert ("POST", "/api/users", "static_docs") in sources
-
-    def test_non_doc_html_ignored(self) -> None:
-        html = "<html><body><p>Hello world</p></body></html>"
-        result = analyze(self._capture_with_doc(html), _scope())
-        assert len(result.endpoints) == 0
-
-
-# ---------------------------------------------------------------------------
 # Source priority integration
 # ---------------------------------------------------------------------------
 
@@ -347,52 +222,3 @@ class TestSourcePriorityIntegration:
         users_eps = [ep for ep in result.endpoints if ep.path_template == "/api/users"]
         assert len(users_eps) == 1
         assert users_eps[0].source == "dynamic"
-
-    def test_openapi_params_merged_with_dynamic(self) -> None:
-        """OpenAPI params should be merged into dynamic endpoint."""
-        from orbis.crawler.browser import NetworkEvent
-
-        spec = {
-            "openapi": "3.0.0",
-            "paths": {
-                "/api/users": {
-                    "get": {
-                        "parameters": [
-                            {"name": "page", "in": "query", "schema": {"type": "integer"}},
-                        ],
-                    },
-                },
-            },
-        }
-        cap = PageCapture(
-            page_url="https://example.com",
-            final_url="https://example.com",
-            network_events=[
-                NetworkEvent(
-                    request_id="1",
-                    method="GET",
-                    url="https://example.com/api/users?limit=10",
-                    resource_type="Fetch",
-                    response_mime="application/json",
-                    status=200,
-                ),
-            ],
-            selective_bodies=[
-                CapturedBody(
-                    url="https://example.com/swagger.json",
-                    body=json.dumps(spec),
-                    mime="application/json",
-                    kind="openapi_json",
-                    truncated=False,
-                ),
-            ],
-        )
-        result = analyze(cap, _scope())
-        users_eps = [ep for ep in result.endpoints if ep.path_template == "/api/users"]
-        assert len(users_eps) == 1
-        ep = users_eps[0]
-        assert ep.source == "dynamic"  # dynamic wins
-        # But OpenAPI params are merged in
-        assert ("query", "page") in ep.params
-        # Dynamic param also present
-        assert ("query", "limit") in ep.params

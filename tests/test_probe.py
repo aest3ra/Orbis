@@ -295,7 +295,7 @@ def test_probe_repo_helpers_persist_status_and_code(tmp_path) -> None:
             path_template="/api/live",
             sample_url="https://example.com/api/live",
             route_kind="application_api",
-            source="passive",
+            source="wayback",
             probe_status="unverified",
         )
         skipped = Endpoint(
@@ -369,8 +369,8 @@ class _FakePlaywrightCM:
         return False
 
 
-def test_run_scan_no_probe_sends_zero_requests(monkeypatch, tmp_path) -> None:
-    """--no-probe must skip the probe stage entirely; default --probe runs it.
+def test_run_scan_always_runs_probe_stage(monkeypatch, tmp_path) -> None:
+    """Probe is automatic; --no-wayback only disables archived URL collection.
 
     max_pages=0 makes the crawl loop body never execute (no real network),
     isolating the post-loop probe gate.
@@ -379,6 +379,11 @@ def test_run_scan_no_probe_sends_zero_requests(monkeypatch, tmp_path) -> None:
     from orbis.crawler import runner as runner_mod
 
     monkeypatch.setattr(runner_mod, "async_playwright", lambda: _FakePlaywrightCM())
+    monkeypatch.setattr(
+        runner_mod,
+        "fetch_wayback_urls",
+        lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("wayback called")),
+    )
 
     calls: list = []
 
@@ -392,16 +397,35 @@ def test_run_scan_no_probe_sends_zero_requests(monkeypatch, tmp_path) -> None:
         cfg = ScanConfig(target="https://example.com/")
         cfg.limits.max_pages = 0
         cfg.limits.max_duration_sec = 5
+        cfg.limits.rate_limit_rps = 0
         return cfg
 
     asyncio.run(runner_mod.run_scan(
-        _config(), db_path=str(tmp_path / "noprobe.db"),
-        passive=False, probe=False,
+        _config(), db_path=str(tmp_path / "nowayback.db"),
+        wayback=False,
     ))
-    assert calls == []  # --no-probe: probe stage never entered
+    assert calls == [[]]
 
-    asyncio.run(runner_mod.run_scan(
-        _config(), db_path=str(tmp_path / "probe.db"),
-        passive=False, probe=True,
-    ))
-    assert len(calls) == 1  # default: probe stage runs once
+
+def test_wayback_backfill_waits_for_live_frontier() -> None:
+    from orbis.config import ScopeConfig
+    from orbis.crawler.frontier import Frontier
+    from orbis.crawler.runner import _enqueue_wayback_backfill
+    from orbis.crawler.scope import Scope
+
+    frontier = Frontier(Scope(ScopeConfig(include_domains=["example.com"])))
+    frontier.enqueue("https://example.com/")
+
+    seeds = ["https://example.com/archive-one", "https://example.com/archive-two"]
+    idx = _enqueue_wayback_backfill(frontier, seeds, 0)
+    assert idx == 0
+
+    live = frontier.pop()
+    assert live is not None
+    assert live.url == "https://example.com/"
+
+    idx = _enqueue_wayback_backfill(frontier, seeds, idx)
+    assert idx == 1
+    seed = frontier.pop()
+    assert seed is not None
+    assert seed.url == "https://example.com/archive-one"

@@ -39,10 +39,10 @@ class Endpoint(SQLModel, table=True):
     sample_url: str
     route_kind: str
     seen_count: int = 1
-    source: str = "dynamic"           # dynamic | static_js | static_openapi | static_docs
+    source: str = "dynamic"           # dynamic | static_js | wayback
     probe_status: str | None = None   # NULL | unverified | verified | failed
     probe_code: int | None = None     # actual HTTP status from active probing
-    discovered_via: str | None = None  # NULL = passive load; else interaction label
+    discovered_via: str | None = None  # NULL = page load; else interaction label
 
 
 class Parameter(SQLModel, table=True):

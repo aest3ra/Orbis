@@ -1,9 +1,9 @@
-"""Passive endpoint sources — archived URLs from third-party datasets.
+"""Wayback endpoint source — archived URLs from the CDX API.
 
-Recon practice treats passive collection as the first coverage layer, merged
+Recon practice treats Wayback collection as the first coverage layer, merged
 with active crawling: archives surface dead/unlinked/deprecated endpoints a
 live crawl can never reach. We query the Wayback Machine CDX API (free, no
-key) for a host's historical URLs. Failures are swallowed — passive is a
+key) for a host's historical URLs. Failures are swallowed — Wayback is a
 bonus, never a reason to abort a scan.
 """
 
@@ -13,7 +13,7 @@ import logging
 import urllib.parse
 import urllib.request
 
-log = logging.getLogger("orbis.passive")
+log = logging.getLogger("orbis.wayback")
 
 _CDX = "https://web.archive.org/cdx/search/cdx"
 _UA = "Mozilla/5.0 (compatible; orbis-asm/1.0)"

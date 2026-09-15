@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import re
 from urllib.parse import urlparse
 
+from orbis.analysis.api_markers import API_PREFIX_RE
 from orbis.crawler.browser import NetworkEvent
 
 RouteKind = str
-
-API_MARKER = re.compile(r"/(?:api|rest|graphql|gql)(?:[-_/]|$)", re.I)
 
 ASSET_SUFFIXES = (
     ".js", ".css", ".map", ".png", ".jpg", ".jpeg", ".gif",
@@ -57,7 +55,7 @@ def _is_api(ev: NetworkEvent, path: str, mime: str, rtype: str) -> bool:
         return False
     if rtype not in ("XHR", "Fetch"):
         return False
-    if API_MARKER.search(path):
+    if API_PREFIX_RE.search(path):
         return True
     if "json" in mime:
         return True

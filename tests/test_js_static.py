@@ -24,6 +24,12 @@ class TestContainsApiMarker:
     def test_graphql(self) -> None:
         assert contains_api_marker('/graphql') is True
 
+    def test_gql(self) -> None:
+        assert contains_api_marker('/gql') is True
+
+    def test_b2b(self) -> None:
+        assert contains_api_marker('/b2b/orders') is True
+
     def test_no_marker(self) -> None:
         assert contains_api_marker('var x = 1; var y = 2;') is False
 
