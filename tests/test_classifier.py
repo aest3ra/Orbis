@@ -107,6 +107,20 @@ class TestClassifyApplicationApi:
         )
         assert classify(ev) == "application_api"
 
+    @pytest.mark.parametrize("path", [
+        "/api-v1/users",
+        "/b2b/orders",
+        "/graphql",
+        "/gql",
+    ])
+    def test_shared_api_markers(self, path: str) -> None:
+        ev = _event(
+            f"https://example.com{path}",
+            resource_type="Fetch",
+            response_mime="text/plain",
+        )
+        assert classify(ev) == "application_api"
+
     def test_fetch_with_json_mime(self) -> None:
         ev = _event(
             "https://example.com/data",

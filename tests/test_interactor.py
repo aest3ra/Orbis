@@ -176,6 +176,23 @@ def test_safe_buttons_are_clicked() -> None:
     ]
 
 
+def test_structural_buttons_are_clicked_without_label_keywords() -> None:
+    page = FakePage([
+        {"kind": "button", "selector": "#role-tab", "text": "", "role": "tab"},
+        {"kind": "button", "selector": "#accordion", "text": "", "expanded": "false"},
+        {"kind": "button", "selector": "#summary", "text": "", "tag": "summary"},
+    ])
+
+    count = asyncio.run(run_safe_interactions(page, _scope()))
+
+    assert count == 3
+    assert page.actions == [
+        ("click", "#role-tab"),
+        ("click", "#accordion"),
+        ("click", "#summary"),
+    ]
+
+
 def test_action_cap_is_fixed() -> None:
     page = FakePage([
         {"kind": "button", "selector": f"#b{i}", "text": "Open modal"}

@@ -18,19 +18,10 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-# --- API marker detection ---
-
-API_PREFIX_RE = re.compile(
-    r"/(?:api(?:[-_][a-z0-9]+)?|rest|b2b|graphql)(?=[/?#]|$)",
-    re.IGNORECASE,
-)
-API_URL_RE = re.compile(
-    r"""(?P<url>"""
-    r"""https?://[^"'`\s<>{}\\]+/(?:api(?:[-_][a-z0-9]+)?|rest|b2b|graphql)(?=[/?#]|$)[^"'`\s<>{}\\]*"""
-    r"""|https?://[^"'`\s<>{}\\]+/[^"'`\s<>{}\\]*?/(?:api(?:[-_][a-z0-9]+)?|rest|b2b|graphql)(?=[/?#]|$)[^"'`\s<>{}\\]*"""
-    r"""|/(?!/)[^"'`\s<>{}\\]*?/(?:api(?:[-_][a-z0-9]+)?|rest|b2b|graphql)(?=[/?#]|$)[^"'`\s<>{}\\]*"""
-    r"""|/(?:api(?:[-_][a-z0-9]+)?|rest|b2b|graphql)(?=[/?#]|$)[^"'`\s<>{}\\]*)""",
-    re.IGNORECASE,
+from orbis.analysis.api_markers import (
+    API_PREFIX_RE,
+    API_URL_RE,
+    contains_api_marker,
 )
 ANGLE_PLACEHOLDER_RE = re.compile(r"<[A-Za-z_$][\w$-]*>")
 
@@ -88,18 +79,6 @@ class StaticEndpointRef:
     """A single API endpoint reference extracted from JS text."""
     method: str     # GET, POST, PUT, PATCH, DELETE
     raw_url: str    # extracted URL (relative or absolute)
-
-
-def contains_api_marker(text: str) -> bool:
-    """Quick check: does the text contain any API path marker?"""
-    lowered = text.lower()
-    return any(
-        marker in lowered
-        for marker in (
-            "/api", "/rest", "/b2b", "/graphql",
-            "api/", "rest/", "b2b/", "graphql",
-        )
-    )
 
 
 def extract_js_endpoints(body: str) -> list[StaticEndpointRef]:

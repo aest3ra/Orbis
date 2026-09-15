@@ -12,7 +12,8 @@ from urllib.parse import parse_qs, urljoin, urlparse
 
 from orbis.crawler.browser import DomElement, NetworkEvent, PageCapture
 from orbis.crawler.scope import Scope
-from orbis.analysis.classifier import API_MARKER, ASSET_SUFFIXES, classify
+from orbis.analysis.api_markers import API_PREFIX_RE
+from orbis.analysis.classifier import ASSET_SUFFIXES, classify
 from orbis.analysis.params import extract_params, infer_type
 from orbis.analysis.url import templatize_path
 
@@ -56,8 +57,8 @@ class NormalizedEndpoint:
     sample_url: str
     route_kind: str
     seen_count: int = 1
-    source: str = "dynamic"           # dynamic | static_js | static_openapi | static_docs
-    discovered_via: str | None = None  # None = passive load; else interaction label
+    source: str = "dynamic"           # dynamic | static_js | wayback
+    discovered_via: str | None = None  # None = page load; else interaction label
     params: dict[tuple[str, str], NormalizedParam] = field(default_factory=dict)
 
 
@@ -190,7 +191,7 @@ def _accumulate(
         eps[key] = ep
     else:
         ep.seen_count += 1
-        # Passive reachability wins: if this endpoint is ever seen on plain
+        # Page-load reachability wins: if this endpoint is ever seen on plain
         # load, drop any interaction tag — you don't need the click to reach it.
         if event.triggered_by is None:
             ep.discovered_via = None
@@ -212,13 +213,10 @@ def _accumulate(
 
 # Source priority: lower number = higher priority.
 # dynamic wins over all static sources (it's actually observed traffic).
-# OpenAPI is highest static priority (explicit param type/location info).
 _SOURCE_PRIORITY: dict[str, int] = {
     "dynamic": 0,
-    "static_openapi": 1,
-    "static_docs": 2,
-    "static_js": 3,
-    "passive": 4,   # archived/unverified — lowest; any live sighting overrides
+    "static_js": 1,
+    "wayback": 2,   # archived/unverified — lowest; any live sighting overrides
 }
 
 
@@ -303,13 +301,10 @@ def _analyze_selective_bodies(
     """Analyze selectively-collected bodies for static endpoint discovery."""
     # Lazy imports to avoid circular dependencies and keep startup fast
     from orbis.analysis.js_static import extract_js_endpoints
-    from orbis.analysis.openapi import parse_openapi_spec
-    from orbis.analysis.docs import extract_doc_endpoints
 
     for cb in capture.selective_bodies:
         try:
             if cb.kind == "js":
-                # JS body: resolve against PAGE URL (not JS file URL)
                 for ref in extract_js_endpoints(cb.body):
                     absolute = _resolve_static_url(ref.raw_url, base_url)
                     if absolute and scope.allows(absolute):
@@ -318,40 +313,20 @@ def _analyze_selective_bodies(
                             source="static_js",
                         )
 
-            elif cb.kind == "openapi_json":
-                for ep in parse_openapi_spec(cb.body, base_url):
-                    absolute = urljoin(base_url, ep.path_template)
-                    if scope.allows(absolute):
-                        _merge_endpoint(
-                            endpoints, ep.method, absolute,
-                            source="static_openapi",
-                            params=ep.parameters,
-                        )
-
-            elif cb.kind == "doc_html":
-                # Doc HTML: resolve against DOC URL (not page URL)
-                for ref in extract_doc_endpoints(cb.body, cb.url):
-                    absolute = urljoin(cb.url, ref.raw_url)
-                    if scope.allows(absolute):
-                        _merge_endpoint(
-                            endpoints, ref.method, absolute,
-                            source="static_docs",
-                        )
-
         except Exception:
             log.debug("static analysis failed for %s (%s)", cb.url, cb.kind,
                       exc_info=True)
 
 
-# --- Passive sources (archived URLs) ---
+# --- Wayback sources (archived URLs) ---
 
 
-def build_passive_results(
+def build_wayback_results(
     urls: list[str], scope: Scope,
 ) -> tuple[list[NormalizedEndpoint], list[str]]:
     """Split archived URLs into recorded API endpoints + page seeds to crawl.
 
-    API-marked URLs are recorded directly as source="passive" (unverified)
+    API-marked URLs are recorded directly as source="wayback" (unverified)
     endpoints with their query params; page-like URLs become frontier seeds;
     assets are dropped. Endpoints are keyed/templatized here, so thousands of
     archived /courses/15, /courses/16 ... collapse to /courses/{id} before
@@ -367,15 +342,15 @@ def build_passive_results(
         path = parsed.path or "/"
         if path.lower().endswith(ASSET_SUFFIXES):
             continue
-        if API_MARKER.search(path):
-            _accumulate_passive(endpoints, parsed)
+        if API_PREFIX_RE.search(path):
+            _accumulate_wayback(endpoints, parsed)
         elif raw not in seen_seeds:
             seen_seeds.add(raw)
             seeds.append(raw)
     return list(endpoints.values()), seeds
 
 
-def _accumulate_passive(
+def _accumulate_wayback(
     eps: dict[tuple[str, str, str], NormalizedEndpoint],
     parsed,
 ) -> None:
@@ -391,7 +366,7 @@ def _accumulate_passive(
             path_template=template,
             sample_url=parsed.geturl(),
             route_kind="application_api",
-            source="passive",
+            source="wayback",
             discovered_via="archive",
         )
         eps[key] = ep

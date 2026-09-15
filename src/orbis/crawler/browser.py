@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import re
 from contextlib import suppress
 from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
@@ -21,18 +20,6 @@ JS_BODY_LIMIT = 2 * 1024 * 1024
 
 # --- Phase 1-B: Selective body collection limits ---
 STATIC_JS_BODY_LIMIT = 5 * 1024 * 1024
-OPENAPI_BODY_LIMIT = 1 * 1024 * 1024
-DOCS_BODY_LIMIT = 2 * 1024 * 1024
-
-_OPENAPI_PATH_RE = re.compile(
-    r"/(swagger|openapi|api-docs|api_docs)"
-    r"|/v[23]/api-docs"
-    r"|/\.well-known/openapi",
-    re.I,
-)
-_DOC_URL_RE = re.compile(
-    r"/(api-?docs?|apidoc|docs?/api|redoc|swagger-ui)", re.I,
-)
 
 INIT_SCRIPT = """
 (() => {
@@ -75,7 +62,7 @@ class CapturedBody:
     url: str          # resource URL
     body: str         # response body text
     mime: str         # response MIME type
-    kind: str         # "js" | "openapi_json" | "doc_html"
+    kind: str         # "js"
     truncated: bool   # whether body was truncated by size limit
 
 
@@ -94,7 +81,7 @@ class NetworkEvent:
     response_body: str | None = None
     body_truncated: bool = False
     source: str = "cdp"
-    triggered_by: str | None = None   # None = passive load; else interaction label
+    triggered_by: str | None = None   # None = page load; else interaction label
 
 
 @dataclass
@@ -136,7 +123,6 @@ async def capture_page(
     nav_timeout_ms: int = 20_000,
     settle_ms: int = 2_000,
     collect_bodies: bool = False,
-    js_analysis: bool = True,
 ) -> PageCapture:
     """Visit url, capture all network traffic and DOM elements"""
     captured: dict[str, NetworkEvent] = {}
@@ -211,10 +197,9 @@ async def capture_page(
         captured[ev.request_id] = ev
 
     selective_rids: set[str] = set()
-    if js_analysis:
-        result.selective_bodies, selective_rids = await _fill_selective_bodies(
-            client, captured, scope,
-        )
+    result.selective_bodies, selective_rids = await _fill_selective_bodies(
+        client, captured, scope,
+    )
     if collect_bodies:
         await _fill_bodies(client, captured, skip_rids=selective_rids)
     result.final_url = page.url
@@ -504,27 +489,11 @@ def _classify_selective_body(
 
     Returns (kind, size_limit) if it should be collected, None otherwise.
     JS bodies are collected regardless of scope (CDN JS may contain target API paths).
-    OpenAPI/doc bodies are only collected for in-scope URLs.
     """
     mime_lower = mime.lower()
 
-    # JS/ECMAScript — always collect, scope-independent
     if "javascript" in mime_lower or "ecmascript" in mime_lower:
         return ("js", STATIC_JS_BODY_LIMIT)
-
-    # JSON on OpenAPI well-known paths — scope-dependent
-    if "json" in mime_lower:
-        path = urlparse(url).path or "/"
-        if _OPENAPI_PATH_RE.search(path):
-            if scope is None or scope.allows(url):
-                return ("openapi_json", OPENAPI_BODY_LIMIT)
-
-    # HTML on API doc URL patterns — scope-dependent
-    if "html" in mime_lower:
-        path = urlparse(url).path or "/"
-        if _DOC_URL_RE.search(path):
-            if scope is None or scope.allows(url):
-                return ("doc_html", DOCS_BODY_LIMIT)
 
     return None
 
@@ -534,10 +503,9 @@ async def _fill_selective_bodies(
     captured: dict[str, NetworkEvent],
     scope: Scope | None,
 ) -> tuple[list[CapturedBody], set[str]]:
-    """Collect response bodies for JS, OpenAPI JSON, and API doc HTML resources.
+    """Collect JavaScript response bodies for static endpoint discovery.
 
-    This runs independently of the collect_bodies flag — selective bodies
-    are always collected when js_analysis is enabled.
+    This runs independently of the collect_bodies flag.
 
     Returns (bodies, fetched_rids) so the caller can skip these request IDs
     in a subsequent _fill_bodies call to avoid duplicate CDP fetches.

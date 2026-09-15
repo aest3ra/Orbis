@@ -83,7 +83,7 @@ def save_endpoints(
                 row.probe_status = probe_status
                 row.probe_code = None
                 row.sample_url = ep.sample_url
-            # Passive reachability wins: a plain-load sighting on any page
+            # Page-load reachability wins: a plain-load sighting on any page
             # clears the interaction tag.
             if ep.discovered_via is None:
                 row.discovered_via = None

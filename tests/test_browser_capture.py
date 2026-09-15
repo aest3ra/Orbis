@@ -112,7 +112,6 @@ def test_capture_page_keeps_out_of_scope_browser_subrequests_raw() -> None:
             scope=_scope(["example.com"]),
             max_scrolls=0,
             settle_ms=0,
-            js_analysis=False,
         )
     )
 
@@ -135,28 +134,18 @@ class TestSelectiveBodyScope:
         assert result is not None
         assert result[0] == "js"
 
-    def test_out_of_scope_openapi_body_is_not_collected(self) -> None:
+    def test_json_body_is_not_collected(self) -> None:
         result = _classify_selective_body(
-            "https://evil.com/openapi.json",
+            "https://example.com/data.json",
             "application/json",
             _scope(["example.com"]),
         )
 
         assert result is None
 
-    def test_in_scope_openapi_body_is_collected(self) -> None:
+    def test_html_doc_body_is_not_collected(self) -> None:
         result = _classify_selective_body(
-            "https://example.com/openapi.json",
-            "application/json",
-            _scope(["example.com"]),
-        )
-
-        assert result is not None
-        assert result[0] == "openapi_json"
-
-    def test_out_of_scope_api_doc_body_is_not_collected(self) -> None:
-        result = _classify_selective_body(
-            "https://evil.com/api-docs",
+            "https://example.com/reference",
             "text/html",
             _scope(["example.com"]),
         )
@@ -270,7 +259,6 @@ def test_interaction_created_observations_flow_through_capture_and_analyzer() ->
             scope=scope,
             max_scrolls=0,
             settle_ms=0,
-            js_analysis=False,
         )
     )
 
