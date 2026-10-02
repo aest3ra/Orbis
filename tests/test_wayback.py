@@ -12,6 +12,11 @@ def _scope(domains: list[str] | None = None) -> Scope:
 
 
 class TestBuildWaybackResults:
+    def test_different_ports_do_not_merge(self) -> None:
+        urls = [f"http://ex.com:{port}/api/users" for port in (8000, 9000)]
+        eps, _ = build_wayback_results(urls, _scope())
+        assert {ep.host for ep in eps} == {"ex.com:8000", "ex.com:9000"}
+
     def test_api_urls_recorded_as_wayback_endpoints(self) -> None:
         urls = [
             "https://ex.com/api/v1/courses/15/",

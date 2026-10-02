@@ -44,6 +44,12 @@ class FakePage:
     async def add_init_script(self, _script: str) -> None:
         return None
 
+    def on(self, _event, _callback):
+        pass
+
+    def remove_listener(self, _event, _callback):
+        pass
+
     async def route(self, _pattern: str, _handler) -> None:
         raise AssertionError("capture_page must not install scoped routes")
 
@@ -75,6 +81,8 @@ class FakePage:
         )
 
     async def evaluate(self, _script: str) -> list:
+        if "performance.now() - window.__orbisInteractionActivity" in _script:
+            return 1000
         if "window.scrollBy" in _script:
             return []
         if "window.__orbisRequests" in _script:
@@ -266,7 +274,7 @@ def test_interaction_created_observations_flow_through_capture_and_analyzer() ->
     assert "https://example.com/api/from-interaction" in raw_urls
     assert "https://evil.com/api/leak" in raw_urls
     assert any(
-        elem.tag == "a" and elem.attributes["href"] == "/from-interaction"
+        elem.tag == "a" and elem.attributes["href"] == "https://example.com/from-interaction"
         for elem in capture.dom_elements
     )
 

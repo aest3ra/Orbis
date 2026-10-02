@@ -15,7 +15,7 @@ from orbis.crawler.scope import Scope
 from orbis.analysis.api_markers import API_PREFIX_RE
 from orbis.analysis.classifier import ASSET_SUFFIXES, classify
 from orbis.analysis.params import extract_params, infer_type
-from orbis.analysis.url import templatize_path
+from orbis.analysis.url import host_with_port, templatize_path
 
 log = logging.getLogger("orbis.analyzer")
 
@@ -89,7 +89,7 @@ def analyze(capture: PageCapture, scope: Scope) -> AnalysisResult:
             continue
         if kind == "page_route":
             frontier_urls.append(event.url)
-        if kind == "application_api":
+        if kind in ("application_api", "download"):
             _accumulate(endpoints, event, kind)
 
     for elem in capture.dom_elements:
@@ -172,7 +172,7 @@ def _accumulate(
     kind: str,
 ) -> None:
     parsed = urlparse(event.url)
-    host = parsed.hostname or ""
+    host = host_with_port(event.url)
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = (event.method, host, template)
@@ -254,7 +254,7 @@ def _merge_endpoint(
     - New key: add as application_api
     """
     parsed = urlparse(absolute_url)
-    host = parsed.hostname or ""
+    host = host_with_port(absolute_url)
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = (method, host, template)
@@ -354,7 +354,7 @@ def _accumulate_wayback(
     eps: dict[tuple[str, str, str], NormalizedEndpoint],
     parsed,
 ) -> None:
-    host = parsed.hostname or ""
+    host = host_with_port(parsed.geturl())
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = ("GET", host, template)

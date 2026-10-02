@@ -57,6 +57,12 @@ class TestResolveStaticUrl:
 # ---------------------------------------------------------------------------
 
 class TestMergeEndpoint:
+    def test_different_ports_do_not_merge(self) -> None:
+        eps = {}
+        for port in (8000, 9000):
+            _merge_endpoint(eps, "GET", f"http://localhost:{port}/api/users", source="static_js")
+        assert {ep.host for ep in eps.values()} == {"localhost:8000", "localhost:9000"}
+
     def test_new_endpoint(self) -> None:
         eps: dict = {}
         _merge_endpoint(

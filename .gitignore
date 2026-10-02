@@ -5,7 +5,9 @@
 runs/
 auth.json
 *.db
+*.scan-*.jsonl
 docs.md
+/benchmarks/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -4,14 +4,21 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import hashlib
+import time
+from pathlib import Path
+from uuid import uuid4
 from contextlib import suppress
 from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
 
-from playwright.async_api import BrowserContext, Page
+from playwright.async_api import BrowserContext, Error as PlaywrightError, Page
 
-from orbis.crawler.interactor import run_safe_interactions
+from orbis.config import InteractionConfig
+from orbis.crawler.interactor import ExplorationState, _upload_files, run_safe_interactions
+from orbis.crawler.planner import QwenPlanner
 from orbis.crawler.scope import Scope
+from orbis.telemetry import safe_url, timestamp
 
 log = logging.getLogger("orbis.capture")
 
@@ -82,6 +89,9 @@ class NetworkEvent:
     body_truncated: bool = False
     source: str = "cdp"
     triggered_by: str | None = None   # None = page load; else interaction label
+    action_id: int | None = None
+    loading_error: str | None = None
+    route_seen_count: int = 0
 
 
 @dataclass
@@ -112,6 +122,7 @@ class PageCapture:
     selective_bodies: list[CapturedBody] = field(default_factory=list)
     interactions: list[InteractionRecord] = field(default_factory=list)
     error: str | None = None
+    observations: list[dict] = field(default_factory=list)
 
 
 async def capture_page(
@@ -123,93 +134,220 @@ async def capture_page(
     nav_timeout_ms: int = 20_000,
     settle_ms: int = 2_000,
     collect_bodies: bool = False,
+    interaction: InteractionConfig | None = None,
+    exploration: ExplorationState | None = None,
+    planner: QwenPlanner | None = None,
+    max_actions: int = 20,
+    download_dir: Path | None = None,
+    deadline: float | None = None,
 ) -> PageCapture:
-    """Visit url, capture all network traffic and DOM elements"""
     captured: dict[str, NetworkEvent] = {}
+    result = PageCapture(page_url=url, final_url=url)
+    state = exploration if exploration is not None else ExplorationState()
+    record_start = len(state.records)
+    fetched_rids: set[str] = set()
+    download_tasks: list[asyncio.Task] = []
+    reported_requests: set[str] = set()
     page = await context.new_page()
-    await page.add_init_script(INIT_SCRIPT)
+    client = None
+    tracker = None
 
-    client = await context.new_cdp_session(page)
-    await client.send("Network.enable")
+    async def downloaded(item, action: dict) -> None:
+        started = time.monotonic()
+        record = {"kind": "download", "url": safe_url(item.url), "status": "pending",
+                  "action_id": action.get("action_id"), "page_id": state.page_id, "started_at": timestamp()}
+        result.observations.append(record)
+        state.event("download_start", **{k: v for k, v in record.items() if k != "page_id"})
+        try:
+            if download_dir is None or (scope is not None and not scope.allows(item.url)):
+                await item.cancel()
+                record["status"] = "cancelled" if download_dir is None else "out_of_scope"
+                return
+            download_dir.mkdir(parents=True, exist_ok=True)
+            identifier = hashlib.sha256(item.url.encode()).hexdigest()[:16]
+            path = download_dir / f"{identifier}-{uuid4().hex}.bin"
+            await item.save_as(path)
+            record.update(status="saved", path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                          size=path.stat().st_size)
+            digest = record["sha256"]
+            state.download_counts[digest] = state.download_counts.get(digest, 0) + 1
+            record["content_seen_count"] = state.download_counts[digest]
+            for event in reversed(list(captured.values())):
+                if event.url == item.url:
+                    event.resource_type = "Download"
+                    record.update(method=event.method, method_evidence="network_request")
+                    break
+            else:
+                # Chromium's download attribute bypasses page network events.
+                # A completed anchor download supplies navigation evidence, not a status code.
+                if action.get("kind") == "link" and action.get("nav_url") == item.url and action.get("method", "GET") == "GET":
+                    rid = f"download:{identifier}:{len(captured)}"
+                    captured[rid] = NetworkEvent(rid, "GET", item.url, "Download", source="download_link",
+                                                 triggered_by=action.get("label"), action_id=action.get("action_id"))
+                    record.update(method="GET", method_evidence="anchor_navigation")
+        except PlaywrightError as exc:
+            record.update(status="failed", error=type(exc).__name__)
+        except asyncio.CancelledError:
+            record.update(status="interrupted", error="cancelled")
+            raise
+        except OSError as exc:
+            record.update(status="failed", error=type(exc).__name__)
+        finally:
+            record.update(duration_ms=round((time.monotonic() - started) * 1000, 1), finished_at=timestamp())
+            state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
+
+    def on_download(item) -> None:
+        download_tasks.append(asyncio.create_task(downloaded(item, dict(state.current_action or {}))))
+
+    async def choose_files(chooser, action_id: int | None) -> None:
+        files = []
+        if interaction is not None and interaction.allow_write and (scope is None or scope.allows(page.url)):
+            files = _upload_files({"accept": await chooser.element.get_attribute("accept") or "",
+                                   "multiple": chooser.is_multiple()}, interaction)
+        await chooser.set_files([str(path) for path in files])
+        state.event("file_selection", action_id=action_id, file_count=len(files))
+
+    def on_filechooser(chooser) -> None:
+        download_tasks.append(asyncio.create_task(choose_files(chooser, (state.current_action or {}).get("action_id"))))
 
     def on_request(event: dict) -> None:
         req = event["request"]
         captured[event["requestId"]] = NetworkEvent(
-            request_id=event["requestId"],
-            method=req["method"],
-            url=req["url"],
+            request_id=event["requestId"], method=req["method"], url=req["url"],
             resource_type=event.get("type", "Other"),
-            request_headers=req.get("headers") or {},
-            post_data=req.get("postData"),
+            request_headers=req.get("headers") or {}, post_data=req.get("postData"),
+            action_id=(state.current_action or {}).get("action_id"),
         )
+        cap = captured[event["requestId"]]
+        if relevant(cap):
+            parsed = urlparse(cap.url)
+            key = (cap.method, parsed.netloc, parsed.path)
+            state.request_counts[key] = state.request_counts.get(key, 0) + 1
+            cap.route_seen_count = state.request_counts[key]
 
     def on_response(event: dict) -> None:
         cap = captured.get(event["requestId"])
-        if cap is None:
-            return
-        resp = event["response"]
-        cap.status = resp["status"]
-        cap.response_headers = resp.get("headers") or {}
-        cap.response_mime = resp.get("mimeType")
+        if cap is not None:
+            resp = event["response"]
+            cap.status = resp["status"]
+            cap.response_headers = resp.get("headers") or {}
+            cap.response_mime = resp.get("mimeType")
+            if relevant(cap):
+                report_request(cap)
 
-    client.on("Network.requestWillBeSent", on_request)
-    client.on("Network.responseReceived", on_response)
+    def on_failed(event: dict) -> None:
+        cap = captured.get(event["requestId"])
+        if cap is not None:
+            error = event.get("errorText", "")
+            cap.loading_error = error if error.startswith("net::") and " " not in error else "network_failure"
+            if relevant(cap):
+                state.event("request_loading_failed", action_id=cap.action_id, request_id=cap.request_id,
+                            method=cap.method, url=cap.url, loading_error=cap.loading_error)
 
-    result = PageCapture(page_url=url, final_url=url)
+    def relevant(event: NetworkEvent) -> bool:
+        return (event.resource_type in ("XHR", "Fetch", "Document", "Download", "WebSocket")
+                and (scope is None or scope.allows(event.url)))
+
+    def report_request(event: NetworkEvent) -> None:
+        state.event("request_observed", action_id=event.action_id, request_id=event.request_id,
+                    method=event.method, url=event.url, resource_type=event.resource_type,
+                    http_status=event.status, loading_error=event.loading_error,
+                    route_seen_count=event.route_seen_count,
+                    attribution="action_window" if event.action_id is not None else "outside_action")
+        reported_requests.add(event.request_id)
+
+    async def observe() -> None:
+        elements = await _collect_dom(page)
+        base = page.url
+        for element in elements:
+            if element.tag == "base" and element.attributes.get("href"):
+                base = urljoin(base, element.attributes["href"])
+                break
+        for element in elements:
+            for attribute in ("href", "src", "action"):
+                if attribute in element.attributes:
+                    element.attributes[attribute] = urljoin(base, element.attributes[attribute] or "")
+        result.dom_elements = _merge_dom_elements(result.dom_elements, elements)
+        result.inline_urls = _merge_strings(result.inline_urls, [
+            urljoin(base, item) for item in await _collect_inline_data(page)
+        ])
+        bodies, fetched = await _fill_selective_bodies(client, captured, scope, fetched_rids)
+        fetched_rids.update(fetched)
+        result.selective_bodies.extend(bodies)
+        events = [event for event in captured.values() if relevant(event)]
+        if state.current_action is not None:
+            action_id = state.current_action["action_id"]
+            events = [event for event in events if event.action_id == action_id]
+            routes = {(event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events}
+            state.records[-1].update(
+                requests=[{"method": event.method, "path": urlparse(event.url).path, "status": event.status,
+                           "loading_error": event.loading_error} for event in events[:12]],
+                request_count=len(events), requests_truncated=len(events) > 12,
+                http_error_count=sum(event.status is not None and event.status >= 400 for event in events),
+                network_failure_count=sum(event.loading_error is not None and event.resource_type != "Download" for event in events),
+                http_status_counts={str(status) if status is not None else "unknown": sum(event.status == status for event in events)
+                                    for status in {event.status for event in events}},
+                new_request_routes=len(routes - state.seen_request_routes), attribution="action_window",
+                application_outcome="unverified",
+            )
+        state.seen_request_routes.update((event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events)
 
     try:
-        await page.goto(url, timeout=nav_timeout_ms, wait_until="domcontentloaded")
-        result.final_url = page.url
-    except Exception as exc:
+        await page.add_init_script(INIT_SCRIPT)
+        page.on("download", on_download)
+        page.on("filechooser", on_filechooser)
+        client = await context.new_cdp_session(page)
+        await client.send("Network.enable")
+        client.on("Network.requestWillBeSent", on_request)
+        client.on("Network.responseReceived", on_response)
+        client.on("Network.loadingFailed", on_failed)
+        async with asyncio.timeout_at(deadline):
+            try:
+                if deadline is not None:
+                    nav_timeout_ms = max(1, min(nav_timeout_ms, int((deadline - time.monotonic() - 0.1) * 1000)))
+                await page.goto(url, timeout=nav_timeout_ms, wait_until="domcontentloaded")
+            except PlaywrightError as exc:
+                result.error = type(exc).__name__
+            await asyncio.sleep(settle_ms / 1000)
+            for _ in range(max_scrolls):
+                await page.evaluate("window.scrollBy(0, window.innerHeight)")
+                await asyncio.sleep(0.5)
+            await observe()
+            if scope is not None:
+                tracker = _DeltaTracker(captured)
+                await run_safe_interactions(
+                    page, scope, tracker=tracker, options=interaction, state=state,
+                    planner=planner, max_actions=max_actions, observe=observe, deadline=deadline,
+                )
+                result.interactions = tracker.records
+            seen_keys = {(event.method, event.url) for event in captured.values()}
+            for event in await _collect_init_script_events(page, page.url, seen_keys):
+                captured[event.request_id] = event
+            if collect_bodies:
+                await _fill_bodies(client, captured, skip_rids=fetched_rids)
+            if download_tasks:
+                await asyncio.gather(*download_tasks)
+    except TimeoutError:
+        result.error = "ScanDeadlineExceeded"
+    except PlaywrightError as exc:
         result.error = type(exc).__name__
-
-    await asyncio.sleep(settle_ms / 1000)
-
-    for _ in range(max_scrolls):
-        try:
-            await page.evaluate("window.scrollBy(0, window.innerHeight)")
-            await asyncio.sleep(0.5)
-        except Exception:
-            break
-
-    result.dom_elements = await _collect_dom(page)
-    result.inline_urls = await _collect_inline_data(page)
-
-    if scope is not None:
-        tracker = _DeltaTracker(captured)
-        actions = await run_safe_interactions(page, scope, tracker=tracker)
-        result.interactions = tracker.records
-        # Re-collect only when an interaction actually fired; an empty or
-        # all-filtered candidate set leaves the DOM unchanged, so re-walking
-        # it would just double the per-page cost for no new signal.
-        if actions > 0:
-            result.dom_elements = _merge_dom_elements(
-                result.dom_elements,
-                await _collect_dom(page),
-            )
-            result.inline_urls = _merge_strings(
-                result.inline_urls,
-                await _collect_inline_data(page),
-            )
-
-    seen_keys = {(e.method, e.url) for e in captured.values()}
-    for ev in await _collect_init_script_events(page, url, seen_keys):
-        captured[ev.request_id] = ev
-
-    selective_rids: set[str] = set()
-    result.selective_bodies, selective_rids = await _fill_selective_bodies(
-        client, captured, scope,
-    )
-    if collect_bodies:
-        await _fill_bodies(client, captured, skip_rids=selective_rids)
-    result.final_url = page.url
-    result.network_events = list(captured.values())
-
-    with suppress(Exception):
-        await client.detach()
-    with suppress(Exception):
-        await page.close()
-
+    finally:
+        result.final_url = page.url
+        result.network_events = list(captured.values())
+        result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
+        for task in download_tasks:
+            if not task.done():
+                task.cancel()
+        if download_tasks:
+            await asyncio.gather(*download_tasks, return_exceptions=True)
+        for event in captured.values():
+            if relevant(event) and event.request_id not in reported_requests:
+                report_request(event)
+        if client is not None:
+            with suppress(PlaywrightError):
+                await client.detach()
+        with suppress(PlaywrightError):
+            await page.close()
     return result
 
 
@@ -255,9 +393,11 @@ class _DeltaTracker:
         self._captured = captured
         self._before: set[str] = set()
         self.records: list[InteractionRecord] = []
+        self.last_requests: list[NetworkEvent] = []
 
     def begin(self) -> None:
         self._before = set(self._captured)
+        self.last_requests = []
 
     def commit(self, action: str, selector: str, label: str) -> int:
         """Tag requests that appeared since begin(); return how many fired.
@@ -269,6 +409,7 @@ class _DeltaTracker:
         triggered: list[tuple[str, str]] = []
         for rid in set(self._captured) - self._before:
             ev = self._captured[rid]
+            self.last_requests.append(ev)
             ev.triggered_by = tag
             triggered.append((ev.method, ev.url))
         if triggered:
@@ -459,9 +600,9 @@ async def _fill_bodies(
     skip_rids: set[str] | None = None,
 ) -> None:
     for rid, ev in list(captured.items()):
-        if ev.status is None or ev.source == "init_script":
-            continue
         if skip_rids and rid in skip_rids:
+            continue
+        if ev.status is None or ev.source == "init_script":
             continue
         mime = (ev.response_mime or "").lower()
         if any(mime.startswith(p) for p in ("image/", "font/", "audio/", "video/")):
@@ -502,6 +643,7 @@ async def _fill_selective_bodies(
     client,
     captured: dict[str, NetworkEvent],
     scope: Scope | None,
+    skip_rids: set[str] | None = None,
 ) -> tuple[list[CapturedBody], set[str]]:
     """Collect JavaScript response bodies for static endpoint discovery.
 
@@ -513,6 +655,8 @@ async def _fill_selective_bodies(
     bodies: list[CapturedBody] = []
     fetched_rids: set[str] = set()
     for rid, ev in list(captured.items()):
+        if skip_rids and rid in skip_rids:
+            continue
         if ev.status is None or ev.source == "init_script":
             continue
         mime = ev.response_mime or ""

@@ -20,6 +20,7 @@ from orbis.config import AuthConfig, ScanConfig, load_config
 from orbis.crawler.runner import run_scan
 from orbis.storage.db import open_db
 from orbis.storage.repo import get_endpoint_with_params, list_endpoints
+from orbis.telemetry import safe_url
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -28,7 +29,8 @@ def _setup_logging(verbose: bool = False) -> None:
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
         level=level,
-        format="  %(message)s",
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+        datefmt="%H:%M:%S",
         handlers=[logging.StreamHandler()],
     )
     if not verbose:
@@ -56,7 +58,7 @@ def scan(
     db_path = db or _default_db(config.target)
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
-    print(f"[bold]orbis scan[/bold] {config.target}")
+    print(f"[bold]orbis scan[/bold] {safe_url(config.target)}")
     print(f"  db:     {db_path}")
     print(f"  scope:  {config.scope.include_domains}")
     depth_str = str(config.limits.max_depth) if config.limits.max_depth is not None else "unlimited"

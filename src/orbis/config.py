@@ -7,7 +7,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ScopeConfig(BaseModel):
@@ -18,6 +18,19 @@ class ScopeConfig(BaseModel):
 class AuthConfig(BaseModel):
     type: str = "none"
     storage_state_path: Path | None = None
+
+
+class InteractionConfig(BaseModel):
+    allow_write: bool = False
+    upload_files: list[Path] = []
+
+
+class LLMConfig(BaseModel):
+    enabled: bool = False
+    base_url: str = "https://integrate.api.nvidia.com/v1"
+    model: str = "qwen/qwen3.5-122b-a10b"
+    max_calls: int = Field(default=30, ge=0)
+    timeout_sec: float = Field(default=30, gt=0)
 
 
 class LimitsConfig(BaseModel):
@@ -38,6 +51,7 @@ class LimitsConfig(BaseModel):
     # Max active probe requests actually sent after safety skips.
     probe_max_requests: int = 500
     probe_timeout_sec: int = 10
+    max_actions_per_page: int = Field(default=20, ge=0)
 
 
 class ScanConfig(BaseModel):
@@ -45,6 +59,8 @@ class ScanConfig(BaseModel):
     scope: ScopeConfig = ScopeConfig()
     auth: AuthConfig = AuthConfig()
     limits: LimitsConfig = LimitsConfig()
+    interaction: InteractionConfig = InteractionConfig()
+    llm: LLMConfig = LLMConfig()
 
     def model_post_init(self, __context: Any) -> None:
         if not self.scope.include_domains:

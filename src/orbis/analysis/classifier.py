@@ -31,6 +31,8 @@ def classify(event: NetworkEvent) -> RouteKind:
     host = (parsed.hostname or "").lower()
     rtype = event.resource_type
 
+    if rtype == "Download":
+        return "download"
     if rtype in ("WebSocket", "EventSource") or parsed.scheme in ("ws", "wss"):
         return "websocket"
     if any(m in path for m in SECURITY_MARKERS):

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlparse
 
 DANGER_KEYWORDS = frozenset({
     "logout", "signout", "sign-out", "log-out",
@@ -22,7 +22,12 @@ _SEG_SPLIT = re.compile(r"[-_]")
 
 
 def is_dangerous_url(url: str) -> bool:
-    path = urlparse(url).path.lower()
+    parsed = urlparse(url)
+    for key, value in parse_qsl(parsed.query):
+        if key.lower() in {"action", "do", "cmd", "op", "operation"}:
+            if any(part in DANGER_KEYWORDS for part in re.split(r"[-_\s]+", value.lower())):
+                return True
+    path = parsed.path.lower()
     for seg in path.split("/"):
         if not seg:
             continue

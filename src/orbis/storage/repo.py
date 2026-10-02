@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
-from orbis.analysis.analyzer import NormalizedEndpoint, _SOURCE_PRIORITY
+from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, _SOURCE_PRIORITY
 from orbis.storage.db import Endpoint, Parameter, Scan
 
 log = logging.getLogger("orbis.storage")
@@ -83,9 +83,10 @@ def save_endpoints(
                 row.probe_status = probe_status
                 row.probe_code = None
                 row.sample_url = ep.sample_url
+                row.discovered_via = ep.discovered_via
             # Page-load reachability wins: a plain-load sighting on any page
             # clears the interaction tag.
-            if ep.discovered_via is None:
+            if ep.source == "dynamic" and ep.discovered_via is None:
                 row.discovered_via = None
             session.flush()
             ep_id = row.id
@@ -127,7 +128,7 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
         if existing:
             existing.seen_count += param.seen_count
             existing.type_inferred = param.type_inferred
-            existing.sample_values_json = samples
+            existing.sample_values_json = _merge_samples(existing.sample_values_json, samples)
         else:
             session.add(Parameter(
                 endpoint_id=endpoint_id,
@@ -137,6 +138,11 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
                 sample_values_json=samples,
                 seen_count=param.seen_count,
             ))
+
+
+def _merge_samples(first: str, second: str) -> str:
+    values = dict.fromkeys(json.loads(first) + json.loads(second))
+    return json.dumps(list(values)[:MAX_SAMPLES])
 
 
 def _has_children(path: str, all_paths: set[str]) -> bool:
@@ -175,7 +181,11 @@ def collapse_scan_endpoints(
 
     # All observed paths (any method) — used to tell a leaf data value from a
     # resource that has its own sub-paths.
-    all_paths = {e.path_template for e in endpoints}
+    all_paths: dict[str, set[str]] = defaultdict(set)
+    by_key = {}
+    for ep in endpoints:
+        all_paths[ep.host].add(ep.path_template)
+        by_key[(ep.method, ep.host, ep.path_template)] = ep
 
     merged = 0
     for key, eps in groups.items():
@@ -188,16 +198,38 @@ def collapse_scan_endpoints(
         # distinct resources (e.g. /api/forum/{communities,posts} where
         # /api/forum/communities/... exists), not data slugs. Collapsing those
         # would destroy real endpoints, so skip the group.
-        non_leaf = sum(1 for e in eps if _has_children(e.path_template, all_paths))
+        non_leaf = sum(1 for e in eps if _has_children(e.path_template, all_paths[e.host]))
         if non_leaf * 2 >= len(eps):
             continue
 
         method, host, prefix = key
-        survivor = eps[0]
-        survivor.path_template = f"{prefix}/{{slug}}"
-        survivor.seen_count = sum(e.seen_count for e in eps)
+        template = f"{prefix}/{{slug}}"
+        survivor = by_key.get((method, host, template))
+        members = [survivor, *eps] if survivor is not None else eps
+        survivor = survivor if survivor is not None else eps[0]
+        source = min(members, key=lambda e: _SOURCE_PRIORITY.get(e.source, 99)).source
+        dynamic = [e for e in members if e.source == "dynamic"]
+        if dynamic:
+            representative = next((e for e in dynamic if e.discovered_via is None), dynamic[0])
+        else:
+            # Keep the sample URL and status together: a failed sibling must
+            # not erase proof that another member of the template responded.
+            probe_order = {"verified": 0, "unverified": 1, "failed": 2}
+            representative = min(members, key=lambda e: (
+                probe_order.get(e.probe_status, 1), _SOURCE_PRIORITY.get(e.source, 99),
+            ))
+        survivor.sample_url = representative.sample_url
+        survivor.route_kind = representative.route_kind
+        survivor.discovered_via = representative.discovered_via
+        survivor.probe_status = None if dynamic else representative.probe_status
+        survivor.probe_code = None if dynamic else representative.probe_code
+        survivor.source = source
+        survivor.path_template = template
+        survivor.seen_count = sum(e.seen_count for e in members)
 
-        for ep in eps[1:]:
+        for ep in members:
+            if ep is survivor:
+                continue
             # Migrate unique params to survivor, then delete the duplicate.
             for param in session.exec(
                 select(Parameter).where(Parameter.endpoint_id == ep.id)
@@ -211,7 +243,12 @@ def collapse_scan_endpoints(
                 ).first()
                 if existing:
                     existing.seen_count += param.seen_count
-                session.delete(param)
+                    existing.sample_values_json = _merge_samples(
+                        existing.sample_values_json, param.sample_values_json,
+                    )
+                    session.delete(param)
+                else:
+                    param.endpoint_id = survivor.id
             session.delete(ep)
             merged += 1
 

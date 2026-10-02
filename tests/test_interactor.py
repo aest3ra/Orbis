@@ -53,10 +53,19 @@ class FakePage:
     async def eval_on_selector(self, selector: str, _script: str, value: str) -> None:
         self.actions.append(("form", selector, value))
 
+    async def evaluate(self, _script):
+        return None
+
+    def on(self, _event, _callback):
+        pass
+
+    def remove_listener(self, _event, _callback):
+        pass
+
 
 @pytest.fixture(autouse=True)
 def no_settle(monkeypatch):
-    async def fake_settle(_page):
+    async def fake_settle(_page, _network_quiet):
         return None
 
     async def fake_collect(page):
@@ -134,7 +143,7 @@ def test_unsafe_candidates_ignored() -> None:
             "kind": "button",
             "selector": "#nav",
             "text": "Load more",
-            "nav_url": "https://example.com/next",
+            "nav_url": "https://other.example/next",
         },
     ])
 
@@ -205,6 +214,40 @@ def test_action_cap_is_fixed() -> None:
     assert len(page.actions) == interactor.MAX_ACTIONS_PER_PAGE
 
 
+def test_failed_click_records_reason_without_exception_text(monkeypatch):
+    from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+
+    async def timeout(self, **kwargs):
+        raise PlaywrightTimeoutError("private-cookie in browser error")
+
+    monkeypatch.setattr(FakeLocator, "click", timeout)
+    page = FakePage([{"kind": "button", "selector": "#tab", "text": "Results tab"}])
+    events = []
+    state = interactor.ExplorationState(emit=lambda event, **record: events.append((event, record)))
+    assert asyncio.run(run_safe_interactions(page, _scope(), state=state)) == 0
+    record = state.records[0]
+    assert record["status"] == "failed" and record["failure_reason"] == "action_timeout"
+    assert record["duration_ms"] >= 0 and record["action_id"] == 1
+    assert record["observed_progress"] is False
+    assert "private-cookie" not in str(events)
+    assert [name for name, _ in events] == ["action_start", "action_end", "exploration_end"]
+
+
+def test_interrupted_action_keeps_start_and_end_records(monkeypatch):
+    async def cancel(_page, _candidate):
+        raise asyncio.CancelledError()
+
+    monkeypatch.setattr(interactor, "_perform", cancel)
+    page = FakePage([{"kind": "button", "selector": "#tab", "text": "Results tab"}])
+    events = []
+    state = interactor.ExplorationState(emit=lambda event, **record: events.append((event, record)))
+    with pytest.raises(asyncio.CancelledError):
+        asyncio.run(run_safe_interactions(page, _scope(), state=state))
+    assert [name for name, _ in events] == ["action_start", "action_end"]
+    assert state.records[0]["status"] == "interrupted"
+    assert state.current_action is None
+
+
 class FakeTracker:
     def __init__(self) -> None:
         self.begins = 0
@@ -248,7 +291,7 @@ def test_tracker_untouched_for_unsafe_candidates() -> None:
 
 
 def test_out_of_scope_after_action_stops(monkeypatch) -> None:
-    async def leave_scope(page):
+    async def leave_scope(page, _network_quiet):
         page.url = "https://evil.com/"
 
     monkeypatch.setattr(interactor, "_settle", leave_scope)

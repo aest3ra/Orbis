@@ -2,7 +2,19 @@
 
 import pytest
 
-from orbis.analysis.url import templatize_path
+from orbis.analysis.url import host_with_port, templatize_path
+
+
+@pytest.mark.parametrize("url, expected", [
+    ("http://localhost:34567/api", "localhost:34567"),
+    ("https://EXAMPLE.com:443/api", "example.com"),
+    ("http://example.com:80/api", "example.com"),
+    ("https://example.com:8443/api", "example.com:8443"),
+    ("http://[::1]:34567/api", "[::1]:34567"),
+    ("http://user:password@localhost:34567/api", "localhost:34567"),
+])
+def test_host_preserves_service_port_without_credentials(url, expected) -> None:
+    assert host_with_port(url) == expected
 
 
 class TestTemplatizePath:

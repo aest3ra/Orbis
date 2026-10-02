@@ -1,9 +1,11 @@
 """Tests for orbis.storage.repo.collapse_scan_endpoints — post-scan dedup."""
 
-import pytest
-from sqlmodel import Session
+import json
 
-from orbis.analysis.analyzer import NormalizedEndpoint
+import pytest
+from sqlmodel import Session, select
+
+from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, NormalizedParam
 from orbis.storage.db import Endpoint, Parameter, open_db
 from orbis.storage.repo import collapse_scan_endpoints, create_scan, save_endpoints
 
@@ -149,10 +151,7 @@ class TestCollapseScanEndpoints:
                 Parameter.endpoint_id == survivor.id
             )
         ))
-        # ep1 had "page" (seen=2), ep2 had "page" (seen=3) → merged to seen=5
-        # ep3 had "sort" (seen=1) → deleted with ep3 (not migrated since
-        # survivor didn't have "sort" — only matching params get their
-        # seen_count bumped; non-matching params on deleted eps are discarded)
+        assert {p.name for p in params} == {"page", "sort"}
         page_param = [p for p in params if p.name == "page"]
         assert len(page_param) == 1
         assert page_param[0].seen_count == 5
@@ -246,3 +245,112 @@ class TestSaveDiscoveredVia:
         assert len(rows) == 1
         assert rows[0].discovered_via is None
         assert rows[0].seen_count == 2
+
+
+def test_save_params_preserves_samples_across_pages(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    for values in (["first", "shared"], ["shared", "second"], []):
+        ep = _norm("GET", "ex.com", "/api/search")
+        ep.params[("query", "q")] = NormalizedParam(
+            "query", "q", "string", values, 1,
+        )
+        save_endpoints(session, scan_id, [ep])
+    param = session.exec(select(Parameter)).one()
+    assert json.loads(param.sample_values_json) == ["first", "shared", "second"]
+    assert param.seen_count == 3
+
+
+def test_save_params_caps_union_of_samples(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    for i in range(MAX_SAMPLES + 2):
+        ep = _norm("GET", "ex.com", "/api/search")
+        ep.params[("query", "q")] = NormalizedParam(
+            "query", "q", "string", [str(i)], 1,
+        )
+        save_endpoints(session, scan_id, [ep])
+    param = session.exec(select(Parameter)).one()
+    assert json.loads(param.sample_values_json) == [str(i) for i in range(MAX_SAMPLES)]
+
+
+def test_static_sighting_does_not_clear_dynamic_interaction(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    dynamic = _norm("GET", "ex.com", "/api/search", discovered_via="Search")
+    static = _norm("GET", "ex.com", "/api/search")
+    static.source = "static_js"
+    save_endpoints(session, scan_id, [dynamic, static])
+    row = session.exec(select(Endpoint)).one()
+    assert row.source == "dynamic"
+    assert row.discovered_via == "Search"
+
+
+def test_dynamic_upgrade_keeps_interaction_label(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    static = _norm("GET", "ex.com", "/api/search")
+    static.source = "static_js"
+    dynamic = _norm("GET", "ex.com", "/api/search", discovered_via="Search")
+    save_endpoints(session, scan_id, [static, dynamic])
+    row = session.exec(select(Endpoint)).one()
+    assert row.source == "dynamic" and row.discovered_via == "Search"
+
+
+def test_collapse_merges_into_existing_slug_and_keeps_evidence(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    survivor = _add_endpoint(session, scan_id, "GET", "ex.com", "/tags/{slug}", seen=2)
+    survivor.source = "wayback"
+    survivor.probe_status = "failed"
+    survivor.probe_code = 404
+    survivor.discovered_via = "archive"
+    survivor_param = _add_param(session, survivor.id, "query", "q", seen=2)
+    survivor_param.sample_values_json = '["archive"]'
+    for slug in ("python", "rust", "go"):
+        ep = _add_endpoint(session, scan_id, "GET", "ex.com", f"/tags/{slug}")
+        ep.discovered_via = "Tags tab"
+        param = _add_param(session, ep.id, "query", "q")
+        param.sample_values_json = json.dumps([slug])
+        _add_param(session, ep.id, "query", slug)
+    session.commit()
+
+    assert collapse_scan_endpoints(session, scan_id, threshold=3) == 3
+    row = session.exec(select(Endpoint)).one()
+    assert row.id == survivor.id
+    assert row.path_template == "/tags/{slug}"
+    assert row.seen_count == 5
+    assert row.source == "dynamic"
+    assert row.probe_status is None and row.probe_code is None
+    assert row.sample_url == "https://ex.com/tags/python"
+    assert row.discovered_via == "Tags tab"
+    params = session.exec(select(Parameter)).all()
+    assert all(p.endpoint_id == row.id for p in params)
+    assert {p.name for p in params} == {"q", "python", "rust", "go"}
+    query = next(p for p in params if p.name == "q")
+    assert query.seen_count == 5
+    assert json.loads(query.sample_values_json) == ["archive", "python", "rust", "go"]
+    assert collapse_scan_endpoints(session, scan_id, threshold=3) == 0
+
+
+def test_collapse_preserves_verified_sample_and_best_source(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    for slug, source, status, code in (
+        ("alpha", "static_js", "unverified", None),
+        ("beta", "wayback", "verified", 200),
+        ("gamma", "static_js", "failed", 404),
+    ):
+        ep = _add_endpoint(session, scan_id, "GET", "ex.com", f"/tags/{slug}")
+        ep.source, ep.probe_status, ep.probe_code = source, status, code
+    session.commit()
+    assert collapse_scan_endpoints(session, scan_id, threshold=3) == 2
+    row = session.exec(select(Endpoint)).one()
+    assert row.source == "static_js"
+    assert row.probe_status == "verified" and row.probe_code == 200
+    assert row.sample_url == "https://ex.com/tags/beta"
+
+
+def test_collapse_leaf_guard_does_not_cross_hosts(session) -> None:
+    scan_id = create_scan(session, "https://ex.com")
+    for slug in ("alpha", "beta", "gamma"):
+        _add_endpoint(session, scan_id, "GET", "ex.com", f"/tags/{slug}")
+        _add_endpoint(session, scan_id, "GET", "other.com", f"/tags/{slug}/detail")
+    session.commit()
+    assert collapse_scan_endpoints(session, scan_id, threshold=3) == 2
+    rows = session.exec(select(Endpoint).where(Endpoint.host == "ex.com")).all()
+    assert len(rows) == 1 and rows[0].path_template == "/tags/{slug}"

@@ -96,6 +96,14 @@ class TestNoveltyPriority:
 
 
 class TestFrontierEnqueue:
+    def test_template_caps_are_separate_for_different_ports(self) -> None:
+        f = Frontier(_scope(), max_per_template=1)
+        assert f.enqueue("http://example.com:8000/page")
+        assert f.enqueue("http://example.com:9000/page")
+        f.saturate(f.template_key("http://example.com:8000/page"))
+        remaining = f.pop()
+        assert remaining is not None and remaining.url == "http://example.com:9000/page"
+
     def test_basic_enqueue(self) -> None:
         f = Frontier(_scope())
         assert f.enqueue("https://example.com/page") is True
