@@ -118,6 +118,7 @@ async def run_safe_interactions(
     max_actions: int = MAX_ACTIONS_PER_PAGE,
     observe: Callable[[], Awaitable[None]] | None = None,
     deadline: float | None = None,
+    check_diagnostics: Callable[[], None] | None = None,
 ) -> int:
     if not scope.allows(page.url):
         return 0
@@ -128,10 +129,14 @@ async def run_safe_interactions(
     attempts = 0
     stop_reason = "action_budget"
     while attempts < max_actions and count < max_actions:
+        if check_diagnostics is not None:
+            check_diagnostics()
         if not scope.allows(page.url) or not _action_time_left(deadline):
             stop_reason = "out_of_scope" if not scope.allows(page.url) else "deadline"
             break
         candidates = await _collect_candidates(page)
+        if check_diagnostics is not None:
+            check_diagnostics()
         fingerprint = _state_fingerprint(candidates)
         fresh = [
             c for c in candidates
@@ -153,6 +158,8 @@ async def run_safe_interactions(
             if planner is not None and (deadline is None or
                     deadline - time.monotonic() > planner.config.timeout_sec * 2 + 5):
                 decision = await planner.choose(page.url, fresh, state.records)
+                if check_diagnostics is not None:
+                    check_diagnostics()
                 if decision is not None:
                     selection = "llm"
                     candidate = dict(fresh[decision.candidate_id])
@@ -184,14 +191,18 @@ async def run_safe_interactions(
         state.current_action = candidate
         primary_error: BaseException | None = None
         try:
-            executed = await _act(page, candidate, scope, tracker, max_actions - count, deadline)
+            executed = await _act(page, candidate, scope, tracker, max_actions - count, deadline, check_diagnostics)
             count += executed
             record.update(status="executed" if executed else "failed", executions=executed)
             if page.url != before_url and candidate["kind"] != "back":
                 back_stack.append(before_url)
             if observe is not None:
                 await observe()
+            if check_diagnostics is not None:
+                check_diagnostics()
             after_state = _state_fingerprint(await _collect_candidates(page))
+            if check_diagnostics is not None:
+                check_diagnostics()
             record.update(after_state=after_state, ui_state_changed=fingerprint != after_state)
             record["observed_progress"] = bool(record["ui_state_changed"] or page.url != before_url
                                                 or record.get("new_request_routes", 0))
@@ -293,6 +304,7 @@ def _upload_files(candidate: dict, options: InteractionConfig) -> list[Path]:
 async def _act(
     page: Page, candidate: dict[str, Any], scope: Scope, tracker: Any, budget: int,
     deadline: float | None = None,
+    check_diagnostics: Callable[[], None] | None = None,
 ) -> int:
     """Perform one candidate, returning the number of actions taken.
 
@@ -304,12 +316,18 @@ async def _act(
     paginate = tracker is not None and _is_pagination(candidate)
     repeats = min(MAX_PAGINATION_REPEATS if paginate else 1, budget)
     done = 0
+    checks = {"check_diagnostics": check_diagnostics} if check_diagnostics is not None else {}
     for _ in range(repeats):
+        if check_diagnostics is not None:
+            check_diagnostics()
         if not _action_time_left(deadline):
             break
         if tracker is not None:
             tracker.begin()
-        if not await _perform_and_settle(page, candidate):
+        performed = await _perform_and_settle(page, candidate, **checks)
+        if check_diagnostics is not None:
+            check_diagnostics()
+        if not performed:
             break
         done += 1
         fired = None
@@ -425,7 +443,9 @@ def _is_candidate_safe(
     return False
 
 
-async def _perform(page: Page, candidate: dict[str, Any]) -> bool:
+async def _perform(
+    page: Page, candidate: dict[str, Any], check_diagnostics: Callable[[], None] | None = None,
+) -> bool:
     selector = candidate.get("selector")
     kind = candidate.get("kind")
     if kind == "back":
@@ -444,6 +464,8 @@ async def _perform(page: Page, candidate: dict[str, Any]) -> bool:
         locator = page.locator(selector).first
         if kind == "input":
             await locator.fill(candidate.get("value", _VALUE), timeout=_CLICK_TIMEOUT_MS)
+            if check_diagnostics is not None:
+                check_diagnostics()
             if _SEARCH_RE.search(candidate.get("text", "")):
                 await locator.press("Enter", timeout=_CLICK_TIMEOUT_MS)
         elif kind == "select":
@@ -461,9 +483,13 @@ async def _perform(page: Page, candidate: dict[str, Any]) -> bool:
             if not await locator.is_visible():
                 candidate["failure_reason"] = "not_visible"
                 return False
+            if check_diagnostics is not None:
+                check_diagnostics()
             if not await locator.is_enabled():
                 candidate["failure_reason"] = "not_enabled"
                 return False
+            if check_diagnostics is not None:
+                check_diagnostics()
             await locator.click(timeout=_CLICK_TIMEOUT_MS)
     except PlaywrightError as exc:
         candidate["failure_reason"] = "action_timeout" if isinstance(exc, PlaywrightTimeoutError) else "browser_error"
@@ -471,7 +497,9 @@ async def _perform(page: Page, candidate: dict[str, Any]) -> bool:
     return True
 
 
-async def _perform_and_settle(page: Page, candidate: dict[str, Any]) -> bool:
+async def _perform_and_settle(
+    page: Page, candidate: dict[str, Any], check_diagnostics: Callable[[], None] | None = None,
+) -> bool:
     pending: set[Request] = set()
     last_network = time.monotonic()
 
@@ -494,26 +522,57 @@ async def _perform_and_settle(page: Page, candidate: dict[str, Any]) -> bool:
     page.on("request", started)
     page.on("requestfinished", finished)
     page.on("requestfailed", finished)
+    checks = {"check_diagnostics": check_diagnostics} if check_diagnostics is not None else {}
+    primary_error: BaseException | None = None
     try:
         await page.evaluate(_WATCH_DOM_JS)
-        if not await _perform(page, candidate):
+        if check_diagnostics is not None:
+            check_diagnostics()
+        performed = await _perform(page, candidate, **checks)
+        if check_diagnostics is not None:
+            check_diagnostics()
+        if not performed:
             return False
         wait_started = time.monotonic()
-        outcome = await _settle(page, network_quiet)
+        outcome = await _settle(page, network_quiet, **checks)
+        if check_diagnostics is not None:
+            check_diagnostics()
         candidate.setdefault("wait_outcomes", []).append({"reason": outcome, "duration_ms": round((time.monotonic() - wait_started) * 1000, 1)})
         return True
     except PlaywrightError as exc:
+        try:
+            if check_diagnostics is not None:
+                check_diagnostics()
+        except BaseException as error:
+            primary_error = error
+            raise
         candidate["failure_reason"] = "action_timeout" if isinstance(exc, PlaywrightTimeoutError) else "browser_error"
         return False
+    except BaseException as exc:
+        primary_error = exc
+        raise
     finally:
         page.remove_listener("request", started)
         page.remove_listener("requestfinished", finished)
         page.remove_listener("requestfailed", finished)
-        with suppress(PlaywrightError):
-            await page.evaluate("() => window.__orbisInteractionActivity?.observer.disconnect()")
+        try:
+            with suppress(PlaywrightError):
+                await page.evaluate("() => window.__orbisInteractionActivity?.observer.disconnect()")
+        except Exception as exc:
+            if primary_error is None:
+                try:
+                    if check_diagnostics is not None:
+                        check_diagnostics()
+                except BaseException as error:
+                    error.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
+                    raise
+                raise
+            primary_error.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
 
 
-async def _settle(page: Page, network_quiet: Callable[[], bool]) -> str:
+async def _settle(
+    page: Page, network_quiet: Callable[[], bool], check_diagnostics: Callable[[], None] | None = None,
+) -> str:
     started = time.monotonic()
     # A load state can already be satisfied before a SPA click. Observe fresh
     # network/DOM activity instead; streaming and animations remain bounded.
@@ -521,12 +580,20 @@ async def _settle(page: Page, network_quiet: Callable[[], bool]) -> str:
         async with asyncio.timeout(_SETTLE_TIMEOUT_MS / 1000):
             while True:
                 await asyncio.sleep(_SETTLE_POLL_MS / 1000)
+                if check_diagnostics is not None:
+                    check_diagnostics()
                 try:
                     dom_quiet_ms = await page.evaluate(_DOM_QUIET_JS)
+                    if check_diagnostics is not None:
+                        check_diagnostics()
                     if dom_quiet_ms is None:
                         await page.evaluate(_WATCH_DOM_JS)
+                        if check_diagnostics is not None:
+                            check_diagnostics()
                         continue
                 except PlaywrightError:
+                    if check_diagnostics is not None:
+                        check_diagnostics()
                     if page.is_closed():
                         return "page_closed"
                     continue
