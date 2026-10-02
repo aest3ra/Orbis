@@ -50,7 +50,7 @@ def download_capture(monkeypatch, tmp_path):
         ), timeout=1)
 
     return SimpleNamespace(capture=capture, request=request, events=page_events,
-                           state=state, logs=logs, directory=tmp_path, page=page, context=context)
+                           state=state, logs=logs, directory=tmp_path, page=page, context=context, client=client)
 
 
 def download_item(save_as):
@@ -430,4 +430,87 @@ def test_download_end_logger_failure_preserves_unexpected_transfer_failure(downl
     assert raised.value.__notes__ == ["Download finalization failed: OSError"]
     assert list(fixture.directory.iterdir()) == []
     assert fixture.logs[-1]["status"] == "failed"
+    fixture.page.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("stage", ["detach", "page_close"])
+@pytest.mark.parametrize("event_name", ["download", "filechooser"])
+def test_cleanup_does_not_start_new_download_or_filechooser_tasks(download_capture, stage, event_name):
+    fixture = download_capture
+    calls = []
+
+    async def blocked(*args):
+        calls.append(event_name)
+        if event_name == "download":
+            args[0].write_bytes(b"incomplete")
+        await asyncio.Event().wait()
+
+    incoming = download_item(blocked) if event_name == "download" else SimpleNamespace(set_files=blocked)
+
+    async def during_cleanup():
+        fixture.events[event_name](incoming)
+        await asyncio.sleep(0)
+
+    operation = fixture.client.detach if stage == "detach" else fixture.page.close
+    operation.side_effect = during_cleanup
+
+    async def scenario():
+        pass
+
+    async def exercise():
+        result = await fixture.capture(scenario)
+        pending = [task for task in asyncio.all_tasks() if task is not asyncio.current_task()]
+        statuses_at_return = [record.get("status") for record in result.observations]
+        files_at_return = list(fixture.directory.iterdir())
+        for task in pending:
+            task.cancel()
+        await asyncio.gather(*pending, return_exceptions=True)
+        assert pending == []
+        assert statuses_at_return == []
+        assert files_at_return == []
+
+    asyncio.run(exercise())
+    assert calls == []
+    assert fixture.logs == []
+    fixture.client.detach.assert_awaited_once()
+    fixture.page.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("primary_type", [RuntimeError, asyncio.CancelledError])
+@pytest.mark.parametrize("event_name", ["download", "filechooser"])
+def test_existing_page_tasks_are_drained_when_capture_fails(download_capture, primary_type, event_name):
+    fixture = download_capture
+    primary = primary_type("primary capture failure")
+
+    async def exercise():
+        entered, exited = asyncio.Event(), asyncio.Event()
+
+        async def blocked(*args):
+            if event_name == "download":
+                args[0].write_bytes(b"incomplete")
+            entered.set()
+            try:
+                await asyncio.Event().wait()
+            finally:
+                exited.set()
+
+        incoming = download_item(blocked) if event_name == "download" else SimpleNamespace(set_files=blocked)
+
+        async def scenario():
+            fixture.events[event_name](incoming)
+            await entered.wait()
+            raise primary
+
+        with pytest.raises(primary_type) as raised:
+            await fixture.capture(scenario)
+        assert raised.value is primary
+        assert exited.is_set()
+        assert [task for task in asyncio.all_tasks() if task is not asyncio.current_task()] == []
+
+    asyncio.run(exercise())
+    assert list(fixture.directory.iterdir()) == []
+    assert fixture.state.download_counts == {}
+    if event_name == "download":
+        assert fixture.logs[-1]["status"] == "interrupted"
+    fixture.client.detach.assert_awaited_once()
     fixture.page.close.assert_awaited_once()

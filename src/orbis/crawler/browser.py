@@ -152,6 +152,7 @@ async def capture_page(
     client = None
     tracker = None
     primary_error: BaseException | None = None
+    closing = False
 
     async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
         started = time.monotonic()
@@ -217,6 +218,8 @@ async def capture_page(
                 download_error.add_note(f"Download finalization failed: {type(exc).__name__}")
 
     def on_download(item) -> None:
+        if closing:
+            return
         # Saving may finish after later actions have requested the same URL.
         action = dict(state.current_action or {})
         matching = [event for event in captured.values() if event.url == item.url and event.source == "cdp"]
@@ -233,6 +236,8 @@ async def capture_page(
         state.event("file_selection", action_id=action_id, file_count=len(files))
 
     def on_filechooser(chooser) -> None:
+        if closing:
+            return
         download_tasks.append(asyncio.create_task(choose_files(chooser, (state.current_action or {}).get("action_id"))))
 
     def on_request(event: dict) -> None:
@@ -361,6 +366,7 @@ async def capture_page(
         primary_error = exc
         raise
     finally:
+        closing = True
         try:
             if page is not None:
                 result.final_url = page.url
