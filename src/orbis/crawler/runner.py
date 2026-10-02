@@ -412,6 +412,10 @@ async def _crawl_scan(
                 if probe_cleanup_observations:
                     with Session(engine) as session:
                         for record in probe_cleanup_observations:
+                            endpoint = session.get(Endpoint, record["endpoint_id"])
+                            if endpoint is not None and endpoint.scan_id == scan_id:
+                                record.update(method=endpoint.method, host=endpoint.host,
+                                              path_template=endpoint.path_template)
                             session.add(Observation(scan_id=scan_id, page_url="", kind="probe_response_cleanup",
                                                     details_json=json.dumps(record)))
                         session.commit()

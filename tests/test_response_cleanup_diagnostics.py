@@ -135,7 +135,8 @@ def test_cleanup_diagnostic_does_not_change_results_or_control_flow(resources, m
     assert resources.request.responses[0].status_reads == 1
     assert resources.request.responses[0].dispose_calls == 1
     expected_error = {"cleanup_error": "OSError", "context_closed": "TargetClosedError"}.get(mode, "CancelledError")
-    assert observations == [{"endpoint_id": 1, "raw_response_status": 200, "cleanup_error_type": expected_error}]
+    assert observations == [{"endpoint_id": 1, "raw_response_status": 200, "cleanup_error_type": expected_error,
+                             "method": "GET", "host": "localhost", "path_template": "/api/alpha"}]
     assert urls == [""]
     event, = [call.kwargs for call in resources.trace.emit.call_args_list if call.args[0] == "probe_end"]
     expected_stop = {"cleanup_error": "completed", "endpoint_timeout": "completed"}.get(mode, mode)
@@ -176,6 +177,57 @@ def test_failed_status_read_does_not_fabricate_raw_status(resources):
     assert rows == [("failed", None), ("verified", 204)]
     assert observations == urls == []
     assert len(resources.request.calls) == 2
+
+
+def test_cleanup_identity_survives_page_route_collapse(resources):
+    names = ("alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta")
+    with Session(resources.engine) as session:
+        for endpoint in session.exec(select(Endpoint)).all():
+            session.delete(endpoint)
+        session.commit()
+        for name in names:
+            session.add(Endpoint(
+                scan_id=resources.scan_id, method="GET", host="localhost", path_template=f"/pages/{name}",
+                sample_url=f"http://localhost/pages/{name}?search=private-query-{name}",
+                route_kind="page_route", source="static_js", probe_status="unverified",
+            ))
+        session.commit()
+        before = {row.id: row.path_template for row in session.exec(select(Endpoint)).all()}
+    resources.request.responses = [Response("cleanup_error", 200) for _ in names]
+
+    outcome = asyncio.run(crawl(resources))
+
+    with Session(resources.engine) as session:
+        endpoints = session.exec(select(Endpoint)).all()
+    assert len(endpoints) == 1
+    assert endpoints[0].path_template == "/pages/{slug}"
+    assert outcome["endpoints_merged"] == 7
+    assert len(resources.request.calls) == 8
+    assert all(response.status_reads == response.dispose_calls == 1 for response in resources.request.responses)
+    records = stored(resources)[1]
+    assert len(records) == 8
+    for record in records:
+        assert record == {
+            "endpoint_id": record["endpoint_id"], "raw_response_status": 200, "cleanup_error_type": "OSError",
+            "method": "GET", "host": "localhost", "path_template": before[record["endpoint_id"]],
+        }
+        assert "private-" not in json.dumps(record)
+        assert "?" not in json.dumps(record)
+
+
+def test_missing_endpoint_keeps_raw_evidence_without_inventing_identity(resources):
+    def delete_before_diagnostic_storage(event, **fields):
+        if event == "probe_end":
+            with Session(resources.engine) as session:
+                session.delete(session.get(Endpoint, 1))
+                session.commit()
+        return fields
+
+    resources.trace.emit.side_effect = delete_before_diagnostic_storage
+
+    asyncio.run(crawl(resources))
+
+    assert stored(resources)[1] == [{"endpoint_id": 1, "raw_response_status": 200, "cleanup_error_type": "OSError"}]
 
 
 @pytest.mark.parametrize("stage", ["add", "commit"])
