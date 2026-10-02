@@ -210,6 +210,7 @@ async def _crawl_scan(
     try:
         browser = await pw.chromium.launch(headless=headless)
         llm_request = None
+        probe_cleanup_observations: list[dict[str, int | str]] = []
         failure: BaseException | None = None
         try:
             ctx_kw: dict = {}
@@ -358,6 +359,7 @@ async def _crawl_scan(
                     results = await probe_candidates(
                         context, candidates, scope=scope, limits=limits,
                         on_result=persist_probe_result,
+                        cleanup_observations=probe_cleanup_observations,
                     )
 
             except asyncio.CancelledError as exc:
@@ -407,20 +409,37 @@ async def _crawl_scan(
             raise
         finally:
             try:
-                if llm_request is not None:
-                    await llm_request.dispose()
+                if probe_cleanup_observations:
+                    with Session(engine) as session:
+                        for record in probe_cleanup_observations:
+                            endpoint = session.get(Endpoint, record["endpoint_id"])
+                            if endpoint is not None and endpoint.scan_id == scan_id:
+                                record.update(method=endpoint.method, host=endpoint.host,
+                                              path_template=endpoint.path_template)
+                            session.add(Observation(scan_id=scan_id, page_url="", kind="probe_response_cleanup",
+                                                    details_json=json.dumps(record)))
+                        session.commit()
             except BaseException as exc:
                 if failure is None or not isinstance(exc, Exception):
                     failure = exc
                     raise
-                failure.add_note(f"Request context disposal failed: {type(exc).__name__}")
+                failure.add_note(f"Probe cleanup observation persistence failed: {type(exc).__name__}")
             finally:
                 try:
-                    await browser.close()
-                except Exception as exc:
-                    if failure is None:
+                    if llm_request is not None:
+                        await llm_request.dispose()
+                except BaseException as exc:
+                    if failure is None or not isinstance(exc, Exception):
+                        failure = exc
                         raise
-                    failure.add_note(f"Browser close failed: {type(exc).__name__}")
+                    failure.add_note(f"Request context disposal failed: {type(exc).__name__}")
+                finally:
+                    try:
+                        await browser.close()
+                    except Exception as exc:
+                        if failure is None:
+                            raise
+                        failure.add_note(f"Browser close failed: {type(exc).__name__}")
     except BaseException as exc:
         driver_failure = exc
         raise
