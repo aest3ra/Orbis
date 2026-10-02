@@ -153,8 +153,9 @@ async def capture_page(
     tracker = None
     primary_error: BaseException | None = None
 
-    async def downloaded(item, action: dict) -> None:
+    async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
         started = time.monotonic()
+        partial_path = None
         record = {"kind": "download", "url": safe_url(item.url), "status": "pending",
                   "action_id": action.get("action_id"), "page_id": state.page_id, "started_at": timestamp()}
         result.observations.append(record)
@@ -167,18 +168,20 @@ async def capture_page(
             download_dir.mkdir(parents=True, exist_ok=True)
             identifier = hashlib.sha256(item.url.encode()).hexdigest()[:16]
             path = download_dir / f"{identifier}-{uuid4().hex}.bin"
-            await item.save_as(path)
-            record.update(status="saved", path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                          size=path.stat().st_size)
-            digest = record["sha256"]
+            partial_path = path.with_suffix(".part")
+            await item.save_as(partial_path)
+            content = partial_path.read_bytes()
+            digest = hashlib.sha256(content).hexdigest()
+            size = len(content)
+            partial_path.replace(path)
+            partial_path = None
+            record.update(status="saved", path=str(path), sha256=digest, size=size)
             state.download_counts[digest] = state.download_counts.get(digest, 0) + 1
             record["content_seen_count"] = state.download_counts[digest]
-            for event in reversed(list(captured.values())):
-                if event.url == item.url:
-                    event.resource_type = "Download"
-                    record.update(method=event.method, method_evidence="network_request")
-                    break
-            else:
+            if network_event is not None:
+                network_event.resource_type = "Download"
+                record.update(method=network_event.method, method_evidence="network_request")
+            elif not has_network_evidence:
                 # Chromium's download attribute bypasses page network events.
                 # A completed anchor download supplies navigation evidence, not a status code.
                 if action.get("kind") == "link" and action.get("nav_url") == item.url and action.get("method", "GET") == "GET":
@@ -194,11 +197,21 @@ async def capture_page(
         except OSError as exc:
             record.update(status="failed", error=type(exc).__name__)
         finally:
+            if partial_path is not None:
+                try:
+                    partial_path.unlink(missing_ok=True)
+                except OSError as exc:
+                    record.update(cleanup_error=type(exc).__name__, partial_path=str(partial_path))
             record.update(duration_ms=round((time.monotonic() - started) * 1000, 1), finished_at=timestamp())
             state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
 
     def on_download(item) -> None:
-        download_tasks.append(asyncio.create_task(downloaded(item, dict(state.current_action or {}))))
+        # Saving may finish after later actions have requested the same URL.
+        action = dict(state.current_action or {})
+        matching = [event for event in captured.values() if event.url == item.url and event.source == "cdp"]
+        same_action = [event for event in matching if event.action_id == action.get("action_id")]
+        network_event = same_action[0] if len(same_action) == 1 else None
+        download_tasks.append(asyncio.create_task(downloaded(item, action, network_event, bool(matching))))
 
     async def choose_files(chooser, action_id: int | None) -> None:
         files = []
