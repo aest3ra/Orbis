@@ -108,7 +108,7 @@ async def run_scan(
                 try:
                     with Session(engine) as session:
                         session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
-                                                details_json=json.dumps(clean(record), ensure_ascii=False)))
+                                                details_json=json.dumps(clean(record))))
                         if metadata_error is None:
                             finish_scan(session, scan_id, outcome["pages"], outcome["endpoints"])
                         else:
@@ -278,7 +278,7 @@ async def _crawl_scan(
                     for record in capture.observations:
                         session.add(Observation(scan_id=scan_id, page_url=safe_url(capture.page_url),
                                                 kind=record.get("observation", record["kind"]),
-                                                details_json=json.dumps(clean(record), ensure_ascii=False)))
+                                                details_json=json.dumps(clean(record))))
                     session.commit()
 
                 for url in result.frontier_urls:
@@ -314,7 +314,7 @@ async def _crawl_scan(
                 )
                 with Session(engine) as session:
                     session.add(Observation(scan_id=scan_id, page_url=safe_url(item.url), kind="page",
-                                            details_json=json.dumps(page_record, ensure_ascii=False)))
+                                            details_json=json.dumps(page_record)))
                     session.commit()
                 err = f" err={capture.error}" if capture.error else ""
                 log.info(
@@ -387,7 +387,7 @@ async def _crawl_scan(
                 with Session(engine) as session:
                     for record in planner.records:
                         session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="llm",
-                                                details_json=json.dumps(clean(record), ensure_ascii=False)))
+                                                details_json=json.dumps(clean(record))))
                     session.commit()
         except BaseException as exc:
             failure = exc
