@@ -327,6 +327,16 @@ async def _crawl_scan(
                 stop_reason = "max_duration"
             probe_started = time.monotonic()
             probe_timeout = asyncio.timeout_at(deadline)
+            probe_counts = {"verified": 0, "failed": 0, "persisted": 0}
+
+            def persist_probe_result(row: tuple[int, str, int | None]) -> None:
+                endpoint_id, status, code = row
+                probe_counts[status] += 1
+                with Session(engine) as session:
+                    set_probe_result(session, endpoint_id, status, code)
+                    session.commit()
+                    probe_counts["persisted"] += 1
+
             try:
                 with Session(engine) as session:
                     rows = list_unverified_endpoints(session, scan_id)
@@ -335,16 +345,12 @@ async def _crawl_scan(
                 async with probe_timeout:
                     results = await probe_candidates(
                         context, candidates, scope=scope, limits=limits,
+                        on_result=persist_probe_result,
                     )
-
-                if results:
-                    with Session(engine) as session:
-                        for endpoint_id, status, code in results:
-                            set_probe_result(session, endpoint_id, status, code)
-                        session.commit()
 
                 trace.emit("probe_end", sent=results.sent, verified=results.verified, failed=results.failed,
                            skipped=results.skipped, remaining=results.remaining, stop_reason=results.stop_reason,
+                           persisted=probe_counts["persisted"],
                            duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
                 log.info(
                     "probe: %d verified, %d failed "
@@ -357,9 +363,21 @@ async def _crawl_scan(
                     results.remaining,
                     results.stop_reason,
                 )
+            except asyncio.CancelledError as exc:
+                try:
+                    trace.emit("probe_end", error="cancelled", stop_reason="cancelled", **probe_counts,
+                               duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
+                except Exception as diagnostic_error:
+                    exc.add_note(f"Probe diagnostics failed: {type(diagnostic_error).__name__}")
+                raise
             except Exception as exc:
-                trace.emit("probe_end", error=type(exc).__name__, stop_reason="deadline" if probe_timeout.expired() else "error",
-                           duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
+                try:
+                    trace.emit("probe_end", error=type(exc).__name__,
+                               stop_reason="deadline" if probe_timeout.expired() else "error", **probe_counts,
+                               duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
+                except Exception as diagnostic_error:
+                    exc.add_note(f"Probe diagnostics failed: {type(diagnostic_error).__name__}")
+                    raise exc from diagnostic_error
                 log.warning("probe non-fatal: %s", type(exc).__name__)
             finally:
                 if probe_timeout.expired() or time.monotonic() >= deadline:

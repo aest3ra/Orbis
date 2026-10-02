@@ -10,6 +10,7 @@ import asyncio
 import logging
 import re
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 from urllib.parse import parse_qsl, urlparse
@@ -184,6 +185,7 @@ async def probe_candidates(
     *,
     scope: Scope,
     limits: Any,
+    on_result: Callable[[tuple[int, str, int | None]], None] | None = None,
 ) -> ProbeResults:
     results: list[tuple[int, str, int | None]] = []
     total = len(candidates)
@@ -225,7 +227,10 @@ async def probe_candidates(
             result = ProbeResult(None, error=type(exc).__name__)
 
         status = classify_probe(result.status)
-        results.append((endpoint_id, status, result.status))
+        row = (endpoint_id, status, result.status)
+        results.append(row)
+        if on_result is not None:
+            on_result(row)
         processed = idx + 1
         log.debug(
             "probe result endpoint=%s status=%s code=%s error=%s",
