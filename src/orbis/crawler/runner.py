@@ -6,6 +6,8 @@ import asyncio
 import json
 import logging
 import time
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -33,6 +35,26 @@ from orbis.storage.repo import (
 )
 
 log = logging.getLogger("orbis.crawler")
+
+
+@contextmanager
+def _terminal_session(engine) -> Iterator[Session]:
+    failure: BaseException | None = None
+    try:
+        with Session(engine) as session:
+            try:
+                yield session
+            except BaseException as exc:
+                failure = exc
+                raise
+    except Exception as exc:
+        if failure is None or exc is failure:
+            raise
+        failure.add_note(f"Terminal database session close failed: {type(exc).__name__}")
+    else:
+        return
+    # Re-raise outside the cleanup handler to retain the original exception chain.
+    raise failure
 
 
 async def run_scan(
@@ -89,7 +111,7 @@ async def run_scan(
                 outcome.setdefault("pages", totals.get("pages_crawled", 0))
                 metadata_error = None
                 try:
-                    with Session(engine) as session:
+                    with _terminal_session(engine) as session:
                         outcome["endpoints"] = session.exec(
                             select(func.count()).select_from(Endpoint).where(Endpoint.scan_id == scan_id)
                         ).one()
@@ -117,7 +139,7 @@ async def run_scan(
                     record = {"event": "scan_end", **outcome, "totals": totals,
                               "log_write_error": type(exc).__name__}
                 try:
-                    with Session(engine) as session:
+                    with _terminal_session(engine) as session:
                         session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
                                                 details_json=json.dumps(clean(record))))
                         if metadata_error is None:
