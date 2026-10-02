@@ -395,14 +395,15 @@ async def capture_page(
                     if error is not None and error is not primary_error and error is not handled_error:
                         failures.append((error, "Page task failed"))
             failures.extend((error, "Download finalization failed") for error in download_finalization_errors)
-            if failures and primary_error is None and result.error is None:
+            if failures and primary_error is None and handled_error is None:
                 error = failures[0][0]
                 if isinstance(error, (TimeoutError, PlaywrightError)):
+                    handled_error = error
                     result.error = "ScanDeadlineExceeded" if isinstance(error, TimeoutError) else type(error).__name__
                     failures = failures[1:]
             if failures:
                 failure_target = primary_error
-                if failure_target is None and result.error is None:
+                if failure_target is None and handled_error is None:
                     failure_target = failures[0][0]
                 if failure_target is not None:
                     for error, label in failures:
