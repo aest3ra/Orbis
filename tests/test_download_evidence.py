@@ -50,7 +50,7 @@ def download_capture(monkeypatch, tmp_path):
         ), timeout=1)
 
     return SimpleNamespace(capture=capture, request=request, events=page_events,
-                           state=state, logs=logs, directory=tmp_path, page=page)
+                           state=state, logs=logs, directory=tmp_path, page=page, context=context)
 
 
 def download_item(save_as):
@@ -332,3 +332,102 @@ def test_completed_artifacts_have_exact_hash_size_and_independent_duplicate_coun
         assert record["size"] == len(payload)
         assert Path(record["path"]).read_bytes() == payload
     assert list(fixture.directory.glob("*.part")) == []
+
+
+def test_download_end_logger_failure_preserves_direct_capture_cancellation(download_capture):
+    fixture = download_capture
+
+    def emit(name, **record):
+        fixture.logs.append({"event": name, **record})
+        if name == "download_end":
+            raise OSError("private logger failure")
+
+    fixture.state.emit = emit
+
+    async def exercise():
+        saving = asyncio.Event()
+
+        async def save_as(path):
+            path.write_bytes(b"incomplete")
+            saving.set()
+            await asyncio.Event().wait()
+
+        async def goto(*args, **kwargs):
+            fixture.events["download"](download_item(save_as))
+
+        fixture.page.goto = goto
+        task = asyncio.create_task(browser.capture_page(
+            fixture.context, fixture.page.url, max_scrolls=0, settle_ms=0,
+            exploration=fixture.state, download_dir=fixture.directory,
+        ))
+        await asyncio.wait_for(saving.wait(), timeout=1)
+        await asyncio.sleep(0)
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError) as raised:
+            await task
+        assert task.cancelled()
+        assert raised.value.__notes__ == ["Download finalization failed: OSError"]
+
+    asyncio.run(exercise())
+    assert list(fixture.directory.iterdir()) == []
+    assert fixture.state.download_counts == {}
+    assert fixture.logs[-1]["status"] == "interrupted"
+    fixture.page.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("transfer_failure", [None, PlaywrightError("private transfer failure")])
+def test_download_end_logger_failure_without_propagating_primary_still_raises(download_capture, transfer_failure):
+    fixture = download_capture
+    logger_failure = OSError("private logger failure")
+
+    def emit(name, **record):
+        fixture.logs.append({"event": name, **record})
+        if name == "download_end":
+            raise logger_failure
+
+    fixture.state.emit = emit
+
+    async def save_as(path):
+        path.write_bytes(b"report")
+        if transfer_failure is not None:
+            raise transfer_failure
+
+    async def scenario():
+        fixture.events["download"](download_item(save_as))
+
+    with pytest.raises(OSError) as raised:
+        asyncio.run(fixture.capture(scenario))
+
+    assert raised.value is logger_failure
+    assert fixture.logs[-1]["status"] == ("saved" if transfer_failure is None else "failed")
+    assert len(list(fixture.directory.glob("*.bin"))) == (1 if transfer_failure is None else 0)
+    assert not list(fixture.directory.glob("*.part"))
+    fixture.page.close.assert_awaited_once()
+
+
+def test_download_end_logger_failure_preserves_unexpected_transfer_failure(download_capture):
+    fixture = download_capture
+    transfer_failure = RuntimeError("private transfer failure")
+
+    def emit(name, **record):
+        fixture.logs.append({"event": name, **record})
+        if name == "download_end":
+            raise OSError("private logger failure")
+
+    fixture.state.emit = emit
+
+    async def save_as(path):
+        path.write_bytes(b"incomplete")
+        raise transfer_failure
+
+    async def scenario():
+        fixture.events["download"](download_item(save_as))
+
+    with pytest.raises(RuntimeError) as raised:
+        asyncio.run(fixture.capture(scenario))
+
+    assert raised.value is transfer_failure
+    assert raised.value.__notes__ == ["Download finalization failed: OSError"]
+    assert list(fixture.directory.iterdir()) == []
+    assert fixture.logs[-1]["status"] == "failed"
+    fixture.page.close.assert_awaited_once()

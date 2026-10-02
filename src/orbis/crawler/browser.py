@@ -156,6 +156,7 @@ async def capture_page(
     async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
         started = time.monotonic()
         partial_path = None
+        download_error: BaseException | None = None
         record = {"kind": "download", "url": safe_url(item.url), "status": "pending",
                   "action_id": action.get("action_id"), "page_id": state.page_id, "started_at": timestamp()}
         result.observations.append(record)
@@ -191,11 +192,16 @@ async def capture_page(
                     record.update(method="GET", method_evidence="anchor_navigation")
         except PlaywrightError as exc:
             record.update(status="failed", error=type(exc).__name__)
-        except asyncio.CancelledError:
+        except asyncio.CancelledError as exc:
+            download_error = exc
             record.update(status="interrupted", error="cancelled")
             raise
         except OSError as exc:
             record.update(status="failed", error=type(exc).__name__)
+        except BaseException as exc:
+            download_error = exc
+            record.update(status="failed", error=type(exc).__name__)
+            raise
         finally:
             if partial_path is not None:
                 try:
@@ -203,7 +209,12 @@ async def capture_page(
                 except OSError as exc:
                     record.update(cleanup_error=type(exc).__name__, partial_path=str(partial_path))
             record.update(duration_ms=round((time.monotonic() - started) * 1000, 1), finished_at=timestamp())
-            state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
+            try:
+                state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
+            except Exception as exc:
+                if download_error is None:
+                    raise
+                download_error.add_note(f"Download finalization failed: {type(exc).__name__}")
 
     def on_download(item) -> None:
         # Saving may finish after later actions have requested the same URL.
