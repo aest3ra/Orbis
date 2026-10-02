@@ -9,7 +9,8 @@ import time
 from pathlib import Path
 
 from playwright.async_api import async_playwright
-from sqlmodel import Session
+from sqlalchemy import func
+from sqlmodel import Session, select
 
 from orbis.analysis.analyzer import analyze, build_wayback_results
 from orbis.config import ScanConfig
@@ -20,7 +21,7 @@ from orbis.crawler.frontier import Frontier
 from orbis.crawler.wayback import fetch_wayback_urls
 from orbis.crawler.probe import probe_candidates
 from orbis.crawler.scope import Scope
-from orbis.storage.db import Observation, open_db
+from orbis.storage.db import Endpoint, Observation, open_db
 from orbis.telemetry import ScanLog, clean, safe_url
 from orbis.storage.repo import (
     collapse_scan_endpoints,
@@ -77,13 +78,31 @@ async def run_scan(
             raise
         finally:
             try:
+                outcome.setdefault("pages", trace.totals.get("pages_crawled", 0))
+                metadata_error = None
+                try:
+                    with Session(engine) as session:
+                        outcome["endpoints"] = session.exec(
+                            select(func.count()).select_from(Endpoint).where(Endpoint.scan_id == scan_id)
+                        ).one()
+                except Exception as exc:
+                    metadata_error = exc
+                    outcome.pop("endpoints", None)
+                    outcome["metadata_error"] = type(exc).__name__
+                    if failure is None:
+                        outcome.update(status="error", stop_reason="exception", error=type(exc).__name__)
                 record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
                 with Session(engine) as session:
                     session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
                                             details_json=json.dumps(clean(record), ensure_ascii=False)))
-                    session.commit()
+                    if metadata_error is None:
+                        finish_scan(session, scan_id, outcome["pages"], outcome["endpoints"])
+                    else:
+                        session.commit()
                 log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
                          outcome["stop_reason"], record["elapsed_ms"])
+                if metadata_error is not None:
+                    raise metadata_error
             except Exception as exc:
                 if failure is None:
                     raise
@@ -345,7 +364,6 @@ async def _crawl_scan(
         collapsed = collapse_scan_endpoints(
             session, scan_id, threshold=limits.slug_threshold,
         )
-        finish_scan(session, scan_id, pages, total_added - collapsed)
 
     return {"stop_reason": stop_reason, "pages": pages, "endpoints": total_added - collapsed,
             "endpoints_merged": collapsed, "queue_remaining": frontier.size}

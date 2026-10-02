@@ -62,6 +62,8 @@ class ScanLog:
         self._file.write(json.dumps(record, ensure_ascii=False) + "\n")
         self._file.flush()
         self.totals[event] += 1
+        if event == "page_end" and details.get("status") in {"completed", "partial", "failed"}:
+            self.totals["pages_crawled"] += 1
         if event == "action_end":
             self.totals[f"actions_{details['status']}"] += 1
             self.totals["actions_with_http_errors"] += bool(details.get("http_error_count"))
