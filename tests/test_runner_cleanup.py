@@ -86,10 +86,9 @@ def crawl_resources(monkeypatch):
     playwright = SimpleNamespace(
         chromium=SimpleNamespace(launch=AsyncMock(return_value=browser)),
         request=SimpleNamespace(new_context=AsyncMock(return_value=request)),
+        stop=AsyncMock(),
     )
-    manager = MagicMock()
-    manager.__aenter__ = AsyncMock(return_value=playwright)
-    manager.__aexit__ = AsyncMock(return_value=False)
+    manager = SimpleNamespace(start=AsyncMock(return_value=playwright))
     monkeypatch.setattr(runner, "async_playwright", Mock(return_value=manager))
     monkeypatch.setattr(runner, "Session", MagicMock())
     monkeypatch.setattr(runner, "QwenPlanner", Mock(return_value=SimpleNamespace(records=[])))
@@ -164,6 +163,95 @@ def test_secondary_cleanup_failure_preserves_primary(scan_resources, stage, prim
     assert all("private-secondary-content" not in note for note in failure.__notes__)
     trace.close.assert_called_once_with()
     engine.dispose.assert_called_once_with()
+
+
+@pytest.mark.parametrize("stage", ["launch", "body", "request", "browser"])
+@pytest.mark.parametrize("failure_type", [RuntimeError, asyncio.CancelledError])
+def test_driver_stop_preserves_earlier_failure(crawl_resources, stage, failure_type):
+    request, browser = crawl_resources
+    playwright = runner.async_playwright.return_value.start.return_value
+    failure = failure_type("primary failure")
+    playwright.stop.side_effect = OSError("private-driver-stop-content")
+    trace = Mock()
+    if stage == "launch":
+        playwright.chromium.launch.side_effect = failure
+    elif stage == "body":
+        trace.emit.side_effect = failure
+    elif stage == "request":
+        request.dispose.side_effect = failure
+    else:
+        browser.close.side_effect = failure
+    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1 if stage == "body" else 0))
+
+    with pytest.raises(failure_type) as raised:
+        asyncio.run(runner._crawl_scan(
+            config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
+            db_path="unused.db", headless=True, wayback=False, trace=trace,
+        ))
+
+    assert raised.value is failure
+    assert "Playwright stop failed: OSError" in failure.__notes__
+    assert "private-" not in " ".join(failure.__notes__)
+    playwright.stop.assert_awaited_once_with()
+    if stage == "launch":
+        browser.close.assert_not_awaited()
+    else:
+        browser.close.assert_awaited_once_with()
+
+
+@pytest.mark.parametrize("stop_fails", [False, True])
+def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, stop_fails):
+    request, browser = crawl_resources
+    playwright = runner.async_playwright.return_value.start.return_value
+    failure = OSError("driver stop failure")
+    if stop_fails:
+        playwright.stop.side_effect = failure
+    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
+    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
+    scan = runner._crawl_scan(
+        config, Mock(), 17, Scope(config.scope), None, None,
+        db_path="unused.db", headless=True, wayback=False, trace=Mock(),
+    )
+    if stop_fails:
+        with pytest.raises(OSError) as raised:
+            asyncio.run(scan)
+        assert raised.value is failure
+        runner.collapse_scan_endpoints.assert_not_called()
+    else:
+        assert asyncio.run(scan)["stop_reason"] == "max_pages"
+        runner.collapse_scan_endpoints.assert_called_once()
+    playwright.stop.assert_awaited_once_with()
+    browser.close.assert_awaited_once_with()
+    request.dispose.assert_not_awaited()
+
+
+@pytest.mark.parametrize("failure_type", [None, RuntimeError])
+def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failure_type):
+    request, browser = crawl_resources
+    playwright = runner.async_playwright.return_value.start.return_value
+    trace = Mock(emit=Mock(side_effect=failure_type("primary failure") if failure_type else None))
+    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1 if failure_type else 0))
+
+    async def exercise():
+        entered = asyncio.Event()
+
+        async def blocked():
+            entered.set()
+            await asyncio.Event().wait()
+
+        playwright.stop.side_effect = blocked
+        task = asyncio.create_task(runner._crawl_scan(
+            config, Mock(), 17, Scope(config.scope), None, None,
+            db_path="unused.db", headless=True, wayback=False, trace=trace,
+        ))
+        await asyncio.wait_for(entered.wait(), timeout=0.5)
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await asyncio.wait_for(task, timeout=0.5)
+
+    asyncio.run(exercise())
+    playwright.stop.assert_awaited_once_with()
+    browser.close.assert_awaited_once_with()
 
 
 def test_first_cleanup_failure_is_preserved_when_both_closes_fail(scan_resources):

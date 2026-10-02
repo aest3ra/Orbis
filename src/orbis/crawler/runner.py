@@ -173,7 +173,9 @@ async def _crawl_scan(
             len(wayback_eps), len(wayback_seeds),
         )
 
-    async with async_playwright() as pw:
+    pw = await async_playwright().start()
+    driver_failure: BaseException | None = None
+    try:
         browser = await pw.chromium.launch(headless=headless)
         llm_request = None
         failure: BaseException | None = None
@@ -356,6 +358,16 @@ async def _crawl_scan(
                     if failure is None:
                         raise
                     failure.add_note(f"Browser close failed: {type(exc).__name__}")
+    except BaseException as exc:
+        driver_failure = exc
+        raise
+    finally:
+        try:
+            await pw.stop()
+        except Exception as exc:
+            if driver_failure is None:
+                raise
+            driver_failure.add_note(f"Playwright stop failed: {type(exc).__name__}")
 
     with Session(engine) as session:
         # Same cardinality bar as the frontier: only genuinely high-cardinality

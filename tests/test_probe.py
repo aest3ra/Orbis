@@ -360,13 +360,13 @@ class _FakePlaywright:
     def __init__(self) -> None:
         self.chromium = _FakeChromium()
 
+    async def stop(self) -> None:
+        pass
+
 
 class _FakePlaywrightCM:
-    async def __aenter__(self) -> _FakePlaywright:
+    async def start(self) -> _FakePlaywright:
         return _FakePlaywright()
-
-    async def __aexit__(self, *_a) -> bool:
-        return False
 
 
 def test_run_scan_always_runs_probe_stage(monkeypatch, tmp_path) -> None:
