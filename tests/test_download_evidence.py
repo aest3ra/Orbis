@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import tracemalloc
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
@@ -276,13 +277,13 @@ def test_partial_removal_failure_is_diagnosed_without_replacing_transfer_failure
     assert not list(fixture.directory.glob("*.bin"))
 
 
-@pytest.mark.parametrize("operation", ["read_bytes", "replace"])
+@pytest.mark.parametrize("operation", ["open", "replace"])
 def test_verification_or_commit_failure_does_not_publish_completed_artifact(download_capture, monkeypatch, operation):
     fixture = download_capture
     original = getattr(Path, operation)
 
     def fail(path, *args, **kwargs):
-        if path.suffix == ".part":
+        if path.suffix == ".part" and (operation != "open" or args == ("rb",)):
             raise OSError("private artifact failure")
         return original(path, *args, **kwargs)
 
@@ -302,9 +303,9 @@ def test_verification_or_commit_failure_does_not_publish_completed_artifact(down
     assert list(fixture.directory.iterdir()) == []
 
 
-def test_completed_artifacts_have_exact_hash_size_and_independent_duplicate_counts(download_capture):
+@pytest.mark.parametrize("payload", [b"", b"report\x00\xff", b"x" * (256 * 1024 + 17)])
+def test_completed_artifacts_have_exact_hash_size_and_independent_duplicate_counts(download_capture, payload):
     fixture = download_capture
-    payload = b"report\x00\xff"
 
     async def save_as(path):
         assert path.suffix == ".part"
@@ -332,6 +333,85 @@ def test_completed_artifacts_have_exact_hash_size_and_independent_duplicate_coun
         assert record["size"] == len(payload)
         assert Path(record["path"]).read_bytes() == payload
     assert list(fixture.directory.glob("*.part")) == []
+
+
+def test_large_download_hash_uses_bounded_memory(download_capture):
+    fixture = download_capture
+    block = bytes(range(256)) * 4096
+    repetitions = 16
+    expected = hashlib.sha256()
+    for _ in range(repetitions):
+        expected.update(block)
+
+    async def save_as(path):
+        with path.open("wb") as file:
+            for _ in range(repetitions):
+                file.write(block)
+
+    async def scenario():
+        fixture.events["download"](download_item(save_as))
+
+    tracemalloc.start()
+    try:
+        result = asyncio.run(fixture.capture(scenario))
+        _, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+
+    record, = result.observations
+    assert record["status"] == "saved"
+    assert record["sha256"] == expected.hexdigest()
+    assert record["size"] == len(block) * repetitions
+    assert Path(record["path"]).stat().st_size == record["size"]
+    assert peak < 4 * 1024 * 1024
+    assert list(fixture.directory.glob("*.part")) == []
+
+
+def test_hash_read_failure_closes_file_and_does_not_publish(download_capture, monkeypatch):
+    fixture = download_capture
+    original_open = Path.open
+    opened = []
+
+    class FailingReader:
+        def __init__(self, file):
+            self.file = file
+            self.reads = 0
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            self.file.close()
+
+        def read(self, size):
+            self.reads += 1
+            if self.reads == 2:
+                raise OSError("private hash read failure")
+            return self.file.read(size)
+
+    def open_file(path, *args, **kwargs):
+        file = original_open(path, *args, **kwargs)
+        if path.suffix == ".part" and args == ("rb",):
+            opened.append(file)
+            return FailingReader(file)
+        return file
+
+    monkeypatch.setattr(Path, "open", open_file)
+
+    async def save_as(path):
+        path.write_bytes(b"x" * (512 * 1024))
+
+    async def scenario():
+        fixture.events["download"](download_item(save_as))
+
+    result = asyncio.run(fixture.capture(scenario))
+    record, = result.observations
+    assert record["status"] == "failed"
+    assert record["error"] == "OSError"
+    assert not {"sha256", "size", "path", "content_seen_count"}.intersection(record)
+    assert len(opened) == 1 and opened[0].closed
+    assert fixture.state.download_counts == {}
+    assert list(fixture.directory.iterdir()) == []
 
 
 def test_download_end_logger_failure_preserves_direct_capture_cancellation(download_capture):

@@ -24,6 +24,7 @@ log = logging.getLogger("orbis.capture")
 BODY_LIMIT = 512 * 1024
 JS_BODY_LIMIT = 2 * 1024 * 1024
 CLEANUP_TIMEOUT_SEC = 2.0
+DOWNLOAD_HASH_CHUNK_SIZE = 256 * 1024
 
 # --- Phase 1-B: Selective body collection limits ---
 STATIC_JS_BODY_LIMIT = 5 * 1024 * 1024
@@ -172,9 +173,13 @@ async def capture_page(
             path = download_dir / f"{identifier}-{uuid4().hex}.bin"
             partial_path = path.with_suffix(".part")
             await item.save_as(partial_path)
-            content = partial_path.read_bytes()
-            digest = hashlib.sha256(content).hexdigest()
-            size = len(content)
+            hasher = hashlib.sha256()
+            size = 0
+            with partial_path.open("rb") as content:
+                while chunk := content.read(DOWNLOAD_HASH_CHUNK_SIZE):
+                    hasher.update(chunk)
+                    size += len(chunk)
+            digest = hasher.hexdigest()
             partial_path.replace(path)
             partial_path = None
             record.update(status="saved", path=str(path), sha256=digest, size=size)
