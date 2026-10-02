@@ -182,6 +182,7 @@ async def run_safe_interactions(
         state.event("action_start", **{key: value for key, value in record.items() if key != "page_id"})
         started = time.monotonic()
         state.current_action = candidate
+        primary_error: BaseException | None = None
         try:
             executed = await _act(page, candidate, scope, tracker, max_actions - count, deadline)
             count += executed
@@ -194,20 +195,32 @@ async def run_safe_interactions(
             record.update(after_state=after_state, ui_state_changed=fingerprint != after_state)
             record["observed_progress"] = bool(record["ui_state_changed"] or page.url != before_url
                                                 or record.get("new_request_routes", 0))
-        except asyncio.CancelledError:
+        except asyncio.CancelledError as exc:
+            primary_error = exc
             record.update(status="interrupted", failure_reason="cancelled")
             raise
         except Exception as exc:
+            primary_error = exc
             record.update(status="error", failure_reason=type(exc).__name__)
             raise
+        except BaseException as exc:
+            primary_error = exc
+            raise
         finally:
-            record.update(after_url=page.url, duration_ms=round((time.monotonic() - started) * 1000, 1),
-                          finished_at=timestamp(), wait_outcomes=candidate.get("wait_outcomes", []))
-            if candidate.get("failure_reason"):
-                record["failure_reason"] = candidate["failure_reason"]
-            record.update(clean(record))
-            state.event("action_end", **{key: value for key, value in record.items() if key != "page_id"})
-            state.current_action = None
+            try:
+                record.update(after_url=page.url, duration_ms=round((time.monotonic() - started) * 1000, 1),
+                              finished_at=timestamp(), wait_outcomes=candidate.get("wait_outcomes", []))
+                if candidate.get("failure_reason"):
+                    record.setdefault("failure_reason", candidate["failure_reason"])
+                record.update(clean(record))
+                state.event("action_end", **{key: value for key, value in record.items() if key != "page_id"})
+            except BaseException as exc:
+                if isinstance(exc, Exception) and primary_error is not None:
+                    primary_error.add_note(f"Action finalization failed: {type(exc).__name__}")
+                else:
+                    raise
+            finally:
+                state.current_action = None
     state.event("exploration_end", url=page.url, stop_reason=stop_reason, attempts=attempts, executions=count)
     return count
 
