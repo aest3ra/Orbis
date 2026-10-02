@@ -745,7 +745,8 @@ def test_all_page_tasks_are_drained_before_first_child_failure_propagates(downlo
 
 @pytest.mark.parametrize("timing", ["early", "late"])
 @pytest.mark.parametrize("failure_type", [PlaywrightError, TimeoutError, OSError])
-def test_page_task_failure_policy_preserves_same_observations_regardless_of_timing(download_capture, timing, failure_type):
+@pytest.mark.parametrize("navigation_failed", [False, True])
+def test_page_task_failure_policy_preserves_same_observations_regardless_of_timing(download_capture, timing, failure_type, navigation_failed):
     fixture = download_capture
     failure = failure_type("private file selection failure")
 
@@ -769,6 +770,9 @@ def test_page_task_failure_policy_preserves_same_observations_regardless_of_timi
             fixture.events["download"](download_item(save_as))
             if timing == "early":
                 fixture.events["filechooser"](chooser)
+            if navigation_failed:
+                fixture.state.current_action = None
+                raise PlaywrightError("private navigation failure")
 
         task = asyncio.create_task(fixture.capture(scenario))
         await asyncio.wait_for(started.wait(), timeout=1)
