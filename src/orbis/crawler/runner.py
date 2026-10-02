@@ -122,11 +122,13 @@ async def run_scan(
                     if failure is None:
                         outcome.update(status="error", stop_reason="exception", error=type(exc).__name__)
                 terminal_error = metadata_error
+                terminal_log_emitted = False
                 try:
                     if trace is None:
                         record = {"event": "scan_end", **outcome, "totals": totals}
                     else:
                         record = trace.emit("scan_end", **outcome, totals=totals)
+                        terminal_log_emitted = True
                 except Exception as exc:
                     if terminal_error is None:
                         terminal_error = exc
@@ -152,6 +154,12 @@ async def run_scan(
                     else:
                         preserved = failure if failure is not None else terminal_error
                         preserved.add_note(f"Terminal database persistence failed: {type(exc).__name__}")
+                    if terminal_log_emitted:
+                        try:
+                            trace.emit("scan_finalization_error", stage="database", error=type(exc).__name__)
+                        except Exception as diagnostic_error:
+                            preserved = failure if failure is not None else terminal_error
+                            preserved.add_note(f"Finalization error logging failed: {type(diagnostic_error).__name__}")
                 if terminal_error is not None:
                     raise terminal_error
                 if trace is not None:
