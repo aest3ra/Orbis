@@ -91,18 +91,38 @@ async def run_scan(
                     outcome["metadata_error"] = type(exc).__name__
                     if failure is None:
                         outcome.update(status="error", stop_reason="exception", error=type(exc).__name__)
-                record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
-                with Session(engine) as session:
-                    session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
-                                            details_json=json.dumps(clean(record), ensure_ascii=False)))
-                    if metadata_error is None:
-                        finish_scan(session, scan_id, outcome["pages"], outcome["endpoints"])
+                terminal_error = metadata_error
+                try:
+                    record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
+                except Exception as exc:
+                    if terminal_error is None:
+                        terminal_error = exc
                     else:
-                        session.commit()
+                        preserved = failure if failure is not None else terminal_error
+                        preserved.add_note(f"Terminal log write failed: {type(exc).__name__}")
+                    if failure is None:
+                        outcome.update(status="error", stop_reason="exception", error=type(terminal_error).__name__)
+                    # A failed write/flush cannot supply a confirmed JSONL envelope.
+                    record = {"event": "scan_end", **outcome, "totals": dict(trace.totals),
+                              "log_write_error": type(exc).__name__}
+                try:
+                    with Session(engine) as session:
+                        session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
+                                                details_json=json.dumps(clean(record), ensure_ascii=False)))
+                        if metadata_error is None:
+                            finish_scan(session, scan_id, outcome["pages"], outcome["endpoints"])
+                        else:
+                            session.commit()
+                except Exception as exc:
+                    if terminal_error is None:
+                        terminal_error = exc
+                    else:
+                        preserved = failure if failure is not None else terminal_error
+                        preserved.add_note(f"Terminal database persistence failed: {type(exc).__name__}")
+                if terminal_error is not None:
+                    raise terminal_error
                 log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
                          outcome["stop_reason"], record["elapsed_ms"])
-                if metadata_error is not None:
-                    raise metadata_error
             except Exception as exc:
                 if failure is None:
                     raise
