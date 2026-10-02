@@ -148,7 +148,7 @@ async def capture_page(
     fetched_rids: set[str] = set()
     download_tasks: list[asyncio.Task] = []
     reported_requests: set[str] = set()
-    page = await context.new_page()
+    page = None
     client = None
     tracker = None
 
@@ -293,15 +293,16 @@ async def capture_page(
         state.seen_request_routes.update((event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events)
 
     try:
-        await page.add_init_script(INIT_SCRIPT)
-        page.on("download", on_download)
-        page.on("filechooser", on_filechooser)
-        client = await context.new_cdp_session(page)
-        await client.send("Network.enable")
-        client.on("Network.requestWillBeSent", on_request)
-        client.on("Network.responseReceived", on_response)
-        client.on("Network.loadingFailed", on_failed)
         async with asyncio.timeout_at(deadline):
+            page = await context.new_page()
+            await page.add_init_script(INIT_SCRIPT)
+            page.on("download", on_download)
+            page.on("filechooser", on_filechooser)
+            client = await context.new_cdp_session(page)
+            await client.send("Network.enable")
+            client.on("Network.requestWillBeSent", on_request)
+            client.on("Network.responseReceived", on_response)
+            client.on("Network.loadingFailed", on_failed)
             try:
                 if deadline is not None:
                     nav_timeout_ms = max(1, min(nav_timeout_ms, int((deadline - time.monotonic() - 0.1) * 1000)))
@@ -332,7 +333,8 @@ async def capture_page(
     except PlaywrightError as exc:
         result.error = type(exc).__name__
     finally:
-        result.final_url = page.url
+        if page is not None:
+            result.final_url = page.url
         result.network_events = list(captured.values())
         result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
         for task in download_tasks:
@@ -346,8 +348,9 @@ async def capture_page(
         if client is not None:
             with suppress(PlaywrightError):
                 await client.detach()
-        with suppress(PlaywrightError):
-            await page.close()
+        if page is not None:
+            with suppress(PlaywrightError):
+                await page.close()
     return result
 
 
