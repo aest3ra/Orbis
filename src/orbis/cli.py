@@ -7,6 +7,8 @@ import hashlib
 import json
 import logging
 import re
+from collections.abc import Iterator
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
@@ -36,6 +38,25 @@ def _setup_logging(verbose: bool = False) -> None:
     if not verbose:
         logging.getLogger("urllib3").setLevel(logging.WARNING)
         logging.getLogger("httpx").setLevel(logging.WARNING)
+
+
+@contextmanager
+def _database_session(db_path: Path) -> Iterator[Session]:
+    engine = open_db(db_path)
+    failure: BaseException | None = None
+    try:
+        with Session(engine) as session:
+            yield session
+    except BaseException as exc:
+        failure = exc
+        raise
+    finally:
+        try:
+            engine.dispose()
+        except Exception as exc:
+            if failure is None:
+                raise
+            failure.add_note(f"Database disposal failed: {type(exc).__name__}")
 
 
 @app.command()
@@ -71,8 +92,7 @@ def scan(
         wayback=wayback,
     ))
 
-    engine = open_db(db_path)
-    with Session(engine) as session:
+    with _database_session(db_path) as session:
         endpoints = list_endpoints(session, scan_id)
 
     print()
@@ -97,8 +117,7 @@ def list_cmd(
     db_path: Path = typer.Argument(..., exists=True, help="orbis DB path."),
 ) -> None:
     """List all endpoints in the DB."""
-    engine = open_db(db_path)
-    with Session(engine) as session:
+    with _database_session(db_path) as session:
         endpoints = list_endpoints(session)
     if not endpoints:
         print("[dim]no endpoints found[/dim]")
@@ -112,8 +131,7 @@ def inspect(
     endpoint_id: int = typer.Argument(..., help="Endpoint ID."),
 ) -> None:
     """Show detail for a single endpoint."""
-    engine = open_db(db_path)
-    with Session(engine) as session:
+    with _database_session(db_path) as session:
         ep, params = get_endpoint_with_params(session, endpoint_id)
 
     if ep is None:
