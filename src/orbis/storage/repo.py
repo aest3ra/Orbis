@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from sqlmodel import Session, select
 
 from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, _SOURCE_PRIORITY
+from orbis.analysis.params import merge_types
 from orbis.storage.db import Endpoint, Parameter, Scan
 
 log = logging.getLogger("orbis.storage")
@@ -83,6 +84,7 @@ def save_endpoints(
                 row.probe_status = probe_status
                 row.probe_code = None
                 row.sample_url = ep.sample_url
+                row.route_kind = ep.route_kind
                 row.discovered_via = ep.discovered_via
             # Page-load reachability wins: a plain-load sighting on any page
             # clears the interaction tag.
@@ -127,7 +129,7 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
         samples = json.dumps(param.sample_values)
         if existing:
             existing.seen_count += param.seen_count
-            existing.type_inferred = param.type_inferred
+            existing.type_inferred = merge_types(existing.type_inferred, param.type_inferred)
             existing.sample_values_json = _merge_samples(existing.sample_values_json, samples)
         else:
             session.add(Parameter(
@@ -156,9 +158,9 @@ def collapse_scan_endpoints(
     scan_id: int,
     threshold: int = 3,
 ) -> int:
-    """Post-scan: collapse high-cardinality sibling endpoints.
+    """Post-scan: collapse high-cardinality sibling page routes.
 
-    When multiple endpoints share the same (method, host, parent_path)
+    When multiple page routes share the same (method, host, parent_path)
     and differ only in the last path segment, they are merged into one
     endpoint with a ``{slug}`` placeholder.  Root-level paths (prefix is
     empty) are never collapsed to avoid merging unrelated top-level pages
@@ -174,6 +176,8 @@ def collapse_scan_endpoints(
     # and root-level paths (empty prefix).
     groups: dict[tuple[str, str, str], list[Endpoint]] = defaultdict(list)
     for ep in endpoints:
+        if ep.route_kind != "page_route":
+            continue
         parts = ep.path_template.rsplit("/", 1)
         if len(parts) == 2 and parts[0] and not parts[1].startswith("{"):
             key = (ep.method, ep.host, parts[0])
@@ -205,6 +209,9 @@ def collapse_scan_endpoints(
         method, host, prefix = key
         template = f"{prefix}/{{slug}}"
         survivor = by_key.get((method, host, template))
+        # An existing API/download template is separate observed evidence.
+        if survivor is not None and survivor.route_kind != "page_route":
+            continue
         members = [survivor, *eps] if survivor is not None else eps
         survivor = survivor if survivor is not None else eps[0]
         source = min(members, key=lambda e: _SOURCE_PRIORITY.get(e.source, 99)).source
@@ -243,6 +250,7 @@ def collapse_scan_endpoints(
                 ).first()
                 if existing:
                     existing.seen_count += param.seen_count
+                    existing.type_inferred = merge_types(existing.type_inferred, param.type_inferred)
                     existing.sample_values_json = _merge_samples(
                         existing.sample_values_json, param.sample_values_json,
                     )

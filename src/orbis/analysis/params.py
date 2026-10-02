@@ -66,6 +66,10 @@ def infer_type(value: str) -> str:
     return "string"
 
 
+def merge_types(first: str, second: str) -> str:
+    return first if first == second else "mixed"
+
+
 def _parse_body(body: str) -> list[tuple[str, str, str]]:
     stripped = body.strip()
     if stripped.startswith("{"):

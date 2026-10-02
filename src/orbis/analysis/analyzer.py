@@ -14,7 +14,7 @@ from orbis.crawler.browser import DomElement, NetworkEvent, PageCapture
 from orbis.crawler.scope import Scope
 from orbis.analysis.api_markers import API_PREFIX_RE
 from orbis.analysis.classifier import ASSET_SUFFIXES, classify
-from orbis.analysis.params import extract_params, infer_type
+from orbis.analysis.params import extract_params, infer_type, merge_types
 from orbis.analysis.url import host_with_port, templatize_path
 
 log = logging.getLogger("orbis.analyzer")
@@ -204,6 +204,8 @@ def _accumulate(
                 location=location, name=name, type_inferred=infer_type(value),
             )
             ep.params[pkey] = param
+        else:
+            param.type_inferred = merge_types(param.type_inferred, infer_type(value))
         param.seen_count += 1
         if value not in param.sample_values and len(param.sample_values) < MAX_SAMPLES:
             param.sample_values.append(value)
@@ -290,6 +292,9 @@ def _merge_endpoint(
                     type_inferred=ptype,
                     seen_count=1,
                 )
+            else:
+                param = ep.params[pkey]
+                param.type_inferred = merge_types(param.type_inferred, ptype)
 
 
 def _analyze_selective_bodies(
@@ -384,5 +389,6 @@ def _accumulate_wayback(
             ep.params[pkey] = param
         param.seen_count += 1
         for v in values:
+            param.type_inferred = merge_types(param.type_inferred, infer_type(v))
             if v and v not in param.sample_values and len(param.sample_values) < MAX_SAMPLES:
                 param.sample_values.append(v)
