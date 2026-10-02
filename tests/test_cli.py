@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
 from sqlalchemy import text
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlmodel import Session
 from typer.testing import CliRunner
 
@@ -270,3 +270,141 @@ def test_fresh_disposal_interruption_propagates(database_resources, monkeypatch,
 
     assert raised.value is interruption
     assert_database_released(resources)
+
+
+@pytest.mark.parametrize("command", ["scan", "list", "inspect"])
+def test_query_error_survives_real_session_rollback_failure(database_resources, monkeypatch, command):
+    resources = database_resources
+    state = SimpleNamespace(primary=None, chain=None, exit_body=None, close_error=None)
+    query_name = "get_endpoint_with_params" if command == "inspect" else "list_endpoints"
+    original_query = getattr(cli, query_name)
+
+    def disconnected_query(session, *args):
+        raw = session.connection().connection.driver_connection
+        external = sqlite3.connect(resources.database)
+        try:
+            external.execute("DROP TABLE endpoint")
+            external.commit()
+        finally:
+            external.close()
+        try:
+            return original_query(session, *args)
+        except OperationalError as exc:
+            state.primary = exc
+            state.chain = (exc.__cause__, exc.__context__, exc.__suppress_context__)
+            raw.close()
+            raise
+
+    class RecordingSession(Session):
+        def __exit__(self, error_type, error, traceback):
+            state.exit_body = error
+            try:
+                return super().__exit__(error_type, error, traceback)
+            except BaseException as exc:
+                state.close_error = exc
+                raise
+
+    monkeypatch.setattr(cli, query_name, disconnected_query)
+    monkeypatch.setattr(cli, "Session", RecordingSession)
+
+    with pytest.raises(OperationalError) as raised:
+        direct_command(command, resources.database)
+
+    assert raised.value is state.primary is state.exit_body
+    assert isinstance(raised.value.orig, sqlite3.OperationalError)
+    assert isinstance(state.close_error, ProgrammingError)
+    assert isinstance(state.close_error.orig, sqlite3.ProgrammingError)
+    assert (raised.value.__cause__, raised.value.__context__, raised.value.__suppress_context__) == state.chain
+    assert raised.value.__notes__ == ["Database session close failed: ProgrammingError"]
+    assert_database_released(resources)
+    assert resources.scan.await_count == (1 if command == "scan" else 0)
+
+
+def test_successful_query_does_not_hide_real_session_close_failure(database_resources):
+    with pytest.raises(ProgrammingError) as raised:
+        with cli._database_session(database_resources.database) as session:
+            session.exec(text("SELECT 1")).one()
+            session.connection().connection.driver_connection.close()
+
+    assert isinstance(raised.value.orig, sqlite3.ProgrammingError)
+    assert getattr(raised.value, "__notes__", []) == []
+    assert_database_released(database_resources)
+
+
+@pytest.mark.parametrize("failure_type", [RuntimeError, asyncio.CancelledError, KeyboardInterrupt, SystemExit])
+def test_body_error_survives_both_session_and_engine_cleanup(database_resources, monkeypatch, failure_type):
+    failure = failure_type("private body failure")
+    session = MagicMock()
+    session.__exit__.side_effect = OSError("private session failure")
+    monkeypatch.setattr(cli, "Session", Mock(return_value=session))
+    database_resources.dispose_error = ValueError("private disposal failure")
+
+    with pytest.raises(failure_type) as raised:
+        with cli._database_session(database_resources.database):
+            raise failure
+
+    assert raised.value is failure
+    assert failure.__context__ is None
+    assert failure.__notes__ == ["Database session close failed: OSError", "Database disposal failed: ValueError"]
+    session.__exit__.assert_called_once()
+    assert session.__exit__.call_args.args[1] is failure
+    assert_database_released(database_resources)
+
+
+@pytest.mark.parametrize("failure_type", [asyncio.CancelledError, KeyboardInterrupt, SystemExit])
+def test_new_session_close_interruption_precedes_body_failure(database_resources, monkeypatch, failure_type):
+    earlier = RuntimeError("earlier body failure")
+    interruption = failure_type("new close interruption")
+    session = MagicMock()
+    session.__exit__.side_effect = interruption
+    monkeypatch.setattr(cli, "Session", Mock(return_value=session))
+    database_resources.dispose_error = OSError("private disposal failure")
+
+    with pytest.raises(failure_type) as raised:
+        with cli._database_session(database_resources.database):
+            raise earlier
+
+    assert raised.value is interruption
+    assert interruption.__notes__ == ["Database disposal failed: OSError"]
+    assert getattr(earlier, "__notes__", []) == []
+    assert_database_released(database_resources)
+
+
+@pytest.mark.parametrize("dispose_fails", [False, True])
+def test_session_suppression_does_not_preserve_suppressed_body_failure(database_resources, monkeypatch, dispose_fails):
+    failure = RuntimeError("suppressed body failure")
+    session = MagicMock()
+    session.__exit__.return_value = True
+    monkeypatch.setattr(cli, "Session", Mock(return_value=session))
+    if dispose_fails:
+        database_resources.dispose_error = OSError("disposal failure")
+
+    def exercise():
+        with cli._database_session(database_resources.database):
+            raise failure
+
+    if dispose_fails:
+        with pytest.raises(OSError) as raised:
+            exercise()
+        assert raised.value is database_resources.dispose_error
+    else:
+        exercise()
+    assert getattr(failure, "__notes__", []) == []
+    session.__exit__.assert_called_once()
+    assert session.__exit__.call_args.args[1] is failure
+    assert_database_released(database_resources)
+
+
+def test_same_body_and_session_error_is_not_a_secondary_failure(database_resources, monkeypatch):
+    failure = RuntimeError("same failure")
+    session = MagicMock()
+    session.__exit__.side_effect = failure
+    monkeypatch.setattr(cli, "Session", Mock(return_value=session))
+
+    with pytest.raises(RuntimeError) as raised:
+        with cli._database_session(database_resources.database):
+            raise failure
+
+    assert raised.value is failure
+    assert getattr(failure, "__notes__", []) == []
+    assert_database_released(database_resources)
