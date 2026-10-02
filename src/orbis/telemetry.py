@@ -67,7 +67,7 @@ class ScanLog:
                         "scan_id": self.scan_id, "sequence": self.sequence,
                         "timestamp": timestamp(), "elapsed_ms": round((time.monotonic() - self.started) * 1000, 1),
                         "event": event, **details})
-        self._file.write(json.dumps(record, ensure_ascii=False) + "\n")
+        self._file.write(json.dumps(record) + "\n")
         self._file.flush()
         self.totals[event] += 1
         if event == "page_end" and details.get("status") in {"completed", "partial", "failed"}:
