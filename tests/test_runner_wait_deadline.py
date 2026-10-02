@@ -190,6 +190,6 @@ def test_external_cancellation_during_probe_propagates(crawl_resources):
 
     asyncio.run(exercise())
 
-    assert events(crawl_resources, "probe_end") == []
+    assert events(crawl_resources, "probe_end")[0]["stop_reason"] == "cancelled"
     crawl_resources.browser.close.assert_awaited_once_with()
     crawl_resources.playwright.stop.assert_awaited_once_with()

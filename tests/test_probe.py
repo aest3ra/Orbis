@@ -10,6 +10,7 @@ from sqlmodel import Session
 
 from orbis.config import ScopeConfig
 from orbis.crawler.probe import (
+    ProbeResults,
     classify_probe,
     probe_candidates,
     probe_endpoint,
@@ -387,9 +388,9 @@ def test_run_scan_always_runs_probe_stage(monkeypatch, tmp_path) -> None:
 
     calls: list = []
 
-    async def _spy(context, candidates, *, scope, limits):
+    async def _spy(context, candidates, *, scope, limits, on_result):
         calls.append(candidates)
-        return []
+        return ProbeResults()
 
     monkeypatch.setattr(runner_mod, "probe_candidates", _spy)
 
