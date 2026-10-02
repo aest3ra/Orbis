@@ -47,32 +47,32 @@ async def run_scan(
             raise ValueError(f"Upload file does not exist: {path}")
     scope = Scope(config.scope)
     engine = open_db(db_path)
-
-    auth_path: str | None = None
-    if config.auth.type == "storage_state" and config.auth.storage_state_path:
-        auth_path = str(config.auth.storage_state_path)
-
-    with Session(engine) as session:
-        scan_id = create_scan(session, config.target, auth_path)
-
-    trace = ScanLog(db_path, scan_id)
-    log.info("scan=%d diagnostics=%s", scan_id, trace.path)
-    trace.emit("scan_start", target=config.target, limits=config.limits.model_dump(),
-               authenticated=auth_path is not None, llm_enabled=config.llm.enabled, wayback=wayback)
-    outcome = {"status": "error", "stop_reason": "exception"}
+    trace = None
     try:
-        summary = await _crawl_scan(config, engine, scan_id, scope, auth_path, api_key,
-                                    db_path=db_path, headless=headless, wayback=wayback, trace=trace)
-        outcome = {"status": "completed", **summary}
-        return scan_id
-    except asyncio.CancelledError:
-        outcome = {"status": "cancelled", "stop_reason": "cancelled"}
-        raise
-    except Exception as exc:
-        outcome["error"] = type(exc).__name__
-        raise
-    finally:
+        auth_path: str | None = None
+        if config.auth.type == "storage_state" and config.auth.storage_state_path:
+            auth_path = str(config.auth.storage_state_path)
+
+        with Session(engine) as session:
+            scan_id = create_scan(session, config.target, auth_path)
+
+        trace = ScanLog(db_path, scan_id)
+        log.info("scan=%d diagnostics=%s", scan_id, trace.path)
+        trace.emit("scan_start", target=config.target, limits=config.limits.model_dump(),
+                   authenticated=auth_path is not None, llm_enabled=config.llm.enabled, wayback=wayback)
+        outcome = {"status": "error", "stop_reason": "exception"}
         try:
+            summary = await _crawl_scan(config, engine, scan_id, scope, auth_path, api_key,
+                                        db_path=db_path, headless=headless, wayback=wayback, trace=trace)
+            outcome = {"status": "completed", **summary}
+            return scan_id
+        except asyncio.CancelledError:
+            outcome = {"status": "cancelled", "stop_reason": "cancelled"}
+            raise
+        except Exception as exc:
+            outcome["error"] = type(exc).__name__
+            raise
+        finally:
             record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
             with Session(engine) as session:
                 session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
@@ -80,8 +80,11 @@ async def run_scan(
                 session.commit()
             log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
                      outcome["stop_reason"], record["elapsed_ms"])
+    finally:
+        try:
+            if trace is not None:
+                trace.close()
         finally:
-            trace.close()
             engine.dispose()
 
 
@@ -294,9 +297,11 @@ async def _crawl_scan(
                                                 details_json=json.dumps(clean(record), ensure_ascii=False)))
                     session.commit()
         finally:
-            if llm_request is not None:
-                await llm_request.dispose()
-            await browser.close()
+            try:
+                if llm_request is not None:
+                    await llm_request.dispose()
+            finally:
+                await browser.close()
 
     with Session(engine) as session:
         # Same cardinality bar as the frontier: only genuinely high-cardinality
