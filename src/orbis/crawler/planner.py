@@ -98,6 +98,7 @@ class QwenPlanner:
             if self.emit is not None:
                 self.emit("llm_start", **record)
             response = None
+            primary_error: BaseException | None = None
             try:
                 response = await self.request.post(
                     self.config.base_url.rstrip("/") + "/chat/completions",
@@ -106,8 +107,13 @@ class QwenPlanner:
                 record["http_status"] = response.status
                 if response.status in (429, 502, 503, 504) and attempt < MAX_RETRIES:
                     record["outcome"] = "retry" if self.calls < self.config.max_calls else "budget_exhausted"
-                    await response.dispose()
+                    owned_response = response
                     response = None
+                    try:
+                        await owned_response.dispose()
+                    except BaseException as exc:
+                        primary_error = exc
+                        raise
                     await asyncio.sleep(1)
                     continue
                 if response.status != 200:
@@ -125,16 +131,36 @@ class QwenPlanner:
                 record["decision"] = {"candidate_id": decision.candidate_id, "value_provided": decision.value is not None}
                 record["outcome"] = "selected"
                 return decision
-            except asyncio.CancelledError:
+            except asyncio.CancelledError as exc:
+                primary_error = exc
                 record.update(outcome="interrupted", error="cancelled")
                 raise
             except (PlaywrightError, ValidationError, ValueError, KeyError, IndexError, TypeError, AttributeError) as exc:
                 record["error"] = type(exc).__name__
+                if exc is primary_error:
+                    raise
                 return None
+            except BaseException as exc:
+                primary_error = exc
+                raise
             finally:
                 record["duration_ms"] = round((time.monotonic() - started) * 1000, 1)
-                if self.emit is not None:
-                    self.emit("llm_end", **record)
-                if response is not None:
-                    await response.dispose()
+                try:
+                    if self.emit is not None:
+                        self.emit("llm_end", **record)
+                except BaseException as exc:
+                    if isinstance(exc, Exception) and primary_error is not None:
+                        primary_error.add_note(f"LLM finalization failed: {type(exc).__name__}")
+                    else:
+                        primary_error = exc
+                        raise
+                finally:
+                    if response is not None:
+                        try:
+                            await response.dispose()
+                        except BaseException as exc:
+                            if isinstance(exc, Exception) and primary_error is not None:
+                                primary_error.add_note(f"LLM response cleanup failed: {type(exc).__name__}")
+                            else:
+                                raise
         return None
