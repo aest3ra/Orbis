@@ -97,8 +97,7 @@ class TestMergeEndpoint:
         assert ("query", "page") in ep.params
         assert ("query", "limit") in ep.params
 
-    def test_parameter_union_no_overwrite(self) -> None:
-        """Existing params should not be overwritten."""
+    def test_parameter_union_preserves_conflicting_types(self) -> None:
         eps: dict = {}
         _merge_endpoint(
             eps, "GET", "https://example.com/api/users",
@@ -111,8 +110,7 @@ class TestMergeEndpoint:
             params=[("query", "page", "integer"), ("query", "new", "string")],
         )
         ep = list(eps.values())[0]
-        # Existing "page" param not overwritten, new "new" param added
-        assert ep.params[("query", "page")].type_inferred == "string"  # original
+        assert ep.params[("query", "page")].type_inferred == "mixed"
         assert ("query", "new") in ep.params
 
 
