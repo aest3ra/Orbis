@@ -18,6 +18,7 @@ def scan_resources(monkeypatch):
     crawl = AsyncMock(return_value={"stop_reason": "frontier_exhausted"})
     monkeypatch.setattr(runner, "open_db", Mock(return_value=engine))
     monkeypatch.setattr(runner, "Session", MagicMock())
+    runner.Session.return_value.__enter__.return_value.exec.return_value.one.return_value = 0
     monkeypatch.setattr(runner, "create_scan", Mock(return_value=17))
     monkeypatch.setattr(runner, "ScanLog", Mock(return_value=trace))
     monkeypatch.setattr(runner, "_crawl_scan", crawl)
@@ -304,7 +305,7 @@ def test_startup_error_survives_cleanup_errors(scan_resources, stage):
         asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path="unused.db", wayback=False))
 
     assert raised.value is failure
-    assert len(failure.__notes__) == (1 if stage == "construction" else 2)
+    assert len(failure.__notes__) == (1 if stage == "construction" else 3)
     assert all("private-" not in note for note in failure.__notes__)
     crawl.assert_not_awaited()
     engine.dispose.assert_called_once_with()

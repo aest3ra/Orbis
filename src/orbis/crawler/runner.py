@@ -58,12 +58,15 @@ async def run_scan(
         with Session(engine) as session:
             scan_id = create_scan(session, config.target, auth_path)
 
-        trace = ScanLog(db_path, scan_id)
-        log.info("scan=%d diagnostics=%s", scan_id, trace.path)
-        trace.emit("scan_start", target=config.target, limits=config.limits.model_dump(),
-                   authenticated=auth_path is not None, llm_enabled=config.llm.enabled, wayback=wayback)
         outcome = {"status": "error", "stop_reason": "exception"}
+        stage = "log_creation"
         try:
+            trace = ScanLog(db_path, scan_id)
+            stage = "scan_start"
+            log.info("scan=%d diagnostics=%s", scan_id, trace.path)
+            trace.emit("scan_start", target=config.target, limits=config.limits.model_dump(),
+                       authenticated=auth_path is not None, llm_enabled=config.llm.enabled, wayback=wayback)
+            stage = "crawl"
             summary = await _crawl_scan(config, engine, scan_id, scope, auth_path, api_key,
                                         db_path=db_path, headless=headless, wayback=wayback, trace=trace)
             outcome = {"status": "completed", **summary}
@@ -71,14 +74,19 @@ async def run_scan(
         except asyncio.CancelledError as exc:
             failure = exc
             outcome = {"status": "cancelled", "stop_reason": "cancelled"}
+            if stage != "crawl":
+                outcome["failure_stage"] = stage
             raise
         except BaseException as exc:
             failure = exc
             outcome["error"] = type(exc).__name__
+            if stage != "crawl":
+                outcome["failure_stage"] = stage
             raise
         finally:
             try:
-                outcome.setdefault("pages", trace.totals.get("pages_crawled", 0))
+                totals = dict(trace.totals) if trace is not None else {}
+                outcome.setdefault("pages", totals.get("pages_crawled", 0))
                 metadata_error = None
                 try:
                     with Session(engine) as session:
@@ -93,7 +101,10 @@ async def run_scan(
                         outcome.update(status="error", stop_reason="exception", error=type(exc).__name__)
                 terminal_error = metadata_error
                 try:
-                    record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
+                    if trace is None:
+                        record = {"event": "scan_end", **outcome, "totals": totals}
+                    else:
+                        record = trace.emit("scan_end", **outcome, totals=totals)
                 except Exception as exc:
                     if terminal_error is None:
                         terminal_error = exc
@@ -103,7 +114,7 @@ async def run_scan(
                     if failure is None:
                         outcome.update(status="error", stop_reason="exception", error=type(terminal_error).__name__)
                     # A failed write/flush cannot supply a confirmed JSONL envelope.
-                    record = {"event": "scan_end", **outcome, "totals": dict(trace.totals),
+                    record = {"event": "scan_end", **outcome, "totals": totals,
                               "log_write_error": type(exc).__name__}
                 try:
                     with Session(engine) as session:
@@ -121,8 +132,9 @@ async def run_scan(
                         preserved.add_note(f"Terminal database persistence failed: {type(exc).__name__}")
                 if terminal_error is not None:
                     raise terminal_error
-                log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
-                         outcome["stop_reason"], record["elapsed_ms"])
+                if trace is not None:
+                    log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
+                             outcome["stop_reason"], record["elapsed_ms"])
             except Exception as exc:
                 if failure is None:
                     raise
