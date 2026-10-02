@@ -48,6 +48,7 @@ async def run_scan(
     scope = Scope(config.scope)
     engine = open_db(db_path)
     trace = None
+    failure: BaseException | None = None
     try:
         auth_path: str | None = None
         if config.auth.type == "storage_state" and config.auth.storage_state_path:
@@ -66,26 +67,46 @@ async def run_scan(
                                         db_path=db_path, headless=headless, wayback=wayback, trace=trace)
             outcome = {"status": "completed", **summary}
             return scan_id
-        except asyncio.CancelledError:
+        except asyncio.CancelledError as exc:
+            failure = exc
             outcome = {"status": "cancelled", "stop_reason": "cancelled"}
             raise
-        except Exception as exc:
+        except BaseException as exc:
+            failure = exc
             outcome["error"] = type(exc).__name__
             raise
         finally:
-            record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
-            with Session(engine) as session:
-                session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
-                                        details_json=json.dumps(clean(record), ensure_ascii=False)))
-                session.commit()
-            log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
-                     outcome["stop_reason"], record["elapsed_ms"])
+            try:
+                record = trace.emit("scan_end", **outcome, totals=dict(trace.totals))
+                with Session(engine) as session:
+                    session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="scan",
+                                            details_json=json.dumps(clean(record), ensure_ascii=False)))
+                    session.commit()
+                log.info("scan=%d status=%s stop=%s elapsed_ms=%.1f", scan_id, outcome["status"],
+                         outcome["stop_reason"], record["elapsed_ms"])
+            except Exception as exc:
+                if failure is None:
+                    raise
+                failure.add_note(f"Terminal diagnostics failed: {type(exc).__name__}")
+    except BaseException as exc:
+        failure = exc
+        raise
     finally:
         try:
             if trace is not None:
                 trace.close()
+        except BaseException as exc:
+            if failure is None or not isinstance(exc, Exception):
+                failure = exc
+                raise
+            failure.add_note(f"Scan log close failed: {type(exc).__name__}")
         finally:
-            engine.dispose()
+            try:
+                engine.dispose()
+            except Exception as exc:
+                if failure is None:
+                    raise
+                failure.add_note(f"Database disposal failed: {type(exc).__name__}")
 
 
 async def _crawl_scan(
@@ -136,6 +157,7 @@ async def _crawl_scan(
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=headless)
         llm_request = None
+        failure: BaseException | None = None
         try:
             ctx_kw: dict = {}
             if auth_path:
@@ -296,12 +318,25 @@ async def _crawl_scan(
                         session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="llm",
                                                 details_json=json.dumps(clean(record), ensure_ascii=False)))
                     session.commit()
+        except BaseException as exc:
+            failure = exc
+            raise
         finally:
             try:
                 if llm_request is not None:
                     await llm_request.dispose()
+            except BaseException as exc:
+                if failure is None or not isinstance(exc, Exception):
+                    failure = exc
+                    raise
+                failure.add_note(f"Request context disposal failed: {type(exc).__name__}")
             finally:
-                await browser.close()
+                try:
+                    await browser.close()
+                except Exception as exc:
+                    if failure is None:
+                        raise
+                    failure.add_note(f"Browser close failed: {type(exc).__name__}")
 
     with Session(engine) as session:
         # Same cardinality bar as the frontier: only genuinely high-cardinality
