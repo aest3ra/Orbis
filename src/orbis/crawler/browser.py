@@ -8,7 +8,6 @@ import hashlib
 import time
 from pathlib import Path
 from uuid import uuid4
-from contextlib import suppress
 from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
 
@@ -24,6 +23,7 @@ log = logging.getLogger("orbis.capture")
 
 BODY_LIMIT = 512 * 1024
 JS_BODY_LIMIT = 2 * 1024 * 1024
+CLEANUP_TIMEOUT_SEC = 2.0
 
 # --- Phase 1-B: Selective body collection limits ---
 STATIC_JS_BODY_LIMIT = 5 * 1024 * 1024
@@ -151,6 +151,7 @@ async def capture_page(
     page = None
     client = None
     tracker = None
+    primary_error: BaseException | None = None
 
     async def downloaded(item, action: dict) -> None:
         started = time.monotonic()
@@ -332,25 +333,59 @@ async def capture_page(
         result.error = "ScanDeadlineExceeded"
     except PlaywrightError as exc:
         result.error = type(exc).__name__
+    except BaseException as exc:
+        primary_error = exc
+        raise
     finally:
-        if page is not None:
-            result.final_url = page.url
-        result.network_events = list(captured.values())
-        result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
-        for task in download_tasks:
-            if not task.done():
-                task.cancel()
-        if download_tasks:
-            await asyncio.gather(*download_tasks, return_exceptions=True)
-        for event in captured.values():
-            if relevant(event) and event.request_id not in reported_requests:
-                report_request(event)
-        if client is not None:
-            with suppress(PlaywrightError):
-                await client.detach()
-        if page is not None:
-            with suppress(PlaywrightError):
-                await page.close()
+        try:
+            if page is not None:
+                result.final_url = page.url
+            result.network_events = list(captured.values())
+            result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
+            for task in download_tasks:
+                if not task.done():
+                    task.cancel()
+            if download_tasks:
+                await asyncio.gather(*download_tasks, return_exceptions=True)
+            for event in captured.values():
+                if relevant(event) and event.request_id not in reported_requests:
+                    report_request(event)
+        except BaseException as exc:
+            if isinstance(exc, Exception) and primary_error is not None:
+                primary_error.add_note(f"Capture finalization failed: {type(exc).__name__}")
+            else:
+                primary_error = exc
+                raise
+        finally:
+            try:
+                if client is not None:
+                    try:
+                        async with asyncio.timeout(CLEANUP_TIMEOUT_SEC):
+                            await client.detach()
+                    except BaseException as exc:
+                        if isinstance(exc, Exception) and primary_error is not None:
+                            primary_error.add_note(f"CDP detach cleanup failed: {type(exc).__name__}")
+                        elif isinstance(exc, (PlaywrightError, TimeoutError)):
+                            log.warning("CDP detach cleanup failed: %s", type(exc).__name__)
+                            if isinstance(exc, TimeoutError):
+                                result.error = result.error or "CaptureCleanupTimeout"
+                        else:
+                            primary_error = exc
+                            raise
+            finally:
+                if page is not None:
+                    try:
+                        async with asyncio.timeout(CLEANUP_TIMEOUT_SEC):
+                            await page.close()
+                    except BaseException as exc:
+                        if isinstance(exc, Exception) and primary_error is not None:
+                            primary_error.add_note(f"Page close cleanup failed: {type(exc).__name__}")
+                        elif isinstance(exc, (PlaywrightError, TimeoutError)):
+                            log.warning("Page close cleanup failed: %s", type(exc).__name__)
+                            if isinstance(exc, TimeoutError):
+                                result.error = result.error or "CaptureCleanupTimeout"
+                        else:
+                            raise
     return result
 
 
