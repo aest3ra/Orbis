@@ -1,7 +1,10 @@
 import asyncio
 import json
+from types import SimpleNamespace
 
 import pytest
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from sqlmodel import Session, select
 
 from orbis.config import ScanConfig
@@ -173,3 +176,206 @@ def test_successful_terminal_record_matches_jsonl_exactly(tmp_path, monkeypatch)
     assert terminal["pages"] == terminal["endpoints"] == 1
     assert scan.finished_at is not None
     assert "log_write_error" not in terminal
+
+
+def install_session_fault(monkeypatch, stage, close_error, *, fail_body=True, body_error=None, disconnect=False):
+    state = SimpleNamespace(count=0, body_error=None, close_error=None, close_calls=[], chain=None)
+    target = 2 if stage == "count" else 3
+
+    class FaultSession(Session):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            state.count += 1
+            self.index = state.count
+
+        def capture_failure(self, operation):
+            try:
+                if body_error is not None:
+                    raise body_error
+                return operation()
+            except BaseException as exc:
+                state.body_error = exc
+                state.chain = (exc.__cause__, exc.__context__, exc.__suppress_context__)
+                if disconnect:
+                    self.connection().connection.driver_connection.close()
+                raise
+
+        def exec(self, *args, **kwargs):
+            if fail_body and stage == "count" and self.index == target:
+                return self.capture_failure(lambda: super(FaultSession, self).exec(
+                    text("SELECT * FROM absent_terminal_count_table")))
+            return super().exec(*args, **kwargs)
+
+        def commit(self):
+            if fail_body and stage == "commit" and self.index == target:
+                self.add(Observation(scan_id=1, page_url="http://localhost/", kind="scan", details_json=None))
+                return self.capture_failure(super().commit)
+            return super().commit()
+
+        def close(self):
+            state.close_calls.append(self.index)
+            try:
+                super().close()
+            except BaseException as exc:
+                state.close_error = exc
+                raise
+            if self.index == target and close_error is not None:
+                state.close_error = close_error
+                raise close_error
+
+    monkeypatch.setattr(runner, "Session", FaultSession)
+    return state
+
+
+@pytest.mark.parametrize("stage", ["count", "commit"])
+@pytest.mark.parametrize("crawl_mode", ["completed", "error", "cancelled"])
+def test_database_body_error_survives_session_close_failure(tmp_path, monkeypatch, stage, crawl_mode):
+    state = install_session_fault(monkeypatch, stage, OSError("private-close-content"))
+    database = tmp_path / "scan.db"
+    primary = RuntimeError("private-crawl-content") if crawl_mode == "error" else None
+
+    async def exercise():
+        nonlocal primary
+        entered = asyncio.Event()
+
+        async def crawl(*args, **kwargs):
+            nonlocal primary
+            if crawl_mode == "error":
+                raise primary
+            if crawl_mode == "cancelled":
+                entered.set()
+                try:
+                    await asyncio.Event().wait()
+                except asyncio.CancelledError as exc:
+                    primary = exc
+                    raise
+            return {"pages": 0, "stop_reason": "max_pages"}
+
+        monkeypatch.setattr(runner, "_crawl_scan", crawl)
+        task = asyncio.create_task(runner.run_scan(
+            ScanConfig(target="http://localhost/"), db_path=str(database), wayback=False))
+        if crawl_mode == "cancelled":
+            await entered.wait()
+            task.cancel("external stop")
+        expected_type = (asyncio.CancelledError if crawl_mode == "cancelled" else
+                         RuntimeError if crawl_mode == "error" else
+                         OperationalError if stage == "count" else IntegrityError)
+        with pytest.raises(expected_type) as raised:
+            await task
+        assert raised.value is (primary if primary is not None else state.body_error)
+        assert task.cancelled() == (crawl_mode == "cancelled")
+
+    asyncio.run(exercise())
+
+    assert state.body_error.__notes__ == ["Terminal database session close failed: OSError"]
+    assert state.body_error.__cause__ is state.chain[0]
+    assert state.body_error.__context__ is (primary if primary is not None else state.chain[1])
+    assert state.body_error.__suppress_context__ == state.chain[2]
+    assert state.close_calls == [1, 2, 3]
+    scan, records = read_result(database)
+    assert scan.finished_at is None
+    if stage == "count":
+        record, = records
+        assert record["metadata_error"] == "OperationalError"
+        assert record["status"] == ("cancelled" if crawl_mode == "cancelled" else "error")
+        assert "private-" not in json.dumps(record)
+    else:
+        assert records == []
+
+
+def test_real_sqlite_rollback_failure_preserves_count_error(tmp_path, monkeypatch):
+    state = install_session_fault(monkeypatch, "count", None, disconnect=True)
+    install_crawl(monkeypatch, None, None, None)
+    database = tmp_path / "scan.db"
+
+    with pytest.raises(OperationalError) as raised:
+        asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path=str(database), wayback=False))
+
+    assert raised.value is state.body_error
+    assert isinstance(state.close_error, ProgrammingError)
+    assert state.body_error.__notes__ == ["Terminal database session close failed: ProgrammingError"]
+    assert (state.body_error.__cause__, state.body_error.__context__,
+            state.body_error.__suppress_context__) == state.chain
+    scan, records = read_result(database)
+    assert scan.finished_at is None
+    assert records[0]["metadata_error"] == "OperationalError"
+
+
+@pytest.mark.parametrize("stage", ["count", "commit"])
+@pytest.mark.parametrize("body_type", [asyncio.CancelledError, KeyboardInterrupt, SystemExit])
+def test_terminal_body_interruption_survives_regular_close_failure(tmp_path, monkeypatch, stage, body_type):
+    body_error = body_type("private-body-content")
+    state = install_session_fault(monkeypatch, stage, OSError("private-close-content"), body_error=body_error)
+    install_crawl(monkeypatch, None, None, None)
+
+    with pytest.raises(body_type) as raised:
+        asyncio.run(runner.run_scan(
+            ScanConfig(target="http://localhost/"), db_path=str(tmp_path / "scan.db"), wayback=False))
+
+    assert raised.value is body_error
+    assert body_error.__notes__ == ["Terminal database session close failed: OSError"]
+    assert (body_error.__cause__, body_error.__context__, body_error.__suppress_context__) == state.chain
+
+
+@pytest.mark.parametrize("stage", ["count", "commit"])
+def test_session_close_error_after_success_is_not_hidden(tmp_path, monkeypatch, stage):
+    close_error = OSError("private-close-content")
+    state = install_session_fault(monkeypatch, stage, close_error, fail_body=False)
+    install_crawl(monkeypatch, None, None, None)
+    database = tmp_path / "scan.db"
+
+    with pytest.raises(OSError) as raised:
+        asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path=str(database), wayback=False))
+
+    assert raised.value is close_error
+    assert state.body_error is None
+    scan, records = read_result(database)
+    assert (scan.finished_at is not None) == (stage == "commit")
+    assert records[0]["status"] == ("completed" if stage == "commit" else "error")
+
+
+@pytest.mark.parametrize("stage", ["count", "commit"])
+@pytest.mark.parametrize("close_type", [asyncio.CancelledError, KeyboardInterrupt])
+@pytest.mark.parametrize("fail_body", [False, True])
+def test_fresh_terminal_close_interruption_propagates(tmp_path, monkeypatch, stage, close_type, fail_body):
+    close_error = close_type("private-close-content")
+    install_session_fault(monkeypatch, stage, close_error, fail_body=fail_body)
+    install_crawl(monkeypatch, None, None, None)
+
+    with pytest.raises(close_type) as raised:
+        asyncio.run(runner.run_scan(
+            ScanConfig(target="http://localhost/"), db_path=str(tmp_path / "scan.db"), wayback=False))
+
+    assert raised.value is close_error
+
+
+@pytest.mark.parametrize("stage", ["count", "commit"])
+def test_terminal_session_entry_failure_preserves_with_contract(tmp_path, monkeypatch, stage):
+    target = 2 if stage == "count" else 3
+    entry_error = OSError("private-entry-content")
+    calls = {"created": 0, "closed": []}
+
+    class EntryFailureSession(Session):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            calls["created"] += 1
+            self.index = calls["created"]
+
+        def __enter__(self):
+            if self.index == target:
+                raise entry_error
+            return super().__enter__()
+
+        def close(self):
+            calls["closed"].append(self.index)
+            return super().close()
+
+    monkeypatch.setattr(runner, "Session", EntryFailureSession)
+    install_crawl(monkeypatch, None, None, None)
+    with pytest.raises(OSError) as raised:
+        asyncio.run(runner.run_scan(
+            ScanConfig(target="http://localhost/"), db_path=str(tmp_path / "scan.db"), wayback=False))
+
+    assert raised.value is entry_error
+    assert not hasattr(entry_error, "__notes__")
+    assert target not in calls["closed"]
