@@ -150,6 +150,7 @@ async def capture_page(
     fetched_rids: set[str] = set()
     download_tasks: list[asyncio.Task] = []
     download_finalization_errors: list[Exception] = []
+    task_diagnostic_errors: list[BaseException] = []
     reported_requests: dict[str, int | None] = {}
     page = None
     client = None
@@ -159,6 +160,13 @@ async def capture_page(
     http_diagnostic_error: BaseException | None = None
     http_diagnostic_pending = False
     closing = False
+
+    def emit_task_diagnostic(name: str, **details) -> None:
+        try:
+            state.event(name, **details)
+        except BaseException as exc:
+            task_diagnostic_errors.append(exc)
+            raise
 
     def check_http_diagnostics() -> None:
         nonlocal http_diagnostic_pending
@@ -186,7 +194,7 @@ async def capture_page(
         record = {"kind": "download", "url": safe_url(item.url), "status": "pending",
                   "action_id": action.get("action_id"), "page_id": state.page_id, "started_at": timestamp()}
         result.observations.append(record)
-        state.event("download_start", **{k: v for k, v in record.items() if k != "page_id"})
+        emit_task_diagnostic("download_start", **{k: v for k, v in record.items() if k != "page_id"})
         try:
             if download_dir is None or (scope is not None and not scope.allows(item.url)):
                 await item.cancel()
@@ -240,7 +248,7 @@ async def capture_page(
                     record.update(cleanup_error=type(exc).__name__, partial_path=str(partial_path))
             record.update(duration_ms=round((time.monotonic() - started) * 1000, 1), finished_at=timestamp())
             try:
-                state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
+                emit_task_diagnostic("download_end", **{k: v for k, v in record.items() if k != "page_id"})
             except Exception as exc:
                 if download_error is None:
                     raise
@@ -264,7 +272,7 @@ async def capture_page(
             files = _upload_files({"accept": await chooser.element.get_attribute("accept") or "",
                                    "multiple": chooser.is_multiple()}, interaction)
         await chooser.set_files([str(path) for path in files])
-        state.event("file_selection", action_id=action_id, file_count=len(files))
+        emit_task_diagnostic("file_selection", action_id=action_id, file_count=len(files))
 
     def on_filechooser(chooser) -> None:
         if closing:
@@ -415,13 +423,13 @@ async def capture_page(
                 await asyncio.gather(*download_tasks)
             check_http_diagnostics()
     except TimeoutError as exc:
-        if exc is http_diagnostic_error:
+        if exc is http_diagnostic_error or any(exc is error for error in task_diagnostic_errors):
             primary_error = exc
             raise
         handled_error = exc
         result.error = "ScanDeadlineExceeded"
     except PlaywrightError as exc:
-        if exc is http_diagnostic_error:
+        if exc is http_diagnostic_error or any(exc is error for error in task_diagnostic_errors):
             primary_error = exc
             raise
         handled_error = exc
@@ -452,7 +460,7 @@ async def capture_page(
             failures.extend((error, "Download finalization failed") for error in download_finalization_errors)
             if failures and primary_error is None and handled_error is None:
                 error = failures[0][0]
-                if isinstance(error, (TimeoutError, PlaywrightError)):
+                if isinstance(error, (TimeoutError, PlaywrightError)) and not any(error is diagnostic for diagnostic in task_diagnostic_errors):
                     handled_error = error
                     result.error = "ScanDeadlineExceeded" if isinstance(error, TimeoutError) else type(error).__name__
                     failures = failures[1:]
