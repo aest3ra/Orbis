@@ -149,7 +149,7 @@ async def capture_page(
     fetched_rids: set[str] = set()
     download_tasks: list[asyncio.Task] = []
     download_finalization_errors: list[Exception] = []
-    reported_requests: set[str] = set()
+    reported_requests: dict[str, int | None] = {}
     page = None
     client = None
     tracker = None
@@ -288,12 +288,20 @@ async def capture_page(
                 and (scope is None or scope.allows(event.url)))
 
     def report_request(event: NetworkEvent) -> None:
-        state.event("request_observed", action_id=event.action_id, request_id=event.request_id,
+        name = "request_observed"
+        details = {}
+        if event.request_id in reported_requests:
+            previous_status = reported_requests[event.request_id]
+            if previous_status == event.status:
+                return
+            name = "request_status_updated"
+            details["previous_http_status"] = previous_status
+        state.event(name, action_id=event.action_id, request_id=event.request_id,
                     method=event.method, url=event.url, resource_type=event.resource_type,
                     http_status=event.status, loading_error=event.loading_error,
                     route_seen_count=event.route_seen_count,
-                    attribution="action_window" if event.action_id is not None else "outside_action")
-        reported_requests.add(event.request_id)
+                    attribution="action_window" if event.action_id is not None else "outside_action", **details)
+        reported_requests[event.request_id] = event.status
 
     async def observe() -> None:
         elements = await _collect_dom(page)
