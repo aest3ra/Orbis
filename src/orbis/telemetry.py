@@ -13,7 +13,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from uuid import uuid4
 
 SCHEMA_VERSION = 1
-_URL_RE = re.compile(r"https?://[^\s\"<>]+")
+_URL_RE = re.compile(r"https?://[^\s\"<>]+", re.IGNORECASE)
 _PRIVATE_FIELDS = {"authorization", "cookie", "cookies", "headers", "request_headers",
                    "response_headers", "post_data", "response_body", "password", "api_key", "value"}
 
