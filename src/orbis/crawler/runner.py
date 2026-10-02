@@ -342,7 +342,7 @@ async def _crawl_scan(
                            duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
                 log.warning("probe non-fatal: %s", type(exc).__name__)
             finally:
-                if probe_timeout.expired():
+                if probe_timeout.expired() or time.monotonic() >= deadline:
                     stop_reason = "max_duration"
 
             if planner is not None:

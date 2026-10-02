@@ -1,4 +1,5 @@
 import asyncio
+import time
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, Mock
 
@@ -137,6 +138,20 @@ def test_probe_deadline_updates_scan_stop_reason(crawl_resources):
     assert events(crawl_resources, "probe_end")[0]["stop_reason"] == "deadline"
     crawl_resources.browser.close.assert_awaited_once_with()
     crawl_resources.playwright.stop.assert_awaited_once_with()
+
+
+def test_synchronous_probe_preparation_overrun_updates_scan_stop_reason(crawl_resources):
+    def slow_listing(*args):
+        time.sleep(0.05)
+        return []
+
+    crawl_resources.rows.side_effect = slow_listing
+
+    result = asyncio.run(crawl(config_for(pages=0, duration=0.03), crawl_resources))
+
+    assert result["stop_reason"] == "max_duration"
+    assert result["pages"] == 0
+    assert events(crawl_resources, "probe_end")[0]["stop_reason"] == "completed"
 
 
 @pytest.mark.parametrize("stage", ["listing", "probe"])
