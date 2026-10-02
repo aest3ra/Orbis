@@ -51,7 +51,15 @@ class ScanLog:
         self.started = time.monotonic()
         self.sequence = 0
         self.totals: Counter = Counter()
-        self._file = os.fdopen(os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600), "w", encoding="utf-8")
+        descriptor = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        try:
+            self._file = os.fdopen(descriptor, "w", encoding="utf-8")
+        except BaseException as failure:
+            try:
+                os.close(descriptor)
+            except OSError as exc:
+                failure.add_note(f"Scan log initialization cleanup failed: {type(exc).__name__}")
+            raise
 
     def emit(self, event: str, **details) -> dict:
         self.sequence += 1
