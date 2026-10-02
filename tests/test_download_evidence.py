@@ -567,11 +567,12 @@ def test_page_task_created_during_gather_does_not_hide_failure(download_capture,
             fixture.events["download"](second)
         await asyncio.wait_for(second_started.wait(), timeout=1)
         finish_first.set()
-        if late_event == "plain_cancellation":
+        if late_event in {"plain_cancellation", "filechooser_failure"}:
             result = await task
-            assert result.error is None
+            assert result.error == ("Error" if late_event == "filechooser_failure" else None)
             assert not [record for record in result.observations if record.get("kind") == "capture_cleanup"]
-            assert second_stopped.is_set()
+            if late_event == "plain_cancellation":
+                assert second_stopped.is_set()
         else:
             with pytest.raises(type(failure)) as raised:
                 await task
@@ -697,8 +698,8 @@ def test_already_handled_page_task_error_is_not_reported_twice(download_capture)
 
 def test_all_page_tasks_are_drained_before_first_child_failure_propagates(download_capture):
     fixture = download_capture
-    first_failure = PlaywrightError("private first child failure")
-    second_failure = OSError("private second child failure")
+    first_failure = OSError("private first child failure")
+    second_failure = PlaywrightError("private second child failure")
     second_failure.add_note("private child note")
 
     async def exercise():
@@ -730,13 +731,70 @@ def test_all_page_tasks_are_drained_before_first_child_failure_propagates(downlo
         for event in entered:
             await asyncio.wait_for(event.wait(), timeout=1)
         finish_first.set()
-        with pytest.raises(PlaywrightError) as raised:
+        with pytest.raises(OSError) as raised:
             await task
         assert raised.value is first_failure
-        assert raised.value.__notes__ == ["Page task failed: OSError"]
+        assert raised.value.__notes__ == ["Page task failed: Error"]
         assert stopped.is_set()
         assert [task for task in asyncio.all_tasks() if task is not asyncio.current_task()] == []
 
     asyncio.run(exercise())
+    fixture.client.detach.assert_awaited_once()
+    fixture.page.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("timing", ["early", "late"])
+@pytest.mark.parametrize("failure_type", [PlaywrightError, TimeoutError, OSError])
+def test_page_task_failure_policy_preserves_same_observations_regardless_of_timing(download_capture, timing, failure_type):
+    fixture = download_capture
+    failure = failure_type("private file selection failure")
+
+    async def exercise():
+        started, finish, child_failed = [asyncio.Event() for _ in range(3)]
+
+        async def save_as(path):
+            started.set()
+            if timing == "late":
+                await finish.wait()
+            path.write_bytes(b"completed download")
+
+        async def set_files(files):
+            child_failed.set()
+            raise failure
+
+        chooser = SimpleNamespace(set_files=set_files)
+
+        async def scenario():
+            fixture.request("observed", "GET", None)
+            fixture.events["download"](download_item(save_as))
+            if timing == "early":
+                fixture.events["filechooser"](chooser)
+
+        task = asyncio.create_task(fixture.capture(scenario))
+        await asyncio.wait_for(started.wait(), timeout=1)
+        if timing == "late":
+            await asyncio.sleep(0)
+            fixture.events["filechooser"](chooser)
+            await asyncio.wait_for(child_failed.wait(), timeout=1)
+            finish.set()
+        if failure_type is OSError:
+            with pytest.raises(OSError) as raised:
+                await task
+            assert raised.value is failure
+        else:
+            result = await task
+            assert result.error == ("ScanDeadlineExceeded" if failure_type is TimeoutError else "Error")
+            assert [(event.request_id, event.method, event.url) for event in result.network_events] == [
+                ("observed", "GET", "http://localhost/export"),
+            ]
+            assert len(result.observations) == 1
+            assert result.observations[0]["status"] == "saved"
+            assert Path(result.observations[0]["path"]).read_bytes() == b"completed download"
+            assert len([record for record in fixture.logs if record["event"] == "request_observed"]) == 1
+        assert [task for task in asyncio.all_tasks() if task is not asyncio.current_task()] == []
+
+    asyncio.run(exercise())
+    assert len(list(fixture.directory.glob("*.bin"))) == 1
+    assert not list(fixture.directory.glob("*.part"))
     fixture.client.detach.assert_awaited_once()
     fixture.page.close.assert_awaited_once()
