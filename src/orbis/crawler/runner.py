@@ -360,21 +360,6 @@ async def _crawl_scan(
                         on_result=persist_probe_result,
                     )
 
-                trace.emit("probe_end", sent=results.sent, verified=results.verified, failed=results.failed,
-                           skipped=results.skipped, remaining=results.remaining, stop_reason=results.stop_reason,
-                           persisted=probe_counts["persisted"],
-                           duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
-                log.info(
-                    "probe: %d verified, %d failed "
-                    "(total=%d sent=%d skipped=%d remaining=%d stop=%s)",
-                    results.verified,
-                    results.failed,
-                    len(candidates),
-                    results.sent,
-                    results.skipped,
-                    results.remaining,
-                    results.stop_reason,
-                )
             except asyncio.CancelledError as exc:
                 try:
                     trace.emit("probe_end", error="cancelled", stop_reason="cancelled", **probe_counts,
@@ -391,6 +376,22 @@ async def _crawl_scan(
                     exc.add_note(f"Probe diagnostics failed: {type(diagnostic_error).__name__}")
                     raise exc from diagnostic_error
                 log.warning("probe non-fatal: %s", type(exc).__name__)
+            else:
+                trace.emit("probe_end", sent=results.sent, verified=results.verified, failed=results.failed,
+                           skipped=results.skipped, remaining=results.remaining, stop_reason=results.stop_reason,
+                           persisted=probe_counts["persisted"],
+                           duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
+                log.info(
+                    "probe: %d verified, %d failed "
+                    "(total=%d sent=%d skipped=%d remaining=%d stop=%s)",
+                    results.verified,
+                    results.failed,
+                    len(candidates),
+                    results.sent,
+                    results.skipped,
+                    results.remaining,
+                    results.stop_reason,
+                )
             finally:
                 if probe_timeout.expired() or time.monotonic() >= deadline:
                     stop_reason = "max_duration"
