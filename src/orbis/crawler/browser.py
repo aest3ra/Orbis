@@ -148,11 +148,13 @@ async def capture_page(
     record_start = len(state.records)
     fetched_rids: set[str] = set()
     download_tasks: list[asyncio.Task] = []
+    download_finalization_errors: list[Exception] = []
     reported_requests: set[str] = set()
     page = None
     client = None
     tracker = None
     primary_error: BaseException | None = None
+    handled_error: BaseException | None = None
     closing = False
 
     async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
@@ -220,6 +222,8 @@ async def capture_page(
             except Exception as exc:
                 if download_error is None:
                     raise
+                # gather does not preserve notes on cancelled child exceptions.
+                download_finalization_errors.append(exc)
                 download_error.add_note(f"Download finalization failed: {type(exc).__name__}")
 
     def on_download(item) -> None:
@@ -363,9 +367,11 @@ async def capture_page(
                 await _fill_bodies(client, captured, skip_rids=fetched_rids)
             if download_tasks:
                 await asyncio.gather(*download_tasks)
-    except TimeoutError:
+    except TimeoutError as exc:
+        handled_error = exc
         result.error = "ScanDeadlineExceeded"
     except PlaywrightError as exc:
+        handled_error = exc
         result.error = type(exc).__name__
     except BaseException as exc:
         primary_error = exc
@@ -382,6 +388,33 @@ async def capture_page(
                     task.cancel()
             if download_tasks:
                 await asyncio.gather(*download_tasks, return_exceptions=True)
+            failures = []
+            for task in download_tasks:
+                if not task.cancelled():
+                    error = task.exception()
+                    if error is not None and error is not primary_error and error is not handled_error:
+                        failures.append((error, "Page task failed"))
+            failures.extend((error, "Download finalization failed") for error in download_finalization_errors)
+            if failures and primary_error is None and result.error is None:
+                error = failures[0][0]
+                if isinstance(error, (TimeoutError, PlaywrightError)):
+                    result.error = "ScanDeadlineExceeded" if isinstance(error, TimeoutError) else type(error).__name__
+                    failures = failures[1:]
+            if failures:
+                failure_target = primary_error
+                if failure_target is None and result.error is None:
+                    failure_target = failures[0][0]
+                if failure_target is not None:
+                    for error, label in failures:
+                        note = f"{label}: {type(error).__name__}"
+                        if error is not failure_target and note not in getattr(failure_target, "__notes__", []):
+                            failure_target.add_note(note)
+                    if primary_error is None:
+                        raise failure_target
+                else:
+                    result.observations.append({"kind": "capture_cleanup", "errors": [
+                        type(error).__name__ for error, _ in failures
+                    ]})
             for event in captured.values():
                 if relevant(event) and event.request_id not in reported_requests:
                     report_request(event)
