@@ -197,19 +197,27 @@ async def _crawl_scan(
                     stop_reason = "frontier_exhausted"
                     break
 
-                if time.monotonic() > deadline:
+                if time.monotonic() >= deadline:
                     stop_reason = "max_duration"
                     log.warning("timeout: %ds limit reached", limits.max_duration_sec)
+                    break
+
+                wait = (last_req_at + rate_delay) - time.monotonic()
+                if wait > 0:
+                    try:
+                        async with asyncio.timeout_at(deadline):
+                            await asyncio.sleep(wait)
+                    except TimeoutError:
+                        stop_reason = "max_duration"
+                        break
+                if time.monotonic() >= deadline:
+                    stop_reason = "max_duration"
                     break
 
                 item = frontier.pop()
                 if item is None:
                     stop_reason = "frontier_exhausted"
                     break
-
-                wait = (last_req_at + rate_delay) - time.monotonic()
-                if wait > 0:
-                    await asyncio.sleep(wait)
                 last_req_at = time.monotonic()
 
                 page_started = time.monotonic()
@@ -298,12 +306,13 @@ async def _crawl_scan(
             if time.monotonic() >= deadline:
                 stop_reason = "max_duration"
             probe_started = time.monotonic()
+            probe_timeout = asyncio.timeout_at(deadline)
             try:
                 with Session(engine) as session:
                     rows = list_unverified_endpoints(session, scan_id)
                     candidates = [(ep.id, ep.sample_url) for ep in rows if ep.id is not None and ep.method == "GET"]
 
-                async with asyncio.timeout_at(deadline):
+                async with probe_timeout:
                     results = await probe_candidates(
                         context, candidates, scope=scope, limits=limits,
                     )
@@ -329,9 +338,12 @@ async def _crawl_scan(
                     results.stop_reason,
                 )
             except Exception as exc:
-                trace.emit("probe_end", error=type(exc).__name__, stop_reason="deadline" if isinstance(exc, TimeoutError) else "error",
+                trace.emit("probe_end", error=type(exc).__name__, stop_reason="deadline" if probe_timeout.expired() else "error",
                            duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
                 log.warning("probe non-fatal: %s", type(exc).__name__)
+            finally:
+                if probe_timeout.expired():
+                    stop_reason = "max_duration"
 
             if planner is not None:
                 with Session(engine) as session:
