@@ -115,7 +115,7 @@ def test_irrelevant_response_still_updates_capture_without_request_diagnostics(c
 
 
 @pytest.mark.parametrize("failed_event", ["request_observed", "request_status_updated"])
-def test_failed_diagnostic_emission_is_not_marked_reported(capture_resources, failed_event):
+def test_failed_diagnostic_emission_aborts_capture_without_retry(capture_resources, failed_event):
     fixture = capture_resources
     failure = OSError("diagnostic emission failure")
     failed = False
@@ -130,9 +130,7 @@ def test_failed_diagnostic_emission_is_not_marked_reported(capture_resources, fa
     fixture.state.emit = emit
 
     def responses():
-        with pytest.raises(OSError) as raised:
-            fixture.response(200)
-        assert raised.value is failure
+        fixture.response(200)
         fixture.response(200)
         fixture.response(200)
 
@@ -147,18 +145,16 @@ def test_failed_diagnostic_emission_is_not_marked_reported(capture_resources, fa
 
     fixture.page.goto.side_effect = goto
     fixture.client.detach.side_effect = detach
-    result = asyncio.run(fixture.capture())
+    with pytest.raises(OSError) as raised:
+        asyncio.run(fixture.capture())
+    assert raised.value is failure
     observed = [record for record in fixture.logs if record["event"] == "request_observed"]
     updated = [record for record in fixture.logs if record["event"] == "request_status_updated"]
     assert failed
-    assert len(observed) == 1
+    assert len(observed) == (failed_event == "request_status_updated")
     if failed_event == "request_status_updated":
-        assert len(updated) == 1
-        assert updated[0]["previous_http_status"] is None
-        assert updated[0]["http_status"] == 200
-    else:
-        assert updated == []
-    assert len(result.network_events) == 1 and result.network_events[0].status == 200
+        assert observed[0]["http_status"] is None
+    assert updated == []
     assert sum(fixture.state.request_counts.values()) == 1
 
 
@@ -205,7 +201,7 @@ def test_status_update_log_failure_preserves_capture_error_policy(capture_resour
                 await task
             assert raised.value is expected
         if primary != "none":
-            assert raised.value.__notes__ == ["CDP detach cleanup failed: OSError"]
+            assert raised.value.__notes__ == ["HTTP diagnostic failed: OSError"]
         assert [task for task in asyncio.all_tasks() if task is not asyncio.current_task()] == []
 
     asyncio.run(exercise())
