@@ -299,9 +299,12 @@ async def _crawl_scan(
                         download_dir=Path(db_path).resolve().parent / "downloads" / str(scan_id),
                         deadline=deadline,
                     )
-                except asyncio.CancelledError:
-                    trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="interrupted",
-                               error="cancelled", duration_ms=round((time.monotonic() - page_started) * 1000, 1))
+                except asyncio.CancelledError as exc:
+                    try:
+                        trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="interrupted",
+                                   error="cancelled", duration_ms=round((time.monotonic() - page_started) * 1000, 1))
+                    except Exception as diagnostic_error:
+                        exc.add_note(f"Page cancellation diagnostics failed: {type(diagnostic_error).__name__}")
                     raise
                 except Exception as exc:
                     pages += 1
