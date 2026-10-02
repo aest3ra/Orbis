@@ -552,22 +552,47 @@ async def _perform_and_settle(
         primary_error = exc
         raise
     finally:
-        page.remove_listener("request", started)
-        page.remove_listener("requestfinished", finished)
-        page.remove_listener("requestfailed", finished)
+        cleanup_error: Exception | None = None
         try:
-            with suppress(PlaywrightError):
-                await page.evaluate("() => window.__orbisInteractionActivity?.observer.disconnect()")
-        except Exception as exc:
-            if primary_error is None:
+            for event, callback in (("request", started), ("requestfinished", finished), ("requestfailed", finished)):
                 try:
-                    if check_diagnostics is not None:
-                        check_diagnostics()
-                except BaseException as error:
-                    error.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
+                    page.remove_listener(event, callback)
+                except Exception as exc:
+                    note = f"Listener removal failed ({event}): {type(exc).__name__}"
+                    if primary_error is None and cleanup_error is None:
+                        try:
+                            if check_diagnostics is not None:
+                                check_diagnostics()
+                        except Exception as error:
+                            cleanup_error = error
+                        except BaseException as error:
+                            error.add_note(note)
+                            raise
+                    target = primary_error if primary_error is not None else cleanup_error
+                    if target is None:
+                        cleanup_error = exc
+                    else:
+                        target.add_note(note)
+        except BaseException as exc:
+            primary_error = exc
+            raise
+        finally:
+            try:
+                with suppress(PlaywrightError):
+                    await page.evaluate("() => window.__orbisInteractionActivity?.observer.disconnect()")
+            except Exception as exc:
+                target = primary_error if primary_error is not None else cleanup_error
+                if target is None:
+                    try:
+                        if check_diagnostics is not None:
+                            check_diagnostics()
+                    except BaseException as error:
+                        error.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
+                        raise
                     raise
-                raise
-            primary_error.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
+                target.add_note(f"Observer disconnect cleanup failed: {type(exc).__name__}")
+        if primary_error is None and cleanup_error is not None:
+            raise cleanup_error
 
 
 async def _settle(
