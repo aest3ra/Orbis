@@ -267,7 +267,7 @@ def test_database_body_error_survives_session_close_failure(tmp_path, monkeypatc
 
     asyncio.run(exercise())
 
-    assert state.body_error.__notes__ == ["Terminal database session close failed: OSError"]
+    assert state.body_error.__notes__ == ["Database session close failed: OSError"]
     assert state.body_error.__cause__ is state.chain[0]
     assert state.body_error.__context__ is (primary if primary is not None else state.chain[1])
     assert state.body_error.__suppress_context__ == state.chain[2]
@@ -293,7 +293,7 @@ def test_real_sqlite_rollback_failure_preserves_count_error(tmp_path, monkeypatc
 
     assert raised.value is state.body_error
     assert isinstance(state.close_error, ProgrammingError)
-    assert state.body_error.__notes__ == ["Terminal database session close failed: ProgrammingError"]
+    assert state.body_error.__notes__ == ["Database session close failed: ProgrammingError"]
     assert (state.body_error.__cause__, state.body_error.__context__,
             state.body_error.__suppress_context__) == state.chain
     scan, records = read_result(database)
@@ -313,7 +313,7 @@ def test_terminal_body_interruption_survives_regular_close_failure(tmp_path, mon
             ScanConfig(target="http://localhost/"), db_path=str(tmp_path / "scan.db"), wayback=False))
 
     assert raised.value is body_error
-    assert body_error.__notes__ == ["Terminal database session close failed: OSError"]
+    assert body_error.__notes__ == ["Database session close failed: OSError"]
     assert (body_error.__cause__, body_error.__context__, body_error.__suppress_context__) == state.chain
 
 
