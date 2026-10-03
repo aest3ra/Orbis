@@ -7,6 +7,7 @@ import logging
 from collections import defaultdict
 from datetime import datetime, timezone
 
+from sqlalchemy import inspect
 from sqlmodel import Session, select
 
 from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, _SOURCE_PRIORITY
@@ -20,8 +21,7 @@ def create_scan(session: Session, target: str, auth_path: str | None = None) -> 
     scan = Scan(target=target, auth_state_path=auth_path)
     session.add(scan)
     session.commit()
-    session.refresh(scan)
-    return scan.id  # type: ignore[return-value]
+    return inspect(scan).identity[0]
 
 
 def finish_scan(session: Session, scan_id: int, pages: int, endpoints: int) -> None:
