@@ -231,3 +231,43 @@ def test_cancellation_survives_probe_diagnostic_failure(probe_scan):
     assert event["persisted"] == 1
     resources.browser.close.assert_awaited_once_with()
     resources.playwright.stop.assert_awaited_once_with()
+
+
+class DiagnosticInterrupt(BaseException):
+    pass
+
+
+@pytest.mark.parametrize("failure_type", [OSError, TimeoutError, asyncio.CancelledError])
+@pytest.mark.parametrize("diagnostic_type", [None, OSError, asyncio.CancelledError, DiagnosticInterrupt])
+def test_probe_diagnostics_preserve_original_error_chain(probe_scan, monkeypatch, failure_type, diagnostic_type):
+    resources = probe_scan
+    failure = failure_type("private probe failure")
+    failure.__cause__ = ValueError("private original cause")
+    failure.__context__ = LookupError("private original context")
+    original_chain = (failure.__cause__, failure.__context__, failure.__suppress_context__)
+    monkeypatch.setattr(runner, "set_probe_result", Mock(side_effect=failure))
+    diagnostic_error = diagnostic_type("private diagnostic failure") if diagnostic_type else None
+    if diagnostic_error is not None:
+        resources.trace.emit.side_effect = diagnostic_error
+
+    expected_error = failure if diagnostic_error is not None or isinstance(failure, asyncio.CancelledError) else None
+    if diagnostic_error is not None and not isinstance(diagnostic_error, Exception):
+        expected_error = diagnostic_error
+    if expected_error is None:
+        asyncio.run(crawl(resources))
+    else:
+        with pytest.raises(type(expected_error)) as raised:
+            asyncio.run(crawl(resources))
+        assert raised.value is expected_error
+
+    assert (failure.__cause__, failure.__context__, failure.__suppress_context__) == original_chain
+    expected_notes = ["Probe diagnostics failed: OSError"] if isinstance(diagnostic_error, Exception) else []
+    assert getattr(failure, "__notes__", []) == expected_notes
+    assert len(resources.request.calls) == 1
+    event, = probe_events(resources)
+    assert event["error"] == ("cancelled" if isinstance(failure, asyncio.CancelledError) else type(failure).__name__)
+    assert event["stop_reason"] == ("cancelled" if isinstance(failure, asyncio.CancelledError) else "error")
+    assert event["persisted"] == 0
+    assert stored_results(resources) == [("unverified", None), ("unverified", None)]
+    resources.browser.close.assert_awaited_once_with()
+    resources.playwright.stop.assert_awaited_once_with()
