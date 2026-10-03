@@ -378,7 +378,7 @@ async def capture_page(
         state.seen_request_routes.update((event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events)
 
     try:
-        async with asyncio.timeout_at(deadline):
+        async with asyncio.timeout_at(deadline) as capture_timeout:
             page = await context.new_page()
             await page.add_init_script(INIT_SCRIPT)
             page.on("download", on_download)
@@ -427,7 +427,7 @@ async def capture_page(
             primary_error = exc
             raise
         handled_error = exc
-        result.error = "ScanDeadlineExceeded"
+        result.error = "ScanDeadlineExceeded" if capture_timeout.expired() else type(exc).__name__
     except PlaywrightError as exc:
         if exc is http_diagnostic_error or any(exc is error for error in task_diagnostic_errors):
             primary_error = exc
@@ -462,7 +462,7 @@ async def capture_page(
                 error = failures[0][0]
                 if isinstance(error, (TimeoutError, PlaywrightError)) and not any(error is diagnostic for diagnostic in task_diagnostic_errors):
                     handled_error = error
-                    result.error = "ScanDeadlineExceeded" if isinstance(error, TimeoutError) else type(error).__name__
+                    result.error = type(error).__name__
                     failures = failures[1:]
             if failures:
                 failure_target = primary_error
