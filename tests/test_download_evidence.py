@@ -867,7 +867,7 @@ def test_page_task_failure_policy_preserves_same_observations_regardless_of_timi
             assert raised.value is failure
         else:
             result = await task
-            assert result.error == ("ScanDeadlineExceeded" if failure_type is TimeoutError else "Error")
+            assert result.error == failure_type.__name__
             assert [(event.request_id, event.method, event.url) for event in result.network_events] == [
                 ("observed", "GET", "http://localhost/export"),
             ]
