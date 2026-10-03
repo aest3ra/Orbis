@@ -403,13 +403,16 @@ async def _crawl_scan(
                     exc.add_note(f"Probe diagnostics failed: {type(diagnostic_error).__name__}")
                 raise
             except Exception as exc:
+                diagnostics_failed = False
                 try:
                     trace.emit("probe_end", error=type(exc).__name__,
                                stop_reason="deadline" if probe_timeout.expired() else "error", **probe_counts,
                                duration_ms=round((time.monotonic() - probe_started) * 1000, 1))
                 except Exception as diagnostic_error:
                     exc.add_note(f"Probe diagnostics failed: {type(diagnostic_error).__name__}")
-                    raise exc from diagnostic_error
+                    diagnostics_failed = True
+                if diagnostics_failed:
+                    raise
                 log.warning("probe non-fatal: %s", type(exc).__name__)
             else:
                 trace.emit("probe_end", sent=results.sent, verified=results.verified, failed=results.failed,
