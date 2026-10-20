@@ -61,29 +61,15 @@ class ProbeResult:
     error: str | None = None
 
 
-class ProbeResults(list[tuple[int, str, int | None]]):
-    def __init__(
-        self,
-        rows: list[tuple[int, str, int | None]] | None = None,
-        *,
-        sent: int = 0,
-        skipped: int = 0,
-        remaining: int = 0,
-        stop_reason: str = "completed",
-    ) -> None:
-        super().__init__(rows or [])
-        self.sent = sent
-        self.skipped = skipped
-        self.remaining = remaining
-        self.stop_reason = stop_reason
-
-    @property
-    def verified(self) -> int:
-        return sum(1 for _id, status, _code in self if status == "verified")
-
-    @property
-    def failed(self) -> int:
-        return sum(1 for _id, status, _code in self if status == "failed")
+@dataclass
+class ProbeResults:
+    """Counts for one probe stage; per-endpoint results go to ``on_result``."""
+    verified: int = 0
+    failed: int = 0
+    sent: int = 0
+    skipped: int = 0
+    remaining: int = 0
+    stop_reason: str = "completed"
 
 
 def _has_unresolved_placeholder(url: str) -> bool:
@@ -241,9 +227,7 @@ async def probe_candidates(
         total, sent, skipped, remaining, budget, stop_reason,
     )
     return ProbeResults(
-        results,
-        sent=sent,
-        skipped=skipped,
-        remaining=remaining,
-        stop_reason=stop_reason,
+        verified=sum(status == "verified" for _, status, _ in results),
+        failed=sum(status == "failed" for _, status, _ in results),
+        sent=sent, skipped=skipped, remaining=remaining, stop_reason=stop_reason,
     )

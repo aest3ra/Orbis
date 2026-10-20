@@ -256,8 +256,8 @@ class FakeTracker:
     def begin(self) -> None:
         self.begins += 1
 
-    def commit(self, action: str, selector: str, label: str) -> None:
-        self.commits.append((action, selector, label))
+    def commit(self, tag: str) -> None:
+        self.commits.append(tag)
 
 
 def test_tracker_brackets_each_successful_action() -> None:
@@ -271,10 +271,7 @@ def test_tracker_brackets_each_successful_action() -> None:
 
     assert count == 2
     assert tracker.begins == 2
-    assert tracker.commits == [
-        ("button", "#tab", "Results tab"),
-        ("button", "#more", "Load more"),
-    ]
+    assert tracker.commits == ["Results tab", "Load more"]
 
 
 def test_tracker_untouched_for_unsafe_candidates() -> None:
@@ -359,8 +356,8 @@ class FakePaginationTracker:
     def begin(self) -> None:
         self.begins += 1
 
-    def commit(self, action: str, selector: str, label: str) -> int:
-        self.commits.append((action, selector, label))
+    def commit(self, tag: str) -> int:
+        self.commits.append(tag)
         return self.fired.pop(0) if self.fired else 0
 
 

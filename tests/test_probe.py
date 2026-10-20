@@ -172,7 +172,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert results == [(3, "verified", 200)]
+        assert (results.verified, results.failed) == (1, 0)
         assert results.sent == 1
         assert results.skipped == 2
         assert results.remaining == 0
@@ -200,10 +200,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert results == [
-            (3, "verified", 200),
-            (4, "failed", 404),
-        ]
+        assert (results.verified, results.failed) == (1, 1)
         assert results.sent == 2
         assert results.skipped == 2
         assert results.remaining == 1
@@ -229,10 +226,6 @@ class TestProbeCandidates:
             )
         )
 
-        assert results == [
-            (1, "failed", None),
-            (2, "verified", 503),
-        ]
         assert results.verified == 1
         assert results.failed == 1
         assert results.stop_reason == "completed"
@@ -254,7 +247,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert results == [(1, "verified", 200)]
+        assert (results.verified, results.failed) == (1, 0)
         assert results.sent == 2
         assert results.skipped == 0
         assert results.remaining == 1
@@ -273,7 +266,7 @@ class TestProbeCandidates:
                 scope=_scope(),
                 limits=_limits(),
             )
-        ) == []
+        ).sent == 0
         assert asyncio.run(
             probe_candidates(
                 context,
@@ -281,7 +274,7 @@ class TestProbeCandidates:
                 scope=_scope(),
                 limits=_limits(),
             )
-        ) == []
+        ).sent == 0
         assert context.request.calls == []
 
 

@@ -147,7 +147,6 @@ def callback_capture(tmp_path):
                 state.raised = exc
             state.cancelled = task.cancelled()
             state.connection_error = connection._error
-            state.request_counts = exploration.request_counts
         finally:
             trace.close()
             connection.playwright_future.cancel()
@@ -171,4 +170,3 @@ def test_successful_dispatch_preserves_observations_and_request_order(callback_c
     assert state.evaluations == 3
     assert state.messages == ["send", "evaluate", "evaluate", "evaluate", "detach"]
     assert state.closed == state.detached == 1
-    assert sum(state.request_counts.values()) == 1

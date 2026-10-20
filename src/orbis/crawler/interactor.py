@@ -109,7 +109,6 @@ class ExplorationState:
     emit: Callable[..., dict] | None = None
     action_counts: dict[str, int] = field(default_factory=dict)
     seen_request_routes: set[tuple[str, str, str]] = field(default_factory=set)
-    request_counts: dict[tuple[str, str, str], int] = field(default_factory=dict)
     download_counts: dict[str, int] = field(default_factory=dict)
     # action key -> completed executions (action_counts also counts failed attempts)
     executed_counts: dict[str, int] = field(default_factory=dict)
@@ -348,12 +347,8 @@ async def _act(
         done += 1
         fired = None
         if tracker is not None:
-            fired = tracker.commit(
-                str(candidate.get("kind") or ""),
-                str(candidate.get("selector") or ""),
-                # clean human label; fall back to broad safety text
-                str(candidate.get("label") or candidate.get("text") or ""),
-            )
+            # clean human label; fall back to the broad text, then the kind
+            fired = tracker.commit(str(candidate.get("label") or candidate.get("text") or candidate.get("kind") or ""))
         if not scope.allows(page.url):
             break
         if paginate and not fired:

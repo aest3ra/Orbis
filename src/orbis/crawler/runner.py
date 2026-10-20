@@ -234,12 +234,6 @@ async def _crawl_scan(
 
                     # Analyzer: all judgment happens here
                     result = analyze(capture, scope)
-                    with Session(engine) as session:
-                        for record in capture.observations:
-                            session.add(Observation(scan_id=scan_id, page_url=safe_url(capture.page_url),
-                                                    kind=record.get("observation", record["kind"]),
-                                                    details_json=json.dumps(clean(record))))
-                        session.commit()
 
                     for url in result.frontier_urls:
                         frontier.enqueue(url, depth=item.depth + 1)
@@ -272,10 +266,6 @@ async def _crawl_scan(
                         actions=len(actions), actions_failed=sum(row["status"] == "failed" for row in actions),
                         actions_with_http_errors=sum(bool(row.get("http_error_count")) for row in actions),
                     )
-                    with Session(engine) as session:
-                        session.add(Observation(scan_id=scan_id, page_url=safe_url(item.url), kind="page",
-                                                details_json=json.dumps(page_record)))
-                        session.commit()
                     err = f" err={capture.error}" if capture.error else ""
                     log.info(
                         "[%d/%d] %s -> endpoints_observed=%d endpoints_new=%d links=%d queue=%d duration_ms=%.1f%s",
@@ -287,13 +277,6 @@ async def _crawl_scan(
                     stop_reason = "max_duration"
                 if await _probe_unverified(context, engine, scan_id, scope, limits, deadline, trace):
                     stop_reason = "max_duration"
-
-                if planner is not None:
-                    with Session(engine) as session:
-                        for record in planner.records:
-                            session.add(Observation(scan_id=scan_id, page_url=safe_url(config.target), kind="llm",
-                                                    details_json=json.dumps(clean(record))))
-                        session.commit()
             finally:
                 if llm_request is not None:
                     await _close(llm_request.dispose(), "LLM request context disposal")

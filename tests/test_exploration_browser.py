@@ -342,6 +342,8 @@ def test_scan_uses_isolated_llm_transport_and_persists_evidence(workflow_site, t
     log_rows = [json.loads(line) for line in log_text.splitlines()]
     assert not any(value in log_text for value in ("private-session", "fixture-only-key"))
     assert any(row["event"] == "llm_end" and row["outcome"] == "selected" for row in log_rows)
+    assert {row["event"] for row in log_rows} >= {"action_end", "download_end", "llm_end"}
+    assert any(row.get("status") == "saved" for row in log_rows if row["event"] == "download_end")
     assert all("action_id" in row and "duration_ms" in row for row in log_rows if row["event"] == "llm_end")
     assert state["llm_requests"]
     assert all(record["cookie"] is None for record in state["llm_requests"])
@@ -351,9 +353,7 @@ def test_scan_uses_isolated_llm_transport_and_persists_evidence(workflow_site, t
         with Session(engine) as session:
             endpoints = session.exec(select(Endpoint).where(Endpoint.scan_id == scan_id)).all()
             assert any(ep.route_kind == "download" for ep in endpoints)
-            rows = session.exec(select(Observation).where(Observation.scan_id == scan_id)).all()
-            assert {row.kind for row in rows} >= {"action", "download", "llm"}
-            assert any(json.loads(row.details_json).get("status") == "saved" for row in rows)
+            assert {row.kind for row in session.exec(select(Observation).where(Observation.scan_id == scan_id)).all()} == {"scan"}
     finally:
         engine.dispose()
 
@@ -383,19 +383,11 @@ def test_http_failures_no_progress_and_new_endpoints_are_distinct(workflow_site,
     assert all(row["application_outcome"] == "unverified" for row in actions)
     requests = [row for row in rows if row["event"] == "request_observed" and row["http_status"] == 500]
     assert [row["action_id"] for row in requests] == [1, 2]
-    assert [row["route_seen_count"] for row in requests] == [1, 2]
     page = next(row for row in rows if row["event"] == "page_end")
     assert page["endpoints_new"] > 0 and page["endpoints_observed"] >= page["endpoints_new"]
     assert page["actions_with_http_errors"] == 2
     assert rows[-1]["stop_reason"] == "max_pages"
     assert rows[-1]["totals"]["actions_without_observed_progress"] == 2
-    engine = open_db(database)
-    try:
-        with Session(engine) as session:
-            evidence = session.exec(select(Observation).where(Observation.kind == "action")).all()
-            assert [json.loads(row.details_json)["http_error_count"] for row in evidence] == [1, 1, 0]
-    finally:
-        engine.dispose()
 
 
 def test_get_probe_does_not_verify_static_post_candidate(workflow_site, tmp_path):

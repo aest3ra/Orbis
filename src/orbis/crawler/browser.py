@@ -87,16 +87,6 @@ class NetworkEvent:
     triggered_by: str | None = None   # None = page load; else interaction label
     action_id: int | None = None
     loading_error: str | None = None
-    route_seen_count: int = 0
-
-
-@dataclass
-class InteractionRecord:
-    """One interaction and the network requests it triggered (delta tracking)."""
-    action: str                       # "click" | "form" | "input"
-    selector: str
-    label: str
-    triggered: list[tuple[str, str]]  # [(method, url), ...]
 
 
 @dataclass
@@ -116,7 +106,6 @@ class PageCapture:
     dom_elements: list[DomElement] = field(default_factory=list)
     inline_urls: list[str] = field(default_factory=list)
     selective_bodies: list[CapturedBody] = field(default_factory=list)
-    interactions: list[InteractionRecord] = field(default_factory=list)
     error: str | None = None
     observations: list[dict] = field(default_factory=list)
 
@@ -232,12 +221,6 @@ async def capture_page(
             request_headers=req.get("headers") or {}, post_data=req.get("postData"),
             action_id=(state.current_action or {}).get("action_id"),
         )
-        cap = captured[event["requestId"]]
-        if relevant(cap):
-            parsed = urlparse(cap.url)
-            key = (cap.method, parsed.netloc, parsed.path)
-            state.request_counts[key] = state.request_counts.get(key, 0) + 1
-            cap.route_seen_count = state.request_counts[key]
 
     def on_response(event: dict) -> None:
         cap = captured.get(event["requestId"])
@@ -274,7 +257,6 @@ async def capture_page(
         state.event(name, action_id=event.action_id, request_id=event.request_id,
                     method=event.method, url=event.url, resource_type=event.resource_type,
                     http_status=event.status, loading_error=event.loading_error,
-                    route_seen_count=event.route_seen_count,
                     attribution="action_window" if event.action_id is not None else "outside_action", **details)
         reported_requests[event.request_id] = event.status
 
@@ -345,7 +327,6 @@ async def capture_page(
                     page, scope, tracker=tracker, options=interaction, state=state,
                     planner=planner, max_actions=max_actions, observe=observe, deadline=deadline,
                 )
-                result.interactions = tracker.records
             seen_keys = {(event.method, event.url) for event in captured.values()}
             for event in await _collect_init_script_events(page, page.url, seen_keys):
                 captured[event.request_id] = event
@@ -433,31 +414,21 @@ class _DeltaTracker:
     def __init__(self, captured: dict[str, NetworkEvent]) -> None:
         self._captured = captured
         self._before: set[str] = set()
-        self.records: list[InteractionRecord] = []
-        self.last_requests: list[NetworkEvent] = []
 
     def begin(self) -> None:
         self._before = set(self._captured)
-        self.last_requests = []
 
-    def commit(self, action: str, selector: str, label: str) -> int:
+    def commit(self, tag: str) -> int:
         """Tag requests that appeared since begin(); return how many fired.
 
         The count lets the interactor decide whether a pagination button is
         still productive (keep clicking) or has run dry (stop).
         """
-        tag = label.strip() or action
-        triggered: list[tuple[str, str]] = []
+        fired = 0
         for rid in set(self._captured) - self._before:
-            ev = self._captured[rid]
-            self.last_requests.append(ev)
-            ev.triggered_by = tag
-            triggered.append((ev.method, ev.url))
-        if triggered:
-            self.records.append(
-                InteractionRecord(action, selector, label, triggered)
-            )
-        return len(triggered)
+            self._captured[rid].triggered_by = tag
+            fired += 1
+        return fired
 
 
 async def _collect_dom(page: Page) -> list[DomElement]:

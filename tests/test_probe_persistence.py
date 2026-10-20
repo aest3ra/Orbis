@@ -144,7 +144,8 @@ def test_callback_receives_existing_results_without_changing_return(probe_scan):
         scope=Scope(resources.config.scope), limits=resources.config.limits, on_result=observed.append,
     ))
 
-    assert observed == results == [(1, "verified", 200), (2, "failed", 404)]
+    assert observed == [(1, "verified", 200), (2, "failed", 404)]
+    assert (results.verified, results.failed, results.sent) == (1, 1, 2)
     assert results.sent == 2
 
 

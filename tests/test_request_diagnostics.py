@@ -86,12 +86,10 @@ def test_response_diagnostics_preserve_status_changes_without_recounting_request
     for record in observed + updated:
         assert record["request_id"] == "observed"
         assert record["page_id"] == 1 and record["action_id"] == 7
-        assert record["route_seen_count"] == 1
     assert len(result.network_events) == 1
     assert result.network_events[0].status == statuses[-1]
     assert result.network_events[0].response_headers == {"generation": str(statuses[-1])}
     assert result.network_events[0].response_mime == "application/json"
-    assert sum(fixture.state.request_counts.values()) == 1
     fixture.page.close.assert_awaited_once()
 
 
@@ -109,7 +107,6 @@ def test_irrelevant_response_still_updates_capture_without_request_diagnostics(c
     fixture.client.detach.side_effect = detach
     result = asyncio.run(fixture.capture())
     assert fixture.logs == []
-    assert fixture.state.request_counts == {}
     assert len(result.network_events) == 1
     assert result.network_events[0].status == 503
 

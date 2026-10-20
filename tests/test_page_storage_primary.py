@@ -165,8 +165,7 @@ def test_page_storage_normal_status_and_evidence_are_unchanged(page_storage, sta
     assert [row["status"] for row in page_ends] == [status]
     assert scan.pages_crawled == 1
     assert rows[-1]["status"] == "completed"
-    assert [record for kind, record in records if kind == "page"] == ([] if status == "failed" else page_ends)
-    assert [record for kind, record in records if kind == "action"] == ([] if status == "failed" else [state.action])
+    assert {kind for kind, _ in records} == {"scan"}  # per-page diagnostics live in the JSONL only
     assert scan.endpoints_found == (0 if status == "failed" else 1)
     state.probe.assert_awaited_once()
 
@@ -181,16 +180,4 @@ def test_new_page_storage_close_interruption_propagates(page_storage, query_fail
     scan, _, rows = stored(state)
     assert rows[-1]["status"] == ("cancelled" if close_type is asyncio.CancelledError else "error")
     assert scan.endpoints_found == (0 if query_fails else 1)
-    state.probe.assert_not_awaited()
-
-
-def test_page_storage_close_error_after_commit_is_not_hidden(page_storage):
-    state = page_storage
-    state.close_error = OSError("private-cleanup-content")
-    assert run_page(state) is state.close_error
-    scan, _, rows = stored(state)
-    assert state.primary is None
-    assert rows[-1]["error"] == "OSError"
-    assert scan.pages_crawled == 0
-    assert scan.endpoints_found == 1
     state.probe.assert_not_awaited()
