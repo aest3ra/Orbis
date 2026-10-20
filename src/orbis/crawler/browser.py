@@ -14,6 +14,7 @@ from urllib.parse import urljoin, urlparse
 
 from playwright.async_api import BrowserContext, Error as PlaywrightError, Page
 
+from orbis.analysis.url import templatize_path
 from orbis.config import InteractionConfig
 from orbis.crawler.interactor import ExplorationState, _upload_files, run_safe_interactions
 from orbis.crawler.planner import QwenPlanner
@@ -22,12 +23,8 @@ from orbis.telemetry import safe_url, timestamp
 
 log = logging.getLogger("orbis.capture")
 
-BODY_LIMIT = 512 * 1024
-JS_BODY_LIMIT = 2 * 1024 * 1024
 CLEANUP_TIMEOUT_SEC = 2.0
 DOWNLOAD_HASH_CHUNK_SIZE = 256 * 1024
-
-# --- Phase 1-B: Selective body collection limits ---
 STATIC_JS_BODY_LIMIT = 5 * 1024 * 1024
 
 INIT_SCRIPT = """
@@ -87,8 +84,6 @@ class NetworkEvent:
     status: int | None = None
     response_headers: dict = field(default_factory=dict)
     response_mime: str | None = None
-    response_body: str | None = None
-    body_truncated: bool = False
     source: str = "cdp"
     triggered_by: str | None = None   # None = page load; else interaction label
     action_id: int | None = None
@@ -135,7 +130,6 @@ async def capture_page(
     max_scrolls: int = 3,
     nav_timeout_ms: int = 20_000,
     settle_ms: int = 2_000,
-    collect_bodies: bool = False,
     interaction: InteractionConfig | None = None,
     exploration: ExplorationState | None = None,
     planner: QwenPlanner | None = None,
@@ -349,9 +343,12 @@ async def capture_page(
                 if attribute in element.attributes:
                     element.attributes[attribute] = urljoin(base, element.attributes[attribute] or "")
         result.dom_elements = _merge_dom_elements(result.dom_elements, elements)
-        result.inline_urls = _merge_strings(result.inline_urls, [
-            urljoin(base, item) for item in await _collect_inline_data(page)
-        ])
+        seen_inline = set(result.inline_urls)
+        for item in await _collect_inline_data(page):
+            absolute = urljoin(base, item)
+            if absolute not in seen_inline:
+                seen_inline.add(absolute)
+                result.inline_urls.append(absolute)
         check_http_diagnostics()
         bodies, fetched = await _fill_selective_bodies(
             client, captured, scope, fetched_rids, check_diagnostics=check_http_diagnostics,
@@ -363,7 +360,7 @@ async def capture_page(
         if state.current_action is not None:
             action_id = state.current_action["action_id"]
             events = [event for event in events if event.action_id == action_id]
-            routes = {(event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events}
+            routes = {_route(event) for event in events}
             state.records[-1].update(
                 requests=[{"method": event.method, "path": urlparse(event.url).path, "status": event.status,
                            "loading_error": event.loading_error} for event in events[:12]],
@@ -375,7 +372,7 @@ async def capture_page(
                 new_request_routes=len(routes - state.seen_request_routes), attribution="action_window",
                 application_outcome="unverified",
             )
-        state.seen_request_routes.update((event.method, urlparse(event.url).netloc, urlparse(event.url).path) for event in events)
+        state.seen_request_routes.update(_route(event) for event in events)
 
     try:
         async with asyncio.timeout_at(deadline) as capture_timeout:
@@ -415,9 +412,6 @@ async def capture_page(
             seen_keys = {(event.method, event.url) for event in captured.values()}
             for event in await _collect_init_script_events(page, page.url, seen_keys):
                 captured[event.request_id] = event
-            check_http_diagnostics()
-            if collect_bodies:
-                await _fill_bodies(client, captured, skip_rids=fetched_rids, check_diagnostics=check_http_diagnostics)
             check_http_diagnostics()
             if download_tasks:
                 await asyncio.gather(*download_tasks)
@@ -540,6 +534,13 @@ async def capture_page(
     return result
 
 
+def _route(event: NetworkEvent) -> tuple[str, str, str]:
+    """Route identity for novelty: templatized so /uploads/<ts>-file.zip and
+    /items/<id> count as one route instead of a new one on every request."""
+    parsed = urlparse(event.url)
+    return event.method, parsed.netloc, templatize_path(parsed.path or "/")
+
+
 def _merge_dom_elements(
     first: list[DomElement],
     second: list[DomElement],
@@ -556,17 +557,6 @@ def _merge_dom_elements(
             continue
         seen.add(key)
         merged.append(elem)
-    return merged
-
-
-def _merge_strings(first: list[str], second: list[str]) -> list[str]:
-    merged: list[str] = []
-    seen: set[str] = set()
-    for value in first + second:
-        if value in seen:
-            continue
-        seen.add(value)
-        merged.append(value)
     return merged
 
 
@@ -783,51 +773,13 @@ async def _collect_init_script_events(
     return events
 
 
-async def _fill_bodies(
-    client,
-    captured: dict[str, NetworkEvent],
-    skip_rids: set[str] | None = None,
-    check_diagnostics: Callable[[], None] | None = None,
-) -> None:
-    for rid, ev in list(captured.items()):
-        if skip_rids and rid in skip_rids:
-            continue
-        if ev.status is None or ev.source == "init_script":
-            continue
-        mime = (ev.response_mime or "").lower()
-        if any(mime.startswith(p) for p in ("image/", "font/", "audio/", "video/")):
-            continue
-        limit = JS_BODY_LIMIT if "javascript" in mime else BODY_LIMIT
-        try:
-            res = await client.send("Network.getResponseBody", {"requestId": rid})
-            body = res.get("body", "") or ""
-            if len(body) > limit:
-                ev.response_body = body[:limit]
-                ev.body_truncated = True
-            else:
-                ev.response_body = body
-        except Exception:
-            pass
-        if check_diagnostics is not None:
-            check_diagnostics()
-
-
-# --- Phase 1-B: Selective body collection ---
-
-
 def _classify_selective_body(
     url: str, mime: str, scope: Scope | None,
 ) -> tuple[str, int] | None:
-    """Decide if a response qualifies for selective body collection.
-
-    Returns (kind, size_limit) if it should be collected, None otherwise.
-    JS bodies are collected regardless of scope (CDN JS may contain target API paths).
-    """
+    """Return the kind and size limit for a JavaScript response."""
     mime_lower = mime.lower()
-
     if "javascript" in mime_lower or "ecmascript" in mime_lower:
         return ("js", STATIC_JS_BODY_LIMIT)
-
     return None
 
 
@@ -838,13 +790,7 @@ async def _fill_selective_bodies(
     skip_rids: set[str] | None = None,
     check_diagnostics: Callable[[], None] | None = None,
 ) -> tuple[list[CapturedBody], set[str]]:
-    """Collect JavaScript response bodies for static endpoint discovery.
-
-    This runs independently of the collect_bodies flag.
-
-    Returns (bodies, fetched_rids) so the caller can skip these request IDs
-    in a subsequent _fill_bodies call to avoid duplicate CDP fetches.
-    """
+    """Collect JavaScript bodies once per request for static endpoint discovery."""
     bodies: list[CapturedBody] = []
     fetched_rids: set[str] = set()
     for rid, ev in list(captured.items()):

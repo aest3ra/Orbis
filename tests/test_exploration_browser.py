@@ -109,6 +109,24 @@ def workflow_site():
                       await fetch('/api/uploads', {method: 'POST', body: data});}; input.click();
                   };
                 </script>''', "text/html")
+            elif self.path == "/state-steps":
+                self.send_body(b'''<button id="advance" role="tab" aria-selected="false">Next</button><script>
+                  let step = 0;
+                  document.querySelector('#advance').onclick = async event => {
+                    step += 1;
+                    event.target.setAttribute('aria-selected', step === 1 ? 'true' : 'false');
+                    if (step === 2) await fetch('/api/state-steps');
+                  };
+                </script>''', "text/html")
+            elif self.path == "/unique-routes":
+                self.send_body(b'''<button id="refresh" role="tab" aria-selected="0">Refresh</button><script>
+                  let n = 0;
+                  document.querySelector('#refresh').onclick = async event => {
+                    n += 1;
+                    event.target.setAttribute('aria-selected', String(n));
+                    await fetch('/api/items/' + Date.now());
+                  };
+                </script>''', "text/html")
             elif self.path == "/app.js":
                 self.send_body(APP_JS.encode(), "text/javascript")
             elif self.path == "/editor.js":
@@ -206,6 +224,30 @@ def test_readonly_exploration_does_not_submit_posts(workflow_site, tmp_path):
     capture = asyncio.run(exercise())
     assert ("GET", "/api/inventory") in state["requests"]
     assert not [row for row in state["requests"] if row[0] == "POST"]
+    assert not capture.error
+
+
+def test_same_url_screen_states_allow_next_step_request(workflow_site, tmp_path):
+    target, state = workflow_site
+    scope = Scope(ScopeConfig(include_domains=["127.0.0.1"]))
+
+    async def exercise():
+        async with async_playwright() as pw:
+            browser = await pw.chromium.launch()
+            try:
+                context = await browser.new_context()
+                return await capture_page(context, target + "/state-steps", scope=scope, max_scrolls=0,
+                                          settle_ms=50, download_dir=tmp_path, max_actions=4)
+            finally:
+                await browser.close()
+
+    capture = asyncio.run(exercise())
+
+    assert ("GET", "/api/state-steps") in state["requests"]
+    assert ("GET", "/api/state-steps") in {
+        (endpoint.method, endpoint.path_template) for endpoint in analyze(capture, scope).endpoints
+    }
+    assert [row["label"] for row in capture.observations if row.get("observation") == "action"] == ["Next", "Next"]
     assert not capture.error
 
 
@@ -418,3 +460,30 @@ def test_post_download_preserves_method_and_separate_artifacts(workflow_site, tm
     second_file = second_record['path']
     assert second_file != evidence['path']
     assert Path(second_file).read_bytes() == Path(evidence['path']).read_bytes() == ATTACHMENT
+
+
+def test_route_novelty_ignores_high_cardinality_paths(workflow_site, tmp_path):
+    """Each click fetches /api/items/<timestamp>. Templatized route novelty makes
+    the second click unproductive, so the per-URL cap stops the control after two
+    executions instead of chasing a new path forever."""
+    target, state = workflow_site
+    scope = Scope(ScopeConfig(include_domains=["127.0.0.1"]))
+
+    async def exercise():
+        async with async_playwright() as pw:
+            browser = await pw.chromium.launch()
+            try:
+                context = await browser.new_context()
+                return await capture_page(context, target + "/unique-routes", scope=scope, max_scrolls=0,
+                                          settle_ms=50, download_dir=tmp_path, max_actions=6)
+            finally:
+                await browser.close()
+
+    capture = asyncio.run(exercise())
+
+    actions = [row for row in capture.observations if row.get("observation") == "action" and row["label"] == "Refresh"]
+    assert [row["status"] for row in actions] == ["executed", "executed"]
+    assert actions[0]["new_request_routes"] >= 1
+    assert actions[1]["new_request_routes"] == 0
+    assert len([path for method, path in state["requests"] if path.startswith("/api/items/")]) == 2
+    assert not capture.error

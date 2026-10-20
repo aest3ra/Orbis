@@ -65,19 +65,15 @@ class ProbeResults(list[tuple[int, str, int | None]]):
         self,
         rows: list[tuple[int, str, int | None]] | None = None,
         *,
-        total: int = 0,
         sent: int = 0,
         skipped: int = 0,
         remaining: int = 0,
-        budget: int = 0,
         stop_reason: str = "completed",
     ) -> None:
         super().__init__(rows or [])
-        self.total = total
         self.sent = sent
         self.skipped = skipped
         self.remaining = remaining
-        self.budget = budget
         self.stop_reason = stop_reason
 
     @property
@@ -260,10 +256,8 @@ async def probe_candidates(
     )
     return ProbeResults(
         results,
-        total=total,
         sent=sent,
         skipped=skipped,
         remaining=remaining,
-        budget=budget,
         stop_reason=stop_reason,
     )

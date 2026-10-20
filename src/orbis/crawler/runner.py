@@ -68,7 +68,7 @@ async def run_scan(
     for path in config.interaction.upload_files:
         if not path.is_file():
             raise ValueError(f"Upload file does not exist: {path}")
-    scope = Scope(config.scope)
+    scope = Scope(config.scope, config.target)
     engine = open_db(db_path)
     trace = None
     failure: BaseException | None = None

@@ -15,7 +15,7 @@ from orbis.crawler.scope import Scope
 from orbis.analysis.api_markers import API_PREFIX_RE
 from orbis.analysis.classifier import ASSET_SUFFIXES, classify
 from orbis.analysis.params import extract_params, infer_type, merge_types
-from orbis.analysis.url import host_with_port, templatize_path
+from orbis.analysis.url import origin, templatize_path
 
 log = logging.getLogger("orbis.analyzer")
 
@@ -52,7 +52,7 @@ class NormalizedParam:
 @dataclass
 class NormalizedEndpoint:
     method: str
-    host: str
+    host: str  # Full origin; the name matches the existing DB column.
     path_template: str
     sample_url: str
     route_kind: str
@@ -172,7 +172,7 @@ def _accumulate(
     kind: str,
 ) -> None:
     parsed = urlparse(event.url)
-    host = host_with_port(event.url)
+    host = origin(event.url)
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = (event.method, host, template)
@@ -256,7 +256,7 @@ def _merge_endpoint(
     - New key: add as application_api
     """
     parsed = urlparse(absolute_url)
-    host = host_with_port(absolute_url)
+    host = origin(absolute_url)
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = (method, host, template)
@@ -359,7 +359,7 @@ def _accumulate_wayback(
     eps: dict[tuple[str, str, str], NormalizedEndpoint],
     parsed,
 ) -> None:
-    host = host_with_port(parsed.geturl())
+    host = origin(parsed.geturl())
     path = (parsed.path or "/").rstrip("/") or "/"
     template = templatize_path(path)
     key = ("GET", host, template)

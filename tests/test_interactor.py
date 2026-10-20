@@ -6,7 +6,7 @@ import asyncio
 
 import pytest
 
-from orbis.config import ScopeConfig
+from orbis.config import InteractionConfig, ScopeConfig
 from orbis.crawler import interactor
 from orbis.crawler.interactor import run_safe_interactions
 from orbis.crawler.scope import Scope
@@ -325,12 +325,27 @@ def test_rediscovery_acts_on_ui_revealed_by_earlier_clicks(monkeypatch) -> None:
     monkeypatch.setattr(interactor, "_collect_candidates", staged_collect)
     page = FakePage([])
 
-    count = asyncio.run(run_safe_interactions(page, _scope()))
+    count = asyncio.run(run_safe_interactions(page, _scope(), max_actions=2))
 
-    # #tab clicked round 1; #modal (revealed afterwards) clicked round 2;
-    # #tab is skipped the second round because its selector is already acted on.
+    # The newly revealed modal is selected before the tab already visible in the prior state.
     assert count == 2
     assert page.actions == [("click", "#tab"), ("click", "#modal")]
+
+
+def test_same_button_can_be_used_in_distinct_screen_states(monkeypatch) -> None:
+    page = FakePage([{"kind": "button", "selector": "#toggle", "text": "Next", "expanded": "false"}])
+    original_click = FakeLocator.click
+
+    async def change_state(self, **kwargs):
+        await original_click(self, **kwargs)
+        page.candidates = [{"kind": "button", "selector": "#toggle", "text": "Next",
+                            "expanded": "true" if len(page.actions) == 1 else "false"}]
+
+    monkeypatch.setattr(FakeLocator, "click", change_state)
+    count = asyncio.run(run_safe_interactions(page, _scope()))
+
+    assert count == 2
+    assert page.actions == [("click", "#toggle"), ("click", "#toggle")]
 
 
 class FakePaginationTracker:
@@ -385,3 +400,127 @@ def test_non_paginator_clicked_once_even_with_tracker() -> None:
 
     assert count == 1
     assert page.actions == [("click", "#tab")]
+
+
+def test_repeat_cap_bounds_unproductive_toggles(monkeypatch) -> None:
+    """Three accordion toggles each flip their own state and never yield a
+    request. Per-screen-state history would re-open and re-close them until the
+    budget is gone; the per-URL cap holds each at two executions."""
+    opened = [False, False, False]
+
+    def candidates():
+        return [{"kind": "button", "selector": f"#t{i}", "key": f"#t{i}", "text": f"Section {i}",
+                 "expanded": "true" if opened[i] else "false"} for i in range(3)]
+
+    page = FakePage(candidates())
+    original_click = FakeLocator.click
+
+    async def flip(self, **kwargs):
+        await original_click(self, **kwargs)
+        index = int(self.selector[2:])
+        opened[index] = not opened[index]
+        page.candidates = candidates()
+
+    monkeypatch.setattr(FakeLocator, "click", flip)
+    count = asyncio.run(run_safe_interactions(page, _scope(), max_actions=20))
+
+    assert count == 6
+    assert all(page.actions.count(("click", f"#t{i}")) == 2 for i in range(3))
+
+
+def test_productive_candidate_may_repeat_beyond_cap(monkeypatch) -> None:
+    """A control whose latest execution still produced new request routes is not
+    capped; it stops one execution after it runs dry."""
+    clicks = {"n": 0}
+
+    def candidates():
+        return [{"kind": "button", "selector": "#more", "key": "#more", "text": "More",
+                 "expanded": str(clicks["n"])}]
+
+    page = FakePage(candidates())
+    original_click = FakeLocator.click
+
+    async def advance(self, **kwargs):
+        await original_click(self, **kwargs)
+        clicks["n"] += 1
+        page.candidates = candidates()
+
+    monkeypatch.setattr(FakeLocator, "click", advance)
+    exploration = interactor.ExplorationState()
+
+    async def observe():
+        exploration.records[-1]["new_request_routes"] = 1 if clicks["n"] <= 4 else 0
+
+    count = asyncio.run(run_safe_interactions(page, _scope(), state=exploration, observe=observe, max_actions=20))
+
+    assert count == 5
+    assert [row["attempt_number"] for row in exploration.records] == [1, 2, 3, 4, 5]
+
+
+def test_never_executed_candidate_outranks_a_repeat(monkeypatch) -> None:
+    """An input whose execution changes the screen state would be eligible again
+    with a higher priority than the submit button; the submit button must still
+    come first because it has never run on this URL."""
+    flips = {"n": 0}
+
+    def candidates():
+        return [
+            # "name" rather than a search-like label: a search input also presses Enter,
+            # which would add a second recorded action for the same candidate.
+            {"kind": "input", "selector": "#q", "key": "#q", "text": "name", "type": "text",
+             "expanded": str(flips["n"])},
+            {"kind": "button", "selector": "#save", "key": "#save", "text": "Save", "label": "Save",
+             "button_type": "button"},
+        ]
+
+    page = FakePage(candidates())
+    original_fill = FakeLocator.fill
+
+    async def fill(self, value, **kwargs):
+        await original_fill(self, value, **kwargs)
+        flips["n"] += 1
+        page.candidates = candidates()
+
+    monkeypatch.setattr(FakeLocator, "fill", fill)
+    options = InteractionConfig(allow_write=True)
+    asyncio.run(run_safe_interactions(page, _scope(), options=options, max_actions=6))
+
+    assert [action[:2] for action in page.actions][:3] == [("fill", "#q"), ("click", "#save"), ("fill", "#q")]
+
+
+def test_failed_executions_do_not_consume_the_cap(monkeypatch) -> None:
+    """A submit control covered twice (not visible) must still run once it is
+    visible again in a later screen state; only completed executions count
+    toward MAX_REPEATS_PER_CANDIDATE."""
+    flips = {"n": 0}
+    visibility_checks = {"save": 0}
+
+    def candidates():
+        return [
+            {"kind": "button", "selector": "#save", "key": "#save", "text": "Save", "label": "Save",
+             "button_type": "button"},
+            {"kind": "button", "selector": "#toggle", "key": "#toggle", "text": "Section",
+             "expanded": str(flips["n"])},
+        ]
+
+    page = FakePage(candidates())
+    original_click = FakeLocator.click
+
+    async def click(self, **kwargs):
+        await original_click(self, **kwargs)
+        if self.selector == "#toggle":
+            flips["n"] += 1
+            page.candidates = candidates()
+
+    async def is_visible(self, **_kwargs):
+        if self.selector == "#save":
+            visibility_checks["save"] += 1
+            return visibility_checks["save"] > 2
+        return True
+
+    monkeypatch.setattr(FakeLocator, "click", click)
+    monkeypatch.setattr(FakeLocator, "is_visible", is_visible)
+    asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(allow_write=True), max_actions=10))
+
+    assert ("click", "#save") in page.actions
+    assert visibility_checks["save"] == 3

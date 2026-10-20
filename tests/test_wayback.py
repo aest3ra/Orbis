@@ -15,7 +15,7 @@ class TestBuildWaybackResults:
     def test_different_ports_do_not_merge(self) -> None:
         urls = [f"http://ex.com:{port}/api/users" for port in (8000, 9000)]
         eps, _ = build_wayback_results(urls, _scope())
-        assert {ep.host for ep in eps} == {"ex.com:8000", "ex.com:9000"}
+        assert {ep.host for ep in eps} == {"http://ex.com:8000", "http://ex.com:9000"}
 
     def test_api_urls_recorded_as_wayback_endpoints(self) -> None:
         urls = [
@@ -70,7 +70,7 @@ class TestBuildWaybackResults:
     def test_out_of_scope_dropped(self) -> None:
         urls = ["https://other.com/api/x", "https://ex.com/api/y"]
         eps, seeds = build_wayback_results(urls, _scope(["ex.com"]))
-        assert {e.host for e in eps} == {"ex.com"}
+        assert {e.host for e in eps} == {"https://ex.com:443"}
         assert all("other.com" not in s for s in seeds)
 
 

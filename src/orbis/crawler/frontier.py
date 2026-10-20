@@ -6,7 +6,7 @@ import heapq
 from itertools import count
 from urllib.parse import urlparse
 
-from orbis.analysis.url import host_with_port
+from orbis.analysis.url import origin
 from orbis.crawler.scope import Scope
 from orbis.crawler.slug import DEFAULT_SLUG_THRESHOLD, SlugDetector
 from orbis.safety import is_safe_url
@@ -48,7 +48,7 @@ class Frontier:
         if not self._scope.allows(url) or not is_safe_url(url):
             return False
         parsed = urlparse(url)
-        host = host_with_port(url)
+        host = origin(url)
         path = parsed.path or "/"
         # Feed cardinality detection even if this URL ends up rejected — seeing
         # the value still counts toward "this position is high-cardinality".
@@ -76,7 +76,7 @@ class Frontier:
         """Current (host, template) for a URL — used by the crawler to track
         per-template novelty for diminishing-returns saturation."""
         parsed = urlparse(_normalize(url))
-        host = host_with_port(url)
+        host = origin(url)
         return host, self._detector.template(host, parsed.path or "/")
 
     def saturate(self, tkey: tuple[str, str]) -> None:

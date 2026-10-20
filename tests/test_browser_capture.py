@@ -281,6 +281,6 @@ def test_interaction_created_observations_flow_through_capture_and_analyzer() ->
     result = analyze(capture, scope)
 
     endpoints = {(ep.source, ep.host, ep.path_template) for ep in result.endpoints}
-    assert ("dynamic", "example.com", "/api/from-interaction") in endpoints
-    assert not any(host == "evil.com" for _source, host, _path in endpoints)
+    assert ("dynamic", "https://example.com:443", "/api/from-interaction") in endpoints
+    assert not any(host == "https://evil.com:443" for _source, host, _path in endpoints)
     assert "https://example.com/from-interaction" in result.frontier_urls

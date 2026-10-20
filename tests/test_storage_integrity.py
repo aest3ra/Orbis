@@ -32,6 +32,16 @@ def _endpoint(path, kind="application_api", source="dynamic"):
     )
 
 
+def test_http_and_https_endpoints_remain_separate(session):
+    scan_id = create_scan(session, "https://local.invalid")
+    endpoints = {}
+    for url in ("http://local.invalid/api/users", "https://local.invalid/api/users"):
+        _accumulate(endpoints, NetworkEvent(url, "GET", url, "Fetch"), "application_api")
+    save_endpoints(session, scan_id, list(endpoints.values()))
+    rows = session.exec(select(Endpoint)).all()
+    assert {row.host for row in rows} == {"http://local.invalid:80", "https://local.invalid:443"}
+
+
 @pytest.mark.parametrize("reverse", [False, True])
 def test_source_priority_preserves_observed_route_kind(session, reverse):
     scan_id = create_scan(session, "http://local.invalid")

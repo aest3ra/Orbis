@@ -2,19 +2,19 @@
 
 import pytest
 
-from orbis.analysis.url import host_with_port, templatize_path
+from orbis.analysis.url import origin, templatize_path
 
 
 @pytest.mark.parametrize("url, expected", [
-    ("http://localhost:34567/api", "localhost:34567"),
-    ("https://EXAMPLE.com:443/api", "example.com"),
-    ("http://example.com:80/api", "example.com"),
-    ("https://example.com:8443/api", "example.com:8443"),
-    ("http://[::1]:34567/api", "[::1]:34567"),
-    ("http://user:password@localhost:34567/api", "localhost:34567"),
+    ("http://localhost:34567/api", "http://localhost:34567"),
+    ("https://EXAMPLE.com:443/api", "https://example.com:443"),
+    ("http://example.com:80/api", "http://example.com:80"),
+    ("https://example.com:8443/api", "https://example.com:8443"),
+    ("http://[::1]:34567/api", "http://[::1]:34567"),
+    ("http://user:password@localhost:34567/api", "http://localhost:34567"),
 ])
-def test_host_preserves_service_port_without_credentials(url, expected) -> None:
-    assert host_with_port(url) == expected
+def test_origin_preserves_service_port_without_credentials(url, expected) -> None:
+    assert origin(url) == expected
 
 
 class TestTemplatizePath:
@@ -128,3 +128,20 @@ class TestTemplatizePath:
         # "v1" has only 1 digit, below _NUMERIC threshold, and
         # _EMBEDDED_NUM requires 4+ digits
         assert templatize_path("/api/v1/users") == "/api/v1/users"
+
+
+class TestEffectivePort:
+    def test_malformed_port_is_treated_as_absent(self) -> None:
+        from urllib.parse import urlparse
+
+        from orbis.analysis.url import effective_port
+
+        assert effective_port(urlparse("http://example.com:abc/")) == 80
+        assert effective_port(urlparse("https://example.com:70000/")) == 443
+        assert effective_port(urlparse("ftp://example.com/")) is None
+
+    def test_origin_does_not_raise_on_malformed_port(self) -> None:
+        from orbis.analysis.url import origin
+
+        assert origin("http://example.com:abc/") == "http://example.com:80"
+        assert origin("https://example.com:70000/x") == "https://example.com:443"

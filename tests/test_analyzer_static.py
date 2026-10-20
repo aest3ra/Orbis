@@ -61,7 +61,7 @@ class TestMergeEndpoint:
         eps = {}
         for port in (8000, 9000):
             _merge_endpoint(eps, "GET", f"http://localhost:{port}/api/users", source="static_js")
-        assert {ep.host for ep in eps.values()} == {"localhost:8000", "localhost:9000"}
+        assert {ep.host for ep in eps.values()} == {"http://localhost:8000", "http://localhost:9000"}
 
     def test_new_endpoint(self) -> None:
         eps: dict = {}
@@ -147,14 +147,14 @@ class TestAnalyzeJsStatic:
         js = 'fetch("/api/products")'
         result = analyze(self._capture_with_js(js), _scope())
         assert any(
-            ep.host == "example.com" and ep.path_template == "/api/products"
+            ep.host == "https://example.com:443" and ep.path_template == "/api/products"
             for ep in result.endpoints
         )
 
     def test_js_out_of_scope_filtered(self) -> None:
         js = 'fetch("https://other.com/api/users")'
         result = analyze(self._capture_with_js(js), _scope())
-        assert not any(ep.host == "other.com" for ep in result.endpoints)
+        assert not any(ep.host == "https://other.com:443" for ep in result.endpoints)
 
     def test_js_with_no_api_marker(self) -> None:
         js = 'fetch("/users/123")'

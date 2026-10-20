@@ -379,7 +379,7 @@ class TestAnalyzeIntegration:
         result = analyze(cap, _scope())
         hosts = {ep.host for ep in result.endpoints}
         paths = {ep.path_template for ep in result.endpoints}
-        assert "evil.com" not in hosts
+        assert "https://evil.com:443" not in hosts
         assert paths == {"/api/users"}
 
     def test_discovered_via_tagged_from_interaction(self) -> None:

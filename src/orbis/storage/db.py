@@ -34,7 +34,7 @@ class Endpoint(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     scan_id: int = Field(foreign_key="scan.id", index=True)
     method: str
-    host: str
+    host: str  # Existing DB column stores the full origin for new scans.
     path_template: str
     sample_url: str
     route_kind: str

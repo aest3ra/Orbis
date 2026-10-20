@@ -96,6 +96,28 @@ class TestNoveltyPriority:
 
 
 class TestFrontierEnqueue:
+    def test_target_port_limits_host_only_scope(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["example.com"]), "http://example.com:8000")
+        frontier = Frontier(scope)
+        assert frontier.enqueue("http://example.com:8000/page")
+        assert not frontier.enqueue("http://example.com:9000/page")
+        assert not frontier.enqueue("http://example.com/page")
+
+    def test_explicit_domain_port_is_allowed(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["example.com:9000"]), "http://example.com:8000")
+        assert scope.allows("http://example.com:9000/page")
+        assert not scope.allows("http://example.com:8000/page")
+
+    def test_target_default_port_limits_scope(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["example.com"]), "https://example.com")
+        assert scope.allows("https://example.com:443/page")
+        assert not scope.allows("http://example.com/page")
+
+    def test_ipv6_target_host_without_brackets(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["::1"]), "http://[::1]:8000")
+        assert scope.allows("http://[::1]:8000/page")
+        assert not scope.allows("http://[::1]:9000/page")
+
     def test_template_caps_are_separate_for_different_ports(self) -> None:
         f = Frontier(_scope(), max_per_template=1)
         assert f.enqueue("http://example.com:8000/page")
@@ -140,7 +162,7 @@ class TestFrontierEnqueue:
         assert f.enqueue("https://example.com/u/2") is True   # raw
         assert f.enqueue("https://example.com/u/3") is True   # rule forms here
         assert f.template_key("https://example.com/u/9") == (
-            "example.com", "/u/{slug}",
+            "https://example.com:443", "/u/{slug}",
         )
 
     def test_max_depth(self) -> None:
@@ -170,7 +192,7 @@ class TestFrontierEnqueue:
         f.enqueue(f"{base}/bbb")   # rule forms → /board/{slug}
         f.enqueue(f"{base}/ccc")
         tkey = f.template_key(f"{base}/bbb")
-        assert tkey == ("example.com", "/board/{slug}")
+        assert tkey == ("https://example.com:443", "/board/{slug}")
         f.saturate(tkey)
         # every queued /board/* member normalizes to the saturated template
         assert f.size == 0
@@ -200,3 +222,19 @@ class TestFrontierPop:
         assert first is not None and second is not None
         assert "page-a" in first.url
         assert "page-b" in second.url
+
+
+class TestScopeMalformedPorts:
+    def test_malformed_port_url_is_out_of_scope(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["example.com"]), "https://example.com")
+        assert not scope.allows("http://example.com:abc/")
+        assert not scope.allows("https://example.com:70000/")
+        assert scope.allows("https://example.com/")
+
+    def test_invalid_include_domain_port_is_reported(self) -> None:
+        with pytest.raises(ValueError, match="include_domains entry 'example.com:abc'"):
+            Scope(ScopeConfig(include_domains=["example.com:abc"]))
+
+    def test_malformed_target_port_does_not_raise(self) -> None:
+        scope = Scope(ScopeConfig(include_domains=["example.com"]), "https://example.com:nope")
+        assert scope.allows("https://example.com/")

@@ -7,8 +7,6 @@ from urllib.parse import urlparse
 from orbis.analysis.api_markers import API_PREFIX_RE
 from orbis.crawler.browser import NetworkEvent
 
-RouteKind = str
-
 ASSET_SUFFIXES = (
     ".js", ".css", ".map", ".png", ".jpg", ".jpeg", ".gif",
     ".svg", ".ico", ".webp", ".woff", ".woff2", ".ttf", ".eot",
@@ -24,7 +22,7 @@ TELEMETRY_PATHS = ("/beacon", "/collect", "/analytics", "/rum", "/pixel")
 SECURITY_MARKERS = ("/cdn-cgi/", "/akam/", "challenge-platform", "cf_chl_")
 
 
-def classify(event: NetworkEvent) -> RouteKind:
+def classify(event: NetworkEvent) -> str:
     parsed = urlparse(event.url)
     path = (parsed.path or "/").lower()
     mime = (event.response_mime or "").lower()

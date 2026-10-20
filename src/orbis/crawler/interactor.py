@@ -26,6 +26,10 @@ from orbis.telemetry import clean, timestamp
 MAX_ACTIONS_PER_PAGE = 20     # total actions across all re-discovery rounds
 MAX_PAGINATION_REPEATS = 4    # repeat clicks on one "load more"/"next" while it keeps firing
 MAX_SCROLL_ACTIONS_PER_URL = 3
+# Executions of one candidate on one URL across screen states. A control that
+# keeps producing new request routes stays eligible; one that stopped is capped
+# so open/close toggles and repeated uploads cannot drain the page budget.
+MAX_REPEATS_PER_CANDIDATE = 2
 __all__ = ["run_safe_interactions"]
 
 _VALUE = "test"
@@ -94,7 +98,7 @@ _DOM_QUIET_JS = """
 
 @dataclass
 class ExplorationState:
-    acted: set[tuple[str, str]] = field(default_factory=set)
+    acted: dict[tuple[str, str], set[str]] = field(default_factory=dict)
     records: list[dict] = field(default_factory=list)
     scrolls: dict[str, int] = field(default_factory=dict)
     current_action: dict | None = None
@@ -104,6 +108,10 @@ class ExplorationState:
     seen_request_routes: set[tuple[str, str, str]] = field(default_factory=set)
     request_counts: dict[tuple[str, str, str], int] = field(default_factory=dict)
     download_counts: dict[str, int] = field(default_factory=dict)
+    # action key -> completed executions (action_counts also counts failed attempts)
+    executed_counts: dict[str, int] = field(default_factory=dict)
+    # action key -> whether its latest execution produced new request routes
+    productive: dict[str, bool] = field(default_factory=dict)
 
     def event(self, event: str, **details) -> None:
         if self.emit is not None:
@@ -128,6 +136,7 @@ async def run_safe_interactions(
     count = 0
     attempts = 0
     stop_reason = "action_budget"
+    previous_candidates: set[str] = set()
     while attempts < max_actions and count < max_actions:
         if check_diagnostics is not None:
             check_diagnostics()
@@ -138,11 +147,14 @@ async def run_safe_interactions(
         if check_diagnostics is not None:
             check_diagnostics()
         fingerprint = _state_fingerprint(candidates)
+        node = (page.url, fingerprint)
+        attempted = state.acted.setdefault(node, set())
         fresh = [
             c for c in candidates
-            if (page.url, _candidate_key(c)) not in state.acted
+            if _candidate_key(c) not in attempted
             and _is_candidate_safe(c, scope, page.url, options)
             and (c["kind"] != "scroll" or state.scrolls.get(page.url, 0) < MAX_SCROLL_ACTIONS_PER_URL)
+            and _repeat_allowed(state, page.url, c)
         ]
         if not fresh:
             if not back_stack:
@@ -151,7 +163,15 @@ async def run_safe_interactions(
             back_stack.pop()
             candidate = {"kind": "back", "selector": "", "label": "Back"}
         else:
-            fresh.sort(key=_priority)
+            # Breadth before repetition: a candidate never executed on this URL
+            # outranks a re-execution in a new screen state, whatever their
+            # priority classes. Within a class, controls that just appeared go
+            # first. Newness never outranks the class itself: rich pages keep
+            # producing new low-priority controls (inserted links, revealed
+            # menus, toasts) and would otherwise starve an already visible
+            # submit control until the page budget is gone.
+            fresh.sort(key=lambda c: (state.executed_counts.get(_action_key(page.url, c), 0) > 0,
+                                      _priority(c), _candidate_key(c) in previous_candidates))
             candidate = dict(fresh[0])
             decision_started = time.monotonic()
             selection = "rules"
@@ -169,14 +189,15 @@ async def run_safe_interactions(
                 candidate["files"] = [str(p) for p in _upload_files(candidate, options)]
             if options.allow_write and candidate["kind"] == "input":
                 candidate.setdefault("value", _input_value(candidate))
-            state.acted.add((page.url, _candidate_key(candidate)))
+            attempted.add(_candidate_key(candidate))
+        previous_candidates = {_candidate_key(c) for c in candidates}
         before_url = page.url
         if candidate["kind"] == "scroll":
             state.scrolls[page.url] = state.scrolls.get(page.url, 0) + 1
         attempts += 1
         action_id = len(state.records) + 1
         candidate["action_id"] = action_id
-        action_key = hashlib.sha256((before_url + _candidate_key(candidate)).encode()).hexdigest()[:16]
+        action_key = _action_key(before_url, candidate)
         state.action_counts[action_key] = state.action_counts.get(action_key, 0) + 1
         record = {"action_id": action_id, "page_id": state.page_id, "action_key": action_key,
                   "started_at": timestamp(), "kind": candidate["kind"],
@@ -193,6 +214,10 @@ async def run_safe_interactions(
         try:
             executed = await _act(page, candidate, scope, tracker, max_actions - count, deadline, check_diagnostics)
             count += executed
+            if executed:
+                # Only completed executions count toward the per-URL cap; a control
+                # that was covered or not yet enabled may still work in a later state.
+                state.executed_counts[action_key] = state.executed_counts.get(action_key, 0) + 1
             record.update(status="executed" if executed else "failed", executions=executed)
             if page.url != before_url and candidate["kind"] != "back":
                 back_stack.append(before_url)
@@ -206,6 +231,7 @@ async def run_safe_interactions(
             record.update(after_state=after_state, ui_state_changed=fingerprint != after_state)
             record["observed_progress"] = bool(record["ui_state_changed"] or page.url != before_url
                                                 or record.get("new_request_routes", 0))
+            state.productive[action_key] = bool(record.get("new_request_routes", 0))
         except asyncio.CancelledError as exc:
             primary_error = exc
             record.update(status="interrupted", failure_reason="cancelled")
@@ -246,10 +272,22 @@ def _candidate_key(candidate: dict) -> str:
                       + ([candidate.get("selector", "")] if "key" not in candidate else []))
 
 
+def _action_key(url: str, candidate: dict) -> str:
+    return hashlib.sha256((url + _candidate_key(candidate)).encode()).hexdigest()[:16]
+
+
+def _repeat_allowed(state: ExplorationState, url: str, candidate: dict) -> bool:
+    """A candidate may run again on this URL in a new screen state while it keeps
+    yielding new request routes; otherwise MAX_REPEATS_PER_CANDIDATE bounds it."""
+    key = _action_key(url, candidate)
+    return state.executed_counts.get(key, 0) < MAX_REPEATS_PER_CANDIDATE or state.productive.get(key, False)
+
+
 def _state_fingerprint(candidates: list[dict]) -> str:
-    return hashlib.sha256(json.dumps([
-        (_candidate_key(c), c.get("expanded", ""), bool(c.get("filled"))) for c in candidates
-    ], ensure_ascii=False).encode()).hexdigest()[:16]
+    return hashlib.sha256(json.dumps(sorted([
+        (_candidate_key(c), c.get("expanded", ""), c.get("selected", ""), bool(c.get("filled")))
+        for c in candidates
+    ]), ensure_ascii=False).encode()).hexdigest()[:16]
 
 
 def _priority(candidate: dict) -> int:

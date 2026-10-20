@@ -181,7 +181,7 @@ def _print_table(endpoints, title: str = "Endpoints") -> None:
     table = Table(title=title, show_header=True, header_style="bold")
     table.add_column("id", justify="right")
     table.add_column("method", style="bold")
-    table.add_column("host")
+    table.add_column("origin")
     table.add_column("path")
     table.add_column("kind")
     table.add_column("source")

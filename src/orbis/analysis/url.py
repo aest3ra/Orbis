@@ -16,14 +16,30 @@ _SLUG = re.compile(r"^\d+-.{8,}$")
 _EMBEDDED_NUM = re.compile(r"\d{4,}")
 
 
-def host_with_port(url: str) -> str:
+DEFAULT_PORTS = {"http": 80, "https": 443, "ws": 80, "wss": 443}
+
+
+def effective_port(parsed) -> int | None:
+    """Explicit port, else the scheme default; None for an unknown scheme.
+
+    ``urlparse(...).port`` raises on a port that is not a number or is out of
+    range; such a URL is treated as if it carried no port.
+    """
+    try:
+        port = parsed.port
+    except ValueError:
+        port = None
+    return port if port is not None else DEFAULT_PORTS.get(parsed.scheme)
+
+
+def origin(url: str) -> str:
     parsed = urlparse(url)
     host = parsed.hostname or ""
     if ":" in host:
         host = f"[{host}]"
-    default_port = {"http": 80, "https": 443, "ws": 80, "wss": 443}.get(parsed.scheme)
-    port = parsed.port
-    return f"{host}:{port}" if port is not None and port != default_port else host
+    port = effective_port(parsed)
+    address = f"{host}:{port}" if port is not None else host
+    return f"{parsed.scheme}://{address}"
 
 
 def templatize_path(path: str) -> str:

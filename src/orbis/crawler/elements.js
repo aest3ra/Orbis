@@ -57,6 +57,7 @@
             tag: el.tagName.toLowerCase(), label: label(el),
             text: [label(el), el.getAttribute('name'), el.id, el.getAttribute('class')].filter(Boolean).join(' ').slice(0, 500),
             name: el.getAttribute('name') || '', role: el.getAttribute('role') || '',
+            selected: el.getAttribute('aria-selected') || '',
             ...formInfo(el), ...extra,
         });
     };
