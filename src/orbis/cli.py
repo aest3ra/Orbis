@@ -43,31 +43,11 @@ def _setup_logging(verbose: bool = False) -> None:
 @contextmanager
 def _database_session(db_path: Path) -> Iterator[Session]:
     engine = open_db(db_path)
-    failure: BaseException | None = None
     try:
         with Session(engine) as session:
-            try:
-                yield session
-            except BaseException as exc:
-                failure = exc
-                raise
-    except BaseException as exc:
-        if failure is None or exc is failure or not isinstance(exc, Exception):
-            failure = exc
-            raise
-        failure.add_note(f"Database session close failed: {type(exc).__name__}")
-    else:
-        failure = None
-        return
+            yield session
     finally:
-        try:
-            engine.dispose()
-        except Exception as exc:
-            if failure is None:
-                raise
-            failure.add_note(f"Database disposal failed: {type(exc).__name__}")
-    # Re-raise outside the cleanup handler to retain the original exception chain.
-    raise failure
+        engine.dispose()
 
 
 @app.command()

@@ -123,32 +123,6 @@ def assert_cleanup(state):
     assert state.trace._file.closed
 
 
-@pytest.mark.parametrize("stage", [None, "write", "flush"])
-def test_actual_page_cancellation_survives_diagnostic_failure(page_cancellation, stage):
-    state = page_cancellation
-    state.stage = stage
-
-    cancel_capture(state)
-
-    assert state.observed is state.original
-    assert isinstance(state.observed, asyncio.CancelledError)
-    assert state.observed.args == ("external stop",)
-    assert state.task.cancelled()
-    assert_cleanup(state)
-    if stage is not None:
-        assert state.observed.__notes__ == ["Page cancellation diagnostics failed: OSError"]
-    rows, scan, records = read_evidence(state)
-    assert rows[-1]["status"] == "cancelled"
-    assert records == [rows[-1]]
-    assert scan.finished_at is not None
-    assert scan.pages_crawled == scan.endpoints_found == 0
-    assert "private-" not in json.dumps(records)
-    page_ends = [row for row in rows if row["event"] == "page_end"]
-    assert [row["sequence"] for row in rows] == ([1, 2, 4] if stage == "write" else [1, 2, 3, 4])
-    assert len(page_ends) == (0 if stage == "write" else 1)
-    assert rows[-1]["totals"].get("page_end", 0) == (1 if stage is None else 0)
-
-
 @pytest.mark.parametrize("stage", ["write", "flush"])
 @pytest.mark.parametrize("interruption_type", [asyncio.CancelledError, KeyboardInterrupt, SystemExit])
 def test_new_page_diagnostic_interruption_takes_precedence(page_cancellation, stage, interruption_type):
@@ -166,28 +140,6 @@ def test_new_page_diagnostic_interruption_takes_precedence(page_cancellation, st
     assert rows[-1]["status"] == ("cancelled" if interruption_type is asyncio.CancelledError else "error")
     assert records == [rows[-1]]
     assert scan.finished_at is not None
-
-
-@pytest.mark.parametrize("stage", ["write", "flush"])
-def test_page_cancellation_survives_later_cleanup_failures(page_cancellation, stage):
-    state = page_cancellation
-    state.stage = stage
-    state.browser.close.side_effect = RuntimeError("private-browser-content")
-    state.playwright.stop.side_effect = ValueError("private-driver-content")
-
-    cancel_capture(state)
-
-    assert state.observed is state.original
-    assert state.task.cancelled()
-    assert state.observed.__notes__ == [
-        "Page cancellation diagnostics failed: OSError",
-        "Browser close failed: RuntimeError",
-        "Playwright stop failed: ValueError",
-    ]
-    assert_cleanup(state)
-    rows, _, records = read_evidence(state)
-    assert records == [rows[-1]]
-    assert rows[-1]["status"] == "cancelled"
 
 
 @pytest.mark.parametrize("stage", ["write", "flush"])

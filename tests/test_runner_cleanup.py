@@ -98,134 +98,6 @@ def crawl_resources(monkeypatch):
     return request, browser
 
 
-def test_llm_dispose_failure_still_closes_browser(crawl_resources):
-    request, browser = crawl_resources
-    failure = RuntimeError("synthetic request disposal failure")
-    request.dispose.side_effect = failure
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
-
-    with pytest.raises(RuntimeError) as raised:
-        asyncio.run(runner._crawl_scan(
-            config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
-            db_path="unused.db", headless=True, wayback=False, trace=Mock(),
-        ))
-
-    assert raised.value is failure
-    request.dispose.assert_awaited_once_with()
-    browser.close.assert_awaited_once_with()
-
-
-@pytest.mark.parametrize("stage", ["request", "browser", "both"])
-@pytest.mark.parametrize("primary", [RuntimeError, asyncio.CancelledError])
-def test_browser_cleanup_preserves_primary_error(crawl_resources, stage, primary):
-    request, browser = crawl_resources
-    failure = primary("primary scan failure")
-    if stage in ("request", "both"):
-        request.dispose.side_effect = OSError("private-request-dispose-content")
-    if stage in ("browser", "both"):
-        browser.close.side_effect = ValueError("private-browser-close-content")
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1))
-
-    with pytest.raises(primary) as raised:
-        asyncio.run(runner._crawl_scan(
-            config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
-            db_path="unused.db", headless=True, wayback=False,
-            trace=Mock(emit=Mock(side_effect=failure)),
-        ))
-
-    assert raised.value is failure
-    assert len(failure.__notes__) == (2 if stage == "both" else 1)
-    assert all("private-" not in note for note in failure.__notes__)
-    request.dispose.assert_awaited_once_with()
-    browser.close.assert_awaited_once_with()
-
-
-@pytest.mark.parametrize("stage", ["terminal_log", "terminal_database", "log_close", "database_dispose"])
-@pytest.mark.parametrize("primary", [RuntimeError, asyncio.CancelledError])
-def test_secondary_cleanup_failure_preserves_primary(scan_resources, stage, primary):
-    engine, trace, crawl = scan_resources
-    failure = primary("primary scan failure")
-    secondary = OSError("private-secondary-content")
-    crawl.side_effect = failure
-    if stage == "terminal_log":
-        trace.emit.side_effect = [trace.emit.return_value, secondary]
-    elif stage == "terminal_database":
-        runner.Session.return_value.__enter__.return_value.commit.side_effect = secondary
-    elif stage == "log_close":
-        trace.close.side_effect = secondary
-    else:
-        engine.dispose.side_effect = secondary
-
-    with pytest.raises(primary) as raised:
-        asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path="unused.db", wayback=False))
-
-    assert raised.value is failure
-    assert any("OSError" in note for note in failure.__notes__)
-    assert all("private-secondary-content" not in note for note in failure.__notes__)
-    trace.close.assert_called_once_with()
-    engine.dispose.assert_called_once_with()
-
-
-@pytest.mark.parametrize("stage", ["launch", "body", "request", "browser"])
-@pytest.mark.parametrize("failure_type", [RuntimeError, asyncio.CancelledError])
-def test_driver_stop_preserves_earlier_failure(crawl_resources, stage, failure_type):
-    request, browser = crawl_resources
-    playwright = runner.async_playwright.return_value.start.return_value
-    failure = failure_type("primary failure")
-    playwright.stop.side_effect = OSError("private-driver-stop-content")
-    trace = Mock()
-    if stage == "launch":
-        playwright.chromium.launch.side_effect = failure
-    elif stage == "body":
-        trace.emit.side_effect = failure
-    elif stage == "request":
-        request.dispose.side_effect = failure
-    else:
-        browser.close.side_effect = failure
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1 if stage == "body" else 0))
-
-    with pytest.raises(failure_type) as raised:
-        asyncio.run(runner._crawl_scan(
-            config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
-            db_path="unused.db", headless=True, wayback=False, trace=trace,
-        ))
-
-    assert raised.value is failure
-    assert "Playwright stop failed: OSError" in failure.__notes__
-    assert "private-" not in " ".join(failure.__notes__)
-    playwright.stop.assert_awaited_once_with()
-    if stage == "launch":
-        browser.close.assert_not_awaited()
-    else:
-        browser.close.assert_awaited_once_with()
-
-
-@pytest.mark.parametrize("stop_fails", [False, True])
-def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, stop_fails):
-    request, browser = crawl_resources
-    playwright = runner.async_playwright.return_value.start.return_value
-    failure = OSError("driver stop failure")
-    if stop_fails:
-        playwright.stop.side_effect = failure
-    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
-    scan = runner._crawl_scan(
-        config, Mock(), 17, Scope(config.scope), None, None,
-        db_path="unused.db", headless=True, wayback=False, trace=Mock(),
-    )
-    if stop_fails:
-        with pytest.raises(OSError) as raised:
-            asyncio.run(scan)
-        assert raised.value is failure
-        runner.collapse_scan_endpoints.assert_not_called()
-    else:
-        assert asyncio.run(scan)["stop_reason"] == "max_pages"
-        runner.collapse_scan_endpoints.assert_called_once()
-    playwright.stop.assert_awaited_once_with()
-    browser.close.assert_awaited_once_with()
-    request.dispose.assert_not_awaited()
-
-
 @pytest.mark.parametrize("failure_type", [None, RuntimeError])
 def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failure_type):
     request, browser = crawl_resources
@@ -255,57 +127,42 @@ def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failu
     browser.close.assert_awaited_once_with()
 
 
-def test_first_cleanup_failure_is_preserved_when_both_closes_fail(scan_resources):
-    engine, trace, crawl = scan_resources
-    failure = OSError("log close failed")
-    trace.close.side_effect = failure
-    engine.dispose.side_effect = RuntimeError("private-dispose-content")
-
-    with pytest.raises(OSError) as raised:
-        asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path="unused.db", wayback=False))
-
-    assert raised.value is failure
-    assert any("RuntimeError" in note for note in failure.__notes__)
-    assert all("private-dispose-content" not in note for note in failure.__notes__)
-    engine.dispose.assert_called_once_with()
-
-
-@pytest.mark.parametrize("primary", [None, RuntimeError("earlier failure")])
-def test_cancellation_during_request_cleanup_is_not_masked(crawl_resources, primary):
+@pytest.mark.parametrize("stop_fails", [False, True])
+def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, caplog, stop_fails):
+    """Driver teardown runs exactly once; a failing stop is logged and does not
+    turn a completed crawl into an error."""
     request, browser = crawl_resources
-    cancellation = asyncio.CancelledError("stop cleanup")
-    request.dispose.side_effect = cancellation
-    browser.close.side_effect = OSError("private-close-content")
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1 if primary else 0))
+    playwright = runner.async_playwright.return_value.start.return_value
+    if stop_fails:
+        playwright.stop.side_effect = OSError("driver stop failure")
+    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
+    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
+    scan = runner._crawl_scan(
+        config, Mock(), 17, Scope(config.scope), None, None,
+        db_path="unused.db", headless=True, wayback=False, trace=Mock(),
+    )
 
-    with pytest.raises(asyncio.CancelledError) as raised:
-        asyncio.run(runner._crawl_scan(
-            config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
-            db_path="unused.db", headless=True, wayback=False,
-            trace=Mock(emit=Mock(side_effect=primary)),
-        ))
+    assert asyncio.run(scan)["stop_reason"] == "max_pages"
 
-    assert raised.value is cancellation
-    assert cancellation.__notes__ == ["Browser close failed: OSError"]
+    runner.collapse_scan_endpoints.assert_called_once()
+    playwright.stop.assert_awaited_once_with()
     browser.close.assert_awaited_once_with()
+    request.dispose.assert_not_awaited()
+    assert ("Playwright stop failed" in caplog.text) == stop_fails
 
 
-@pytest.mark.parametrize("stage", ["construction", "first_write"])
-def test_startup_error_survives_cleanup_errors(scan_resources, stage):
-    engine, trace, crawl = scan_resources
-    failure = RuntimeError("startup failure")
-    if stage == "construction":
-        runner.ScanLog.side_effect = failure
-    else:
-        trace.emit.side_effect = failure
-    trace.close.side_effect = OSError("private-close-content")
-    engine.dispose.side_effect = OSError("private-dispose-content")
+def test_llm_dispose_failure_still_closes_browser(crawl_resources, monkeypatch, caplog):
+    request, browser = crawl_resources
+    request.dispose.side_effect = RuntimeError("synthetic request disposal failure")
+    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
+    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
 
-    with pytest.raises(RuntimeError) as raised:
-        asyncio.run(runner.run_scan(ScanConfig(target="http://localhost/"), db_path="unused.db", wayback=False))
+    summary = asyncio.run(runner._crawl_scan(
+        config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
+        db_path="unused.db", headless=True, wayback=False, trace=Mock(),
+    ))
 
-    assert raised.value is failure
-    assert len(failure.__notes__) == (1 if stage == "construction" else 3)
-    assert all("private-" not in note for note in failure.__notes__)
-    crawl.assert_not_awaited()
-    engine.dispose.assert_called_once_with()
+    assert summary["stop_reason"] == "max_pages"
+    assert "LLM request context disposal failed" in caplog.text
+    request.dispose.assert_awaited_once_with()
+    browser.close.assert_awaited_once_with()

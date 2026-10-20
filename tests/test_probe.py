@@ -388,7 +388,7 @@ def test_run_scan_always_runs_probe_stage(monkeypatch, tmp_path) -> None:
 
     calls: list = []
 
-    async def _spy(context, candidates, *, scope, limits, on_result, cleanup_observations):
+    async def _spy(context, candidates, *, scope, limits, on_result):
         calls.append(candidates)
         return ProbeResults()
 

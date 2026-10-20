@@ -6,7 +6,6 @@ import asyncio
 import logging
 import hashlib
 import time
-from collections.abc import Callable
 from pathlib import Path
 from uuid import uuid4
 from dataclasses import dataclass, field
@@ -143,52 +142,18 @@ async def capture_page(
     record_start = len(state.records)
     fetched_rids: set[str] = set()
     download_tasks: list[asyncio.Task] = []
-    download_finalization_errors: list[Exception] = []
-    task_diagnostic_errors: list[BaseException] = []
     reported_requests: dict[str, int | None] = {}
     page = None
     client = None
-    tracker = None
-    primary_error: BaseException | None = None
-    handled_error: BaseException | None = None
-    http_diagnostic_error: BaseException | None = None
-    http_diagnostic_pending = False
     closing = False
-
-    def emit_task_diagnostic(name: str, **details) -> None:
-        try:
-            state.event(name, **details)
-        except BaseException as exc:
-            task_diagnostic_errors.append(exc)
-            raise
-
-    def check_http_diagnostics() -> None:
-        nonlocal http_diagnostic_pending
-        if http_diagnostic_error is not None:
-            http_diagnostic_pending = False
-            raise http_diagnostic_error
-
-    def emit_http_diagnostic(name: str, **details) -> bool:
-        nonlocal http_diagnostic_error, http_diagnostic_pending
-        if http_diagnostic_error is not None:
-            return False
-        try:
-            state.event(name, **details)
-        except BaseException as exc:
-            # Playwright otherwise defers callback errors to an unrelated API call.
-            http_diagnostic_error = exc
-            http_diagnostic_pending = True
-            return False
-        return True
 
     async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
         started = time.monotonic()
         partial_path = None
-        download_error: BaseException | None = None
         record = {"kind": "download", "url": safe_url(item.url), "status": "pending",
                   "action_id": action.get("action_id"), "page_id": state.page_id, "started_at": timestamp()}
         result.observations.append(record)
-        emit_task_diagnostic("download_start", **{k: v for k, v in record.items() if k != "page_id"})
+        state.event("download_start", **{k: v for k, v in record.items() if k != "page_id"})
         try:
             if download_dir is None or (scope is not None and not scope.allows(item.url)):
                 await item.cancel()
@@ -222,17 +187,10 @@ async def capture_page(
                     captured[rid] = NetworkEvent(rid, "GET", item.url, "Download", source="download_link",
                                                  triggered_by=action.get("label"), action_id=action.get("action_id"))
                     record.update(method="GET", method_evidence="anchor_navigation")
-        except PlaywrightError as exc:
+        except (PlaywrightError, OSError) as exc:
             record.update(status="failed", error=type(exc).__name__)
-        except asyncio.CancelledError as exc:
-            download_error = exc
+        except asyncio.CancelledError:
             record.update(status="interrupted", error="cancelled")
-            raise
-        except OSError as exc:
-            record.update(status="failed", error=type(exc).__name__)
-        except BaseException as exc:
-            download_error = exc
-            record.update(status="failed", error=type(exc).__name__)
             raise
         finally:
             if partial_path is not None:
@@ -241,14 +199,7 @@ async def capture_page(
                 except OSError as exc:
                     record.update(cleanup_error=type(exc).__name__, partial_path=str(partial_path))
             record.update(duration_ms=round((time.monotonic() - started) * 1000, 1), finished_at=timestamp())
-            try:
-                emit_task_diagnostic("download_end", **{k: v for k, v in record.items() if k != "page_id"})
-            except Exception as exc:
-                if download_error is None:
-                    raise
-                # gather does not preserve notes on cancelled child exceptions.
-                download_finalization_errors.append(exc)
-                download_error.add_note(f"Download finalization failed: {type(exc).__name__}")
+            state.event("download_end", **{k: v for k, v in record.items() if k != "page_id"})
 
     def on_download(item) -> None:
         if closing:
@@ -266,7 +217,7 @@ async def capture_page(
             files = _upload_files({"accept": await chooser.element.get_attribute("accept") or "",
                                    "multiple": chooser.is_multiple()}, interaction)
         await chooser.set_files([str(path) for path in files])
-        emit_task_diagnostic("file_selection", action_id=action_id, file_count=len(files))
+        state.event("file_selection", action_id=action_id, file_count=len(files))
 
     def on_filechooser(chooser) -> None:
         if closing:
@@ -304,16 +255,14 @@ async def capture_page(
             error = event.get("errorText", "")
             cap.loading_error = error if error.startswith("net::") and " " not in error else "network_failure"
             if relevant(cap):
-                emit_http_diagnostic("request_loading_failed", action_id=cap.action_id, request_id=cap.request_id,
-                                     method=cap.method, url=cap.url, loading_error=cap.loading_error)
+                state.event("request_loading_failed", action_id=cap.action_id, request_id=cap.request_id,
+                            method=cap.method, url=cap.url, loading_error=cap.loading_error)
 
     def relevant(event: NetworkEvent) -> bool:
         return (event.resource_type in ("XHR", "Fetch", "Document", "Download", "WebSocket")
                 and (scope is None or scope.allows(event.url)))
 
     def report_request(event: NetworkEvent) -> None:
-        if http_diagnostic_error is not None:
-            return
         name = "request_observed"
         details = {}
         if event.request_id in reported_requests:
@@ -322,17 +271,15 @@ async def capture_page(
                 return
             name = "request_status_updated"
             details["previous_http_status"] = previous_status
-        if emit_http_diagnostic(name, action_id=event.action_id, request_id=event.request_id,
-                               method=event.method, url=event.url, resource_type=event.resource_type,
-                               http_status=event.status, loading_error=event.loading_error,
-                               route_seen_count=event.route_seen_count,
-                               attribution="action_window" if event.action_id is not None else "outside_action", **details):
-            reported_requests[event.request_id] = event.status
+        state.event(name, action_id=event.action_id, request_id=event.request_id,
+                    method=event.method, url=event.url, resource_type=event.resource_type,
+                    http_status=event.status, loading_error=event.loading_error,
+                    route_seen_count=event.route_seen_count,
+                    attribution="action_window" if event.action_id is not None else "outside_action", **details)
+        reported_requests[event.request_id] = event.status
 
     async def observe() -> None:
-        check_http_diagnostics()
         elements = await _collect_dom(page)
-        check_http_diagnostics()
         base = page.url
         for element in elements:
             if element.tag == "base" and element.attributes.get("href"):
@@ -349,11 +296,7 @@ async def capture_page(
             if absolute not in seen_inline:
                 seen_inline.add(absolute)
                 result.inline_urls.append(absolute)
-        check_http_diagnostics()
-        bodies, fetched = await _fill_selective_bodies(
-            client, captured, scope, fetched_rids, check_diagnostics=check_http_diagnostics,
-        )
-        check_http_diagnostics()
+        bodies, fetched = await _fill_selective_bodies(client, captured, scope, fetched_rids)
         fetched_rids.update(fetched)
         result.selective_bodies.extend(bodies)
         events = [event for event in captured.values() if relevant(event)]
@@ -391,147 +334,66 @@ async def capture_page(
                 await page.goto(url, timeout=nav_timeout_ms, wait_until="domcontentloaded")
             except PlaywrightError as exc:
                 result.error = type(exc).__name__
-            check_http_diagnostics()
             await asyncio.sleep(settle_ms / 1000)
-            check_http_diagnostics()
             for _ in range(max_scrolls):
                 await page.evaluate("window.scrollBy(0, window.innerHeight)")
-                check_http_diagnostics()
                 await asyncio.sleep(0.5)
-                check_http_diagnostics()
             await observe()
             if scope is not None:
                 tracker = _DeltaTracker(captured)
                 await run_safe_interactions(
                     page, scope, tracker=tracker, options=interaction, state=state,
                     planner=planner, max_actions=max_actions, observe=observe, deadline=deadline,
-                    check_diagnostics=check_http_diagnostics,
                 )
-                check_http_diagnostics()
                 result.interactions = tracker.records
             seen_keys = {(event.method, event.url) for event in captured.values()}
             for event in await _collect_init_script_events(page, page.url, seen_keys):
                 captured[event.request_id] = event
-            check_http_diagnostics()
             if download_tasks:
                 await asyncio.gather(*download_tasks)
-            check_http_diagnostics()
     except TimeoutError as exc:
-        if exc is http_diagnostic_error or any(exc is error for error in task_diagnostic_errors):
-            primary_error = exc
-            raise
-        handled_error = exc
         result.error = "ScanDeadlineExceeded" if capture_timeout.expired() else type(exc).__name__
     except PlaywrightError as exc:
-        if exc is http_diagnostic_error or any(exc is error for error in task_diagnostic_errors):
-            primary_error = exc
-            raise
-        handled_error = exc
         result.error = type(exc).__name__
-    except BaseException as exc:
-        if not isinstance(exc, Exception):
-            http_diagnostic_pending = False
-        primary_error = exc
-        raise
     finally:
+        # Keep what was captured, whatever stopped the page; then release the page.
         closing = True
-        try:
-            if page is not None:
-                result.final_url = page.url
-            result.network_events = list(captured.values())
-            result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
-            for task in download_tasks:
-                if not task.done():
-                    task.cancel()
-            if download_tasks:
-                await asyncio.gather(*download_tasks, return_exceptions=True)
-            failures = []
-            for task in download_tasks:
-                if not task.cancelled():
-                    error = task.exception()
-                    if error is not None and error is not primary_error and error is not handled_error:
-                        failures.append((error, "Page task failed"))
-            failures.extend((error, "Download finalization failed") for error in download_finalization_errors)
-            if failures and primary_error is None and handled_error is None:
-                error = failures[0][0]
-                if isinstance(error, (TimeoutError, PlaywrightError)) and not any(error is diagnostic for diagnostic in task_diagnostic_errors):
-                    handled_error = error
-                    result.error = type(error).__name__
-                    failures = failures[1:]
-            if failures:
-                failure_target = primary_error
-                if failure_target is None and handled_error is None:
-                    failure_target = failures[0][0]
-                if failure_target is not None:
-                    for error, label in failures:
-                        note = f"{label}: {type(error).__name__}"
-                        if error is not failure_target and note not in getattr(failure_target, "__notes__", []):
-                            failure_target.add_note(note)
-                    if primary_error is None:
-                        raise failure_target
-                else:
-                    result.observations.append({"kind": "capture_cleanup", "errors": [
-                        type(error).__name__ for error, _ in failures
-                    ]})
-            for event in captured.values():
-                if relevant(event) and event.request_id not in reported_requests:
-                    report_request(event)
-        except BaseException as exc:
-            if not isinstance(exc, Exception):
-                http_diagnostic_pending = False
-            if isinstance(exc, Exception) and primary_error is not None:
-                primary_error.add_note(f"Capture finalization failed: {type(exc).__name__}")
-            else:
-                primary_error = exc
-                raise
-        finally:
-            try:
-                if client is not None:
-                    try:
-                        async with asyncio.timeout(CLEANUP_TIMEOUT_SEC):
-                            await client.detach()
-                    except BaseException as exc:
-                        if not isinstance(exc, Exception):
-                            http_diagnostic_pending = False
-                        if isinstance(exc, Exception) and primary_error is not None:
-                            primary_error.add_note(f"CDP detach cleanup failed: {type(exc).__name__}")
-                        elif isinstance(exc, Exception) and http_diagnostic_error is not None:
-                            http_diagnostic_error.add_note(f"CDP detach cleanup failed: {type(exc).__name__}")
-                        elif isinstance(exc, (PlaywrightError, TimeoutError)):
-                            log.warning("CDP detach cleanup failed: %s", type(exc).__name__)
-                            if isinstance(exc, TimeoutError):
-                                result.error = result.error or "CaptureCleanupTimeout"
-                        else:
-                            primary_error = exc
-                            raise
-            finally:
-                try:
-                    if page is not None:
-                        try:
-                            async with asyncio.timeout(CLEANUP_TIMEOUT_SEC):
-                                await page.close()
-                        except BaseException as exc:
-                            if not isinstance(exc, Exception):
-                                http_diagnostic_pending = False
-                            if isinstance(exc, Exception) and primary_error is not None:
-                                primary_error.add_note(f"Page close cleanup failed: {type(exc).__name__}")
-                            elif isinstance(exc, Exception) and http_diagnostic_error is not None:
-                                http_diagnostic_error.add_note(f"Page close cleanup failed: {type(exc).__name__}")
-                            elif isinstance(exc, (PlaywrightError, TimeoutError)):
-                                log.warning("Page close cleanup failed: %s", type(exc).__name__)
-                                if isinstance(exc, TimeoutError):
-                                    result.error = result.error or "CaptureCleanupTimeout"
-                            else:
-                                primary_error = exc
-                                raise
-                finally:
-                    if http_diagnostic_error is not None and http_diagnostic_error is not primary_error:
-                        if primary_error is None or (
-                            http_diagnostic_pending and not isinstance(http_diagnostic_error, Exception)
-                        ):
-                            raise http_diagnostic_error
-                        primary_error.add_note(f"HTTP diagnostic failed: {type(http_diagnostic_error).__name__}")
+        if page is not None:
+            result.final_url = page.url
+        result.network_events = list(captured.values())
+        result.observations.extend({"observation": "action", **record} for record in state.records[record_start:])
+        for task in download_tasks:
+            task.cancel()
+        if download_tasks:
+            for outcome in await asyncio.gather(*download_tasks, return_exceptions=True):
+                if isinstance(outcome, Exception):
+                    log.warning("page task failed: %s", type(outcome).__name__)
+                    result.error = result.error or type(outcome).__name__
+        for event in captured.values():
+            if relevant(event) and event.request_id not in reported_requests:
+                report_request(event)
+        await _release_page(client, page, result)
     return result
+
+
+async def _release_page(client, page: Page | None, result: PageCapture) -> None:
+    """Detach the CDP session and close the page, each within a bounded wait.
+
+    A hung teardown is reported on the capture rather than raised: the page's
+    evidence is already in ``result`` and a stuck close must not lose it.
+    """
+    for what, close in (("CDP detach", client.detach if client is not None else None),
+                        ("page close", page.close if page is not None else None)):
+        if close is None:
+            continue
+        try:
+            async with asyncio.timeout(CLEANUP_TIMEOUT_SEC):
+                await close()
+        except TimeoutError:
+            log.warning("%s timed out", what)
+            result.error = result.error or "CaptureCleanupTimeout"
+        except Exception as exc:
+            log.warning("%s failed: %s", what, type(exc).__name__)
 
 
 def _route(event: NetworkEvent) -> tuple[str, str, str]:
@@ -788,7 +650,6 @@ async def _fill_selective_bodies(
     captured: dict[str, NetworkEvent],
     scope: Scope | None,
     skip_rids: set[str] | None = None,
-    check_diagnostics: Callable[[], None] | None = None,
 ) -> tuple[list[CapturedBody], set[str]]:
     """Collect JavaScript bodies once per request for static endpoint discovery."""
     bodies: list[CapturedBody] = []
@@ -820,6 +681,4 @@ async def _fill_selective_bodies(
                 ))
         except Exception:
             log.debug("selective body fetch failed for %s", ev.url)
-        if check_diagnostics is not None:
-            check_diagnostics()
     return bodies, fetched_rids

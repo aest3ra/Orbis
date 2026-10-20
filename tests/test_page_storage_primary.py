@@ -171,53 +171,6 @@ def test_page_storage_normal_status_and_evidence_are_unchanged(page_storage, sta
     state.probe.assert_awaited_once()
 
 
-@pytest.mark.parametrize("status", ["completed", "partial"])
-@pytest.mark.parametrize("disconnect", [False, True])
-def test_real_endpoint_query_error_survives_sqlite_rollback_failure(page_storage, status, disconnect):
-    state = page_storage
-    state.capture_status = status
-    state.query_fails = True
-    state.disconnect = disconnect
-    raised = run_page(state)
-    assert raised is state.primary
-    assert isinstance(raised, OperationalError)
-    assert isinstance(raised.orig, sqlite3.OperationalError)
-    assert (raised.__cause__, raised.__context__, raised.__suppress_context__) == state.chain
-    if disconnect:
-        assert isinstance(state.cleanup, ProgrammingError)
-        assert isinstance(state.cleanup.orig, sqlite3.ProgrammingError)
-        assert raised.__notes__ == ["Database session close failed: ProgrammingError"]
-    else:
-        assert state.cleanup is None
-        assert not getattr(raised, "__notes__", [])
-    scan, records, rows = stored(state)
-    assert rows[-1]["error"] == "OperationalError"
-    assert rows[-1]["status"] == "error"
-    assert scan.pages_crawled == scan.endpoints_found == 0
-    assert [record for kind, record in records if kind == "action"] == [state.action]
-    assert not [record for kind, record in records if kind == "page"]
-    assert not [row for row in rows if row["event"] == "page_end"]
-    state.probe.assert_not_awaited()
-
-
-@pytest.mark.parametrize("body_type", [RuntimeError, asyncio.CancelledError, KeyboardInterrupt, SystemExit])
-def test_page_storage_preserves_body_error_and_chain_over_ordinary_close_error(page_storage, body_type):
-    state = page_storage
-    cause = ValueError("private-cause-content")
-    state.body_error = body_type("private-body-content")
-    state.body_error.__cause__ = cause
-    state.body_error.__context__ = cause
-    state.close_error = OSError("private-cleanup-content")
-    raised = run_page(state)
-    assert raised is state.body_error
-    assert (raised.__cause__, raised.__context__, raised.__suppress_context__) == state.chain
-    assert raised.__notes__ == ["Database session close failed: OSError"]
-    _, _, rows = stored(state)
-    assert rows[-1]["status"] == ("cancelled" if body_type is asyncio.CancelledError else "error")
-    assert "private-" not in json.dumps(rows)
-    state.probe.assert_not_awaited()
-
-
 @pytest.mark.parametrize("query_fails", [False, True])
 @pytest.mark.parametrize("close_type", [asyncio.CancelledError, KeyboardInterrupt, SystemExit])
 def test_new_page_storage_close_interruption_propagates(page_storage, query_fails, close_type):

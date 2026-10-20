@@ -7,6 +7,7 @@ that were not observed live and records reachability from the response status.
 from __future__ import annotations
 
 import asyncio
+from contextlib import suppress
 import logging
 import re
 import time
@@ -150,7 +151,6 @@ async def probe_endpoint(
     url: str,
     *,
     timeout_sec: float,
-    cleanup_observation: dict[str, int | str] | None = None,
 ) -> ProbeResult:
     async def _get_status() -> int:
         resp = await context.request.get(
@@ -159,20 +159,12 @@ async def probe_endpoint(
             timeout=timeout_sec * 1000,
         )
         try:
-            status = resp.status
-            if cleanup_observation is not None:
-                cleanup_observation["raw_response_status"] = status
-            return status
+            return resp.status
         finally:
-            # Free the server-side response buffer immediately; we only need
-            # the status, and up to probe_max_requests responses would otherwise
-            # accumulate in the driver until the context closes.
-            try:
+            # Free the driver-side response buffer right away; only the status
+            # is needed and probe_max_requests responses would otherwise pile up.
+            with suppress(Exception):
                 await resp.dispose()
-            except BaseException as exc:
-                if cleanup_observation is not None and "raw_response_status" in cleanup_observation:
-                    cleanup_observation["cleanup_error_type"] = type(exc).__name__
-                raise
 
     try:
         return ProbeResult(
@@ -191,7 +183,6 @@ async def probe_candidates(
     scope: Scope,
     limits: Any,
     on_result: Callable[[tuple[int, str, int | None]], None] | None = None,
-    cleanup_observations: list[dict[str, int | str]] | None = None,
 ) -> ProbeResults:
     results: list[tuple[int, str, int | None]] = []
     total = len(candidates)
@@ -222,10 +213,8 @@ async def probe_candidates(
         last_req_at = time.monotonic()
         sent += 1
 
-        observation = {} if cleanup_observations is not None else None
         try:
-            result = await probe_endpoint(context, url, timeout_sec=timeout_sec,
-                                          cleanup_observation=observation)
+            result = await probe_endpoint(context, url, timeout_sec=timeout_sec)
         except Exception as exc:
             if _is_target_closed(exc):
                 log.warning("probe stopped: browser context closed")
@@ -233,9 +222,6 @@ async def probe_candidates(
                 processed = idx + 1
                 break
             result = ProbeResult(None, error=type(exc).__name__)
-        finally:
-            if cleanup_observations is not None and observation is not None and "cleanup_error_type" in observation:
-                cleanup_observations.append({"endpoint_id": endpoint_id, **observation})
 
         status = classify_probe(result.status)
         row = (endpoint_id, status, result.status)

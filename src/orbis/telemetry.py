@@ -54,11 +54,8 @@ class ScanLog:
         descriptor = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
         try:
             self._file = os.fdopen(descriptor, "w", encoding="utf-8")
-        except BaseException as failure:
-            try:
-                os.close(descriptor)
-            except OSError as exc:
-                failure.add_note(f"Scan log initialization cleanup failed: {type(exc).__name__}")
+        except Exception:
+            os.close(descriptor)
             raise
 
     def emit(self, event: str, **details) -> dict:

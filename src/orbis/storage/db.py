@@ -74,10 +74,7 @@ def open_db(path: str | Path):
     engine = create_engine(f"sqlite:///{Path(path).resolve()}", echo=False)
     try:
         SQLModel.metadata.create_all(engine)
-    except BaseException as failure:
-        try:
-            engine.dispose()
-        except Exception as exc:
-            failure.add_note(f"Database initialization cleanup failed: {type(exc).__name__}")
+    except Exception:
+        engine.dispose()
         raise
     return engine
