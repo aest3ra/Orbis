@@ -65,7 +65,7 @@ def resources(tmp_path, monkeypatch):
             session.add(Endpoint(
                 scan_id=scan_id, method="GET", host="localhost", path_template=f"/api/{name}",
                 sample_url=f"http://localhost/api/{name}", route_kind="api",
-                source="static_js", probe_status="unverified",
+                source="static_js", probe_status="unprobed",
             ))
         session.commit()
     request = Request()
@@ -115,7 +115,7 @@ def test_normal_responses_add_no_diagnostic_writes(resources, monkeypatch):
     asyncio.run(crawl(resources))
 
     rows, observations, urls = stored(resources)
-    assert rows == [("verified", 200), ("verified", 204)]
+    assert rows == [("responded", 200), ("responded", 204)]
     assert observations == urls == []
     assert len(commits) == 2
     assert [response.status_reads for response in resources.request.responses] == [1, 1]
@@ -127,6 +127,6 @@ def test_failed_status_read_does_not_fabricate_raw_status(resources):
     asyncio.run(crawl(resources))
 
     rows, observations, urls = stored(resources)
-    assert rows == [("failed", None), ("verified", 204)]
+    assert rows == [("no_response", None), ("responded", 204)]
     assert observations == urls == []
     assert len(resources.request.calls) == 2

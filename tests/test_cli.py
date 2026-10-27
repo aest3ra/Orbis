@@ -24,7 +24,7 @@ def test_endpoint_table_shows_probe_code_by_default(capsys) -> None:
         path_template="/api/users",
         route_kind="application_api",
         source="wayback",
-        probe_status="verified",
+        probe_status="responded",
         probe_code=405,
         seen_count=1,
     )

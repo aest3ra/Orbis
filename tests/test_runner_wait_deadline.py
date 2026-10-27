@@ -33,7 +33,7 @@ def crawl_resources(monkeypatch):
         SimpleNamespace(frontier_urls=["http://localhost/next"], endpoints=[]),
         SimpleNamespace(frontier_urls=[], endpoints=[]),
     ]))
-    monkeypatch.setattr(runner, "list_unverified_endpoints", rows)
+    monkeypatch.setattr(runner, "list_unprobed_endpoints", rows)
     monkeypatch.setattr(runner, "probe_candidates", probe)
     return SimpleNamespace(browser=browser, playwright=playwright, trace=trace,
                            capture=capture, probe=probe, rows=rows)

@@ -40,12 +40,12 @@ def set_probe_result(
         ep.probe_code = code
 
 
-def list_unverified_endpoints(session: Session, scan_id: int) -> list[Endpoint]:
+def list_unprobed_endpoints(session: Session, scan_id: int) -> list[Endpoint]:
     return list(session.exec(
         select(Endpoint)
         .where(
             Endpoint.scan_id == scan_id,
-            Endpoint.probe_status == "unverified",
+            Endpoint.probe_status == "unprobed",
         )
         .order_by(Endpoint.id)
     ).all())
@@ -69,8 +69,8 @@ def save_endpoints(
         ).first()
 
         # Derive probe_status from source:
-        # dynamic → NULL (already observed), static_* → "unverified"
-        probe_status = None if ep.source == "dynamic" else "unverified"
+        # dynamic → NULL (observed live), static_* → "unprobed" until the probe stage runs
+        probe_status = None if ep.source == "dynamic" else "unprobed"
 
         if row:
             row.seen_count += ep.seen_count

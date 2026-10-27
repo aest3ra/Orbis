@@ -93,7 +93,7 @@ def crawl_resources(monkeypatch):
     monkeypatch.setattr(runner, "async_playwright", Mock(return_value=manager))
     monkeypatch.setattr(runner, "Session", MagicMock())
     monkeypatch.setattr(runner, "QwenPlanner", Mock(return_value=SimpleNamespace(records=[])))
-    monkeypatch.setattr(runner, "list_unverified_endpoints", Mock(return_value=[]))
+    monkeypatch.setattr(runner, "list_unprobed_endpoints", Mock(return_value=[]))
     monkeypatch.setattr(runner, "probe_candidates", AsyncMock(return_value=ProbeResults()))
     return request, browser
 

@@ -11,7 +11,6 @@ from sqlmodel import Session
 from orbis.config import ScopeConfig
 from orbis.crawler.probe import (
     ProbeResults,
-    classify_probe,
     probe_candidates,
     probe_endpoint,
     probe_target_ok,
@@ -20,7 +19,7 @@ from orbis.crawler.scope import Scope
 from orbis.storage.db import Endpoint, open_db
 from orbis.storage.repo import (
     create_scan,
-    list_unverified_endpoints,
+    list_unprobed_endpoints,
     set_probe_result,
 )
 
@@ -80,16 +79,6 @@ class FakeRequest:
 class FakeContext:
     def __init__(self, outcomes: list[int | BaseException], *, delay: float = 0) -> None:
         self.request = FakeRequest(outcomes, delay=delay)
-
-
-class TestClassifyProbe:
-    @pytest.mark.parametrize("status", [200, 301, 302, 400, 401, 403, 405, 429, 500, 503])
-    def test_response_statuses_are_verified(self, status: int) -> None:
-        assert classify_probe(status) == "verified"
-
-    @pytest.mark.parametrize("status", [404, 410, None])
-    def test_missing_or_no_response_is_failed(self, status: int | None) -> None:
-        assert classify_probe(status) == "failed"
 
 
 class TestProbeTargetOk:
@@ -172,7 +161,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert (results.verified, results.failed) == (1, 0)
+        assert (results.responded, results.no_response) == (1, 0)
         assert results.sent == 1
         assert results.skipped == 2
         assert results.remaining == 0
@@ -200,7 +189,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert (results.verified, results.failed) == (1, 1)
+        assert (results.responded, results.no_response) == (2, 0)
         assert results.sent == 2
         assert results.skipped == 2
         assert results.remaining == 1
@@ -226,8 +215,8 @@ class TestProbeCandidates:
             )
         )
 
-        assert results.verified == 1
-        assert results.failed == 1
+        assert results.responded == 1
+        assert results.no_response == 1
         assert results.stop_reason == "completed"
 
     def test_target_closed_stops_loop_and_leaves_remaining_unreported(self) -> None:
@@ -247,7 +236,7 @@ class TestProbeCandidates:
             )
         )
 
-        assert (results.verified, results.failed) == (1, 0)
+        assert (results.responded, results.no_response) == (1, 0)
         assert results.sent == 2
         assert results.skipped == 0
         assert results.remaining == 1
@@ -282,7 +271,7 @@ def test_probe_repo_helpers_persist_status_and_code(tmp_path) -> None:
     engine = open_db(tmp_path / "probe.db")
     with Session(engine) as session:
         scan_id = create_scan(session, "https://example.com")
-        verified = Endpoint(
+        pending = Endpoint(
             scan_id=scan_id,
             method="GET",
             host="example.com",
@@ -290,7 +279,7 @@ def test_probe_repo_helpers_persist_status_and_code(tmp_path) -> None:
             sample_url="https://example.com/api/live",
             route_kind="application_api",
             source="wayback",
-            probe_status="unverified",
+            probe_status="unprobed",
         )
         skipped = Endpoint(
             scan_id=scan_id,
@@ -302,21 +291,21 @@ def test_probe_repo_helpers_persist_status_and_code(tmp_path) -> None:
             source="dynamic",
             probe_status=None,
         )
-        session.add(verified)
+        session.add(pending)
         session.add(skipped)
         session.commit()
-        session.refresh(verified)
+        session.refresh(pending)
 
-        assert [ep.id for ep in list_unverified_endpoints(session, scan_id)] == [
-            verified.id
+        assert [ep.id for ep in list_unprobed_endpoints(session, scan_id)] == [
+            pending.id
         ]
 
-        set_probe_result(session, verified.id, "verified", 405)
+        set_probe_result(session, pending.id, "responded", 405)
         session.commit()
-        session.refresh(verified)
+        session.refresh(pending)
 
-        assert verified.probe_status == "verified"
-        assert verified.probe_code == 405
+        assert pending.probe_status == "responded"
+        assert pending.probe_code == 405
 
 
 def test_probe_endpoint_disposes_response() -> None:

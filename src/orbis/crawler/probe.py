@@ -1,7 +1,10 @@
 """Active endpoint probing.
 
-Probe is verification-only: it sends safe in-scope GET requests for endpoints
-that were not observed live and records reachability from the response status.
+Probe sends safe in-scope GET requests for endpoints that were never observed
+live and records the raw outcome: the HTTP status when the server answered, or
+no response. It claims nothing about whether the route exists. Servers answer
+missing paths in app-specific ways (404, 401 behind an auth wall, 400 under a
+GraphQL router), so that judgment belongs to whoever reads probe_code.
 """
 
 from __future__ import annotations
@@ -64,8 +67,8 @@ class ProbeResult:
 @dataclass
 class ProbeResults:
     """Counts for one probe stage; per-endpoint results go to ``on_result``."""
-    verified: int = 0
-    failed: int = 0
+    responded: int = 0
+    no_response: int = 0
     sent: int = 0
     skipped: int = 0
     remaining: int = 0
@@ -114,14 +117,6 @@ def probe_target_ok(url: str | None, scope: Scope) -> bool:
     if _query_is_dangerous(url):
         return False
     return True
-
-
-def classify_probe(status: int | None) -> str:
-    if status is None:
-        return "failed"
-    if status in (404, 410):
-        return "failed"
-    return "verified"
 
 
 def _is_target_closed(exc: BaseException) -> bool:
@@ -209,7 +204,7 @@ async def probe_candidates(
                 break
             result = ProbeResult(None, error=type(exc).__name__)
 
-        status = classify_probe(result.status)
+        status = "responded" if result.status is not None else "no_response"
         row = (endpoint_id, status, result.status)
         results.append(row)
         if on_result is not None:
@@ -227,7 +222,7 @@ async def probe_candidates(
         total, sent, skipped, remaining, budget, stop_reason,
     )
     return ProbeResults(
-        verified=sum(status == "verified" for _, status, _ in results),
-        failed=sum(status == "failed" for _, status, _ in results),
+        responded=sum(status == "responded" for _, status, _ in results),
+        no_response=sum(status == "no_response" for _, status, _ in results),
         sent=sent, skipped=skipped, remaining=remaining, stop_reason=stop_reason,
     )

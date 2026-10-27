@@ -40,8 +40,8 @@ class Endpoint(SQLModel, table=True):
     route_kind: str
     seen_count: int = 1
     source: str = "dynamic"           # dynamic | static_js | wayback
-    probe_status: str | None = None   # NULL | unverified | verified | failed
-    probe_code: int | None = None     # actual HTTP status from active probing
+    probe_status: str | None = None   # NULL (observed live) | unprobed | responded | no_response
+    probe_code: int | None = None     # HTTP status the probe GET received; no verdict attached
     discovered_via: str | None = None  # NULL = page load; else interaction label
 
 

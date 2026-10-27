@@ -41,7 +41,7 @@ def probe_scan(tmp_path, monkeypatch):
             session.add(Endpoint(
                 scan_id=scan_id, method="GET", host="localhost", path_template=f"/api/{name}",
                 sample_url=f"http://localhost/api/{name}", route_kind="api",
-                source="static_js", probe_status="unverified",
+                source="static_js", probe_status="unprobed",
             ))
         session.commit()
     request = FakeRequest()
@@ -81,7 +81,7 @@ def probe_events(resources):
 
 
 @pytest.mark.parametrize("mode", ["deadline", "cancelled"])
-@pytest.mark.parametrize("status,classification", [(200, "verified"), (404, "failed")])
+@pytest.mark.parametrize("status,classification", [(200, "responded"), (404, "responded")])
 def test_completed_result_survives_later_interruption(probe_scan, mode, status, classification):
     resources = probe_scan
     resources.request.outcomes[0] = status
@@ -91,7 +91,7 @@ def test_completed_result_survives_later_interruption(probe_scan, mode, status, 
     async def exercise():
         task = asyncio.create_task(crawl(resources))
         await asyncio.wait_for(resources.request.blocked.wait(), timeout=1)
-        assert stored_results(resources) == [(classification, status), ("unverified", None)]
+        assert stored_results(resources) == [(classification, status), ("unprobed", None)]
         if mode == "cancelled":
             task.cancel("external cancellation")
             with pytest.raises(asyncio.CancelledError) as raised:
@@ -103,13 +103,13 @@ def test_completed_result_survives_later_interruption(probe_scan, mode, status, 
 
     asyncio.run(exercise())
 
-    assert stored_results(resources) == [(classification, status), ("unverified", None)]
+    assert stored_results(resources) == [(classification, status), ("unprobed", None)]
     assert len(resources.request.calls) == 2
     resources.request.responses[0].dispose.assert_awaited_once_with()
     event, = probe_events(resources)
     assert event["stop_reason"] == mode
-    assert event["verified"] == (classification == "verified")
-    assert event["failed"] == (classification == "failed")
+    assert event["responded"] == 1
+    assert event["no_response"] == 0
     assert event["persisted"] == 1
     assert "sent" not in event
     assert "remaining" not in event
@@ -125,12 +125,12 @@ def test_normal_results_are_stored_once(probe_scan, monkeypatch):
 
     asyncio.run(crawl(resources))
 
-    assert stored_results(resources) == [("verified", 200), ("failed", 404)]
+    assert stored_results(resources) == [("responded", 200), ("responded", 404)]
     assert save.call_count == 2
     event, = probe_events(resources)
     assert event["stop_reason"] == "completed"
     assert event["sent"] == 2
-    assert event["verified"] == event["failed"] == 1
+    assert event["responded"] == 2 and event["no_response"] == 0
     assert event["persisted"] == 2
 
 
@@ -144,8 +144,8 @@ def test_callback_receives_existing_results_without_changing_return(probe_scan):
         scope=Scope(resources.config.scope), limits=resources.config.limits, on_result=observed.append,
     ))
 
-    assert observed == [(1, "verified", 200), (2, "failed", 404)]
-    assert (results.verified, results.failed, results.sent) == (1, 1, 2)
+    assert observed == [(1, "responded", 200), (2, "responded", 404)]
+    assert (results.responded, results.no_response, results.sent) == (2, 0, 2)
     assert results.sent == 2
 
 
@@ -162,7 +162,7 @@ def test_callback_error_propagates_without_another_request(probe_scan, failure_t
         ))
 
     assert raised.value is failure
-    callback.assert_called_once_with((1, "verified", 200))
+    callback.assert_called_once_with((1, "responded", 200))
     assert len(resources.request.calls) == 1
 
 

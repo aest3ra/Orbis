@@ -26,7 +26,7 @@ from orbis.telemetry import ScanLog, clean, safe_url
 from orbis.storage.repo import (
     create_scan,
     finish_scan,
-    list_unverified_endpoints,
+    list_unprobed_endpoints,
     save_endpoints,
     set_probe_result,
 )
@@ -135,7 +135,7 @@ async def _crawl_scan(
     wayback_seeds: list[str] = []
     wayback_seed_idx = 0
 
-    # Wayback layer: pull archived URLs and record API-marked ones as unverified
+    # Wayback layer: pull archived URLs and record API-marked ones as unprobed
     # endpoints. Page-like archived URLs are kept as backfill: only one is
     # admitted when the live frontier is empty, so archived pages cannot crowd
     # out live discovery or consume template caps before live links appear.
@@ -274,7 +274,7 @@ async def _crawl_scan(
 
                 if time.monotonic() >= deadline:
                     stop_reason = "max_duration"
-                if await _probe_unverified(context, engine, scan_id, scope, limits, deadline, trace):
+                if await _probe_unobserved(context, engine, scan_id, scope, limits, deadline, trace):
                     stop_reason = "max_duration"
             finally:
                 if llm_request is not None:
@@ -288,12 +288,12 @@ async def _crawl_scan(
             "queue_remaining": frontier.size}
 
 
-async def _probe_unverified(context, engine, scan_id: int, scope: Scope, limits, deadline: float,
+async def _probe_unobserved(context, engine, scan_id: int, scope: Scope, limits, deadline: float,
                             trace: ScanLog) -> bool:
-    """Verify endpoints never observed live with safe GETs. Non-fatal; returns
-    whether the scan deadline was reached while probing."""
+    """Send safe GETs to endpoints never observed live and store the raw outcome.
+    Non-fatal; returns whether the scan deadline was reached while probing."""
     started = time.monotonic()
-    counts = {"verified": 0, "failed": 0, "persisted": 0}
+    counts = {"responded": 0, "no_response": 0, "persisted": 0}
 
     def persist(row: tuple[int, str, int | None]) -> None:
         endpoint_id, status, code = row
@@ -309,7 +309,7 @@ async def _probe_unverified(context, engine, scan_id: int, scope: Scope, limits,
     timeout = asyncio.timeout_at(deadline)
     try:
         with Session(engine) as session:
-            rows = list_unverified_endpoints(session, scan_id)
+            rows = list_unprobed_endpoints(session, scan_id)
             candidates = [(ep.id, ep.sample_url) for ep in rows if ep.id is not None and ep.method == "GET"]
         async with timeout:
             results = await probe_candidates(context, candidates, scope=scope, limits=limits, on_result=persist)
@@ -321,12 +321,12 @@ async def _probe_unverified(context, engine, scan_id: int, scope: Scope, limits,
                    stop_reason="deadline" if timeout.expired() else "error", **counts, duration_ms=elapsed())
         log.warning("probe non-fatal: %s", type(exc).__name__)
     else:
-        trace.emit("probe_end", sent=results.sent, verified=results.verified, failed=results.failed,
+        trace.emit("probe_end", sent=results.sent, responded=results.responded, no_response=results.no_response,
                    skipped=results.skipped, remaining=results.remaining, stop_reason=results.stop_reason,
                    persisted=counts["persisted"], duration_ms=elapsed())
         log.info(
-            "probe: %d verified, %d failed (total=%d sent=%d skipped=%d remaining=%d stop=%s)",
-            results.verified, results.failed, len(candidates), results.sent, results.skipped,
+            "probe: %d responded, %d no response (total=%d sent=%d skipped=%d remaining=%d stop=%s)",
+            results.responded, results.no_response, len(candidates), results.sent, results.skipped,
             results.remaining, results.stop_reason,
         )
     return timeout.expired() or time.monotonic() >= deadline
