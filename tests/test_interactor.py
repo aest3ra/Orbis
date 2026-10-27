@@ -50,9 +50,6 @@ class FakePage:
     def locator(self, selector: str) -> FakeLocator:
         return FakeLocator(self, selector)
 
-    async def eval_on_selector(self, selector: str, _script: str, value: str) -> None:
-        self.actions.append(("form", selector, value))
-
     async def evaluate(self, _script):
         return None
 
@@ -75,30 +72,6 @@ def no_settle(monkeypatch):
     monkeypatch.setattr(interactor, "_collect_candidates", fake_collect)
 
 
-def test_get_form_submitted_but_post_form_ignored_in_same_pass() -> None:
-    page = FakePage([
-        {
-            "kind": "form",
-            "selector": "#search",
-            "text": "Search",
-            "form_method": "GET",
-            "form_action": "https://example.com/search",
-        },
-        {
-            "kind": "form",
-            "selector": "#login",
-            "text": "Login",
-            "form_method": "POST",
-            "form_action": "https://example.com/login",
-        },
-    ])
-
-    count = asyncio.run(run_safe_interactions(page, _scope()))
-
-    assert count == 1
-    assert page.actions == [("form", "#search", "test")]
-
-
 def test_search_input_enters_value() -> None:
     page = FakePage([
         {
@@ -116,8 +89,6 @@ def test_search_input_enters_value() -> None:
 
 def test_unsafe_candidates_ignored() -> None:
     page = FakePage([
-        {"kind": "form", "selector": "#file", "text": "Search", "has_file": True},
-        {"kind": "form", "selector": "#hidden", "text": "Search", "has_hidden_submit": True},
         {"kind": "button", "selector": "#download", "text": "Download report"},
         {"kind": "button", "selector": "#delete", "text": "Delete account"},
         {
@@ -145,21 +116,6 @@ def test_unsafe_candidates_ignored() -> None:
             "text": "Load more",
             "nav_url": "https://other.example/next",
         },
-    ])
-
-    assert asyncio.run(run_safe_interactions(page, _scope())) == 0
-    assert page.actions == []
-
-
-def test_out_of_scope_get_form_ignored() -> None:
-    page = FakePage([
-        {
-            "kind": "form",
-            "selector": "#search",
-            "text": "Search",
-            "form_method": "GET",
-            "form_action": "https://other.example/search",
-        }
     ])
 
     assert asyncio.run(run_safe_interactions(page, _scope())) == 0

@@ -6,7 +6,7 @@ import asyncio
 
 from orbis.analysis.analyzer import analyze
 from orbis.config import ScopeConfig
-from orbis.crawler.browser import _classify_selective_body, capture_page
+from orbis.crawler.browser import capture_page
 from orbis.crawler.scope import Scope
 
 
@@ -131,34 +131,25 @@ def test_capture_page_keeps_out_of_scope_browser_subrequests_raw() -> None:
     ] == [("GET", "https://evil.com/api/leak", 200)]
 
 
-class TestSelectiveBodyScope:
-    def test_javascript_body_is_collected_regardless_of_scope(self) -> None:
-        result = _classify_selective_body(
-            "https://cdn.example-assets.com/app.js",
-            "application/javascript",
-            _scope(["example.com"]),
-        )
+class _DiscoverLocator:
+    """Stands in for page.locator(...).first: a visible, enabled button whose click
+    fires the interaction requests."""
 
-        assert result is not None
-        assert result[0] == "js"
+    def __init__(self, page: "InteractionCapturePage") -> None:
+        self.page = page
 
-    def test_json_body_is_not_collected(self) -> None:
-        result = _classify_selective_body(
-            "https://example.com/data.json",
-            "application/json",
-            _scope(["example.com"]),
-        )
+    @property
+    def first(self) -> "_DiscoverLocator":
+        return self
 
-        assert result is None
+    async def is_visible(self, **_kwargs) -> bool:
+        return True
 
-    def test_html_doc_body_is_not_collected(self) -> None:
-        result = _classify_selective_body(
-            "https://example.com/reference",
-            "text/html",
-            _scope(["example.com"]),
-        )
+    async def is_enabled(self, **_kwargs) -> bool:
+        return True
 
-        assert result is None
+    async def click(self, **_kwargs) -> None:
+        await self.page.discover()
 
 
 class InteractionCapturePage(FakePage):
@@ -166,13 +157,8 @@ class InteractionCapturePage(FakePage):
         super().__init__()
         self.url = "https://example.com/"
         self.candidates = [
-            {
-                "kind": "form",
-                "selector": "#discover",
-                "text": "Search",
-                "form_method": "GET",
-                "form_action": "https://example.com/discover",
-            }
+            {"kind": "button", "selector": "#discover", "key": "#discover", "text": "Search",
+             "label": "Search", "button_type": "button"}
         ]
 
     async def goto(self, url: str, *, timeout: int, wait_until: str) -> None:
@@ -183,8 +169,11 @@ class InteractionCapturePage(FakePage):
             return self.candidates
         return await super().evaluate(script)
 
-    async def eval_on_selector(self, selector: str, _script: str, _value: str) -> None:
+    def locator(self, selector: str) -> "_DiscoverLocator":
         assert selector == "#discover"
+        return _DiscoverLocator(self)
+
+    async def discover(self) -> None:
         assert self.client is not None
         self.client.emit(
             "Network.requestWillBeSent",

@@ -70,24 +70,6 @@ _SUBMIT_RE = re.compile(r"^(submit|publish|post|save|등록|게시|저장)(?:\s|
 
 _COLLECT_JS = Path(__file__).with_name("elements.js").read_text(encoding="utf-8")
 
-_FORM_JS = """
-(form, value) => {
-    const fields = Array.from(form.querySelectorAll("input,textarea")).filter((el) => {
-        const type = (el.getAttribute("type") || "text").toLowerCase();
-        return !el.disabled && !el.readOnly && !["hidden","file","password","submit","button","reset","checkbox","radio"].includes(type);
-    });
-    for (const el of fields) {
-        el.focus();
-        el.value = value;
-        el.dispatchEvent(new Event("input", {bubbles: true}));
-        el.dispatchEvent(new Event("change", {bubbles: true}));
-    }
-    if (form.requestSubmit) form.requestSubmit();
-    else form.submit();
-    return true;
-}
-"""
-
 _WATCH_DOM_JS = """
 () => {
     window.__orbisInteractionActivity?.observer.disconnect();
@@ -326,8 +308,6 @@ def _priority(candidate: dict) -> int:
         return offset
     if kind == "file":
         return offset + 1
-    if kind == "form":
-        return offset + 1
     if kind == "button" and _UPLOAD_RE.search(candidate.get("label", "")):
         return offset + 1
     if kind == "button" and _SUBMIT_RE.search(candidate.get("label", "")):
@@ -443,8 +423,6 @@ def _is_candidate_safe(
         return False
     if candidate.get("authentication") or _AUTH_RE.search(text + " " + candidate.get("nav_url", "")):
         return False
-    if candidate.get("has_hidden_submit") or (candidate.get("has_file") and not options.allow_write):
-        return False
     if candidate.get("filled"):
         return False
 
@@ -466,8 +444,6 @@ def _is_candidate_safe(
     if kind in ("select", "check"):
         return options.allow_write or bool(_SEARCH_RE.search(text))
 
-    if kind == "form":
-        return options.allow_write or _method(candidate, "form_method") == "GET"
     if kind == "input":
         if options.allow_write:
             return True
@@ -511,9 +487,6 @@ async def _perform(page: Page, candidate: dict[str, Any]) -> bool:
         candidate["failure_reason"] = "missing_selector"
         return False
     try:
-        if kind == "form":
-            await page.eval_on_selector(selector, _FORM_JS, candidate.get("value", _VALUE))
-            return True
         locator = page.locator(selector).first
         if kind == "input":
             await locator.fill(candidate.get("value", _VALUE), timeout=_CLICK_TIMEOUT_MS)

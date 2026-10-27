@@ -85,7 +85,9 @@ def analyze(capture: PageCapture, scope: Scope) -> AnalysisResult:
         if not scope.allows(event.url):
             continue
         kind = classify(event)
-        if kind in ("asset", "telemetry", "security_challenge", "frontend_data"):
+        # WebSocket/SSE are observed in the scan diagnostics only; they are neither
+        # HTTP endpoints nor crawlable pages, so they are not stored as endpoints.
+        if kind in ("asset", "telemetry", "security_challenge", "frontend_data", "websocket"):
             continue
         if kind == "page_route":
             frontier_urls.append(event.url)
@@ -309,18 +311,15 @@ def _analyze_selective_bodies(
 
     for cb in capture.selective_bodies:
         try:
-            if cb.kind == "js":
-                for ref in extract_js_endpoints(cb.body):
-                    absolute = _resolve_static_url(ref.raw_url, base_url)
-                    if absolute and scope.allows(absolute):
-                        _merge_endpoint(
-                            endpoints, ref.method, absolute,
-                            source="static_js",
-                        )
-
+            for ref in extract_js_endpoints(cb.body):
+                absolute = _resolve_static_url(ref.raw_url, base_url)
+                if absolute and scope.allows(absolute):
+                    _merge_endpoint(
+                        endpoints, ref.method, absolute,
+                        source="static_js",
+                    )
         except Exception:
-            log.debug("static analysis failed for %s (%s)", cb.url, cb.kind,
-                      exc_info=True)
+            log.debug("static analysis failed for %s", cb.url, exc_info=True)
 
 
 # --- Wayback sources (archived URLs) ---

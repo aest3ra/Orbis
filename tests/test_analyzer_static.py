@@ -128,7 +128,6 @@ class TestAnalyzeJsStatic:
                     url="https://cdn.example.com/app.bundle.js",
                     body=js_body,
                     mime="application/javascript",
-                    kind="js",
                     truncated=False,
                 ),
             ],
@@ -181,7 +180,6 @@ class TestAnalyzeJsStatic:
                     url="https://example.com/bad.js",
                     body="",  # empty body
                     mime="application/javascript",
-                    kind="js",
                     truncated=False,
                 ),
             ],
@@ -217,7 +215,6 @@ class TestSourcePriorityIntegration:
                     url="https://cdn.example.com/app.js",
                     body='fetch("/api/users")',
                     mime="application/javascript",
-                    kind="js",
                     truncated=False,
                 ),
             ],

@@ -16,7 +16,6 @@ class ScopeConfig(BaseModel):
 
 
 class AuthConfig(BaseModel):
-    type: str = "none"
     storage_state_path: Path | None = None
 
 

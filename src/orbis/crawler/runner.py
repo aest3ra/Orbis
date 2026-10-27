@@ -24,7 +24,6 @@ from orbis.crawler.scope import Scope
 from orbis.storage.db import Endpoint, Observation, open_db
 from orbis.telemetry import ScanLog, clean, safe_url
 from orbis.storage.repo import (
-    collapse_scan_endpoints,
     create_scan,
     finish_scan,
     list_unverified_endpoints,
@@ -48,7 +47,7 @@ async def run_scan(
             raise ValueError(f"Upload file does not exist: {path}")
     scope = Scope(config.scope, config.target)
     auth_path: str | None = None
-    if config.auth.type == "storage_state" and config.auth.storage_state_path:
+    if config.auth.storage_state_path:
         auth_path = str(config.auth.storage_state_path)
 
     engine = open_db(db_path)
@@ -285,16 +284,8 @@ async def _crawl_scan(
     finally:
         await _close(pw.stop(), "Playwright stop")
 
-    with Session(engine) as session:
-        # Same cardinality bar as the frontier: only genuinely high-cardinality
-        # sibling sets collapse, so a handful of distinct API resources
-        # (/api/forum/{communities,questions,reviews}) are left intact.
-        collapsed = collapse_scan_endpoints(
-            session, scan_id, threshold=limits.slug_threshold,
-        )
-
-    return {"stop_reason": stop_reason, "pages": pages, "endpoints": total_added - collapsed,
-            "endpoints_merged": collapsed, "queue_remaining": frontier.size}
+    return {"stop_reason": stop_reason, "pages": pages, "endpoints": total_added,
+            "queue_remaining": frontier.size}
 
 
 async def _probe_unverified(context, engine, scan_id: int, scope: Scope, limits, deadline: float,

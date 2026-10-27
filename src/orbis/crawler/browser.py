@@ -67,7 +67,6 @@ class CapturedBody:
     url: str          # resource URL
     body: str         # response body text
     mime: str         # response MIME type
-    kind: str         # "js"
     truncated: bool   # whether body was truncated by size limit
 
 
@@ -278,7 +277,7 @@ async def capture_page(
             if absolute not in seen_inline:
                 seen_inline.add(absolute)
                 result.inline_urls.append(absolute)
-        bodies, fetched = await _fill_selective_bodies(client, captured, scope, fetched_rids)
+        bodies, fetched = await _fill_selective_bodies(client, captured, fetched_rids)
         fetched_rids.update(fetched)
         result.selective_bodies.extend(bodies)
         events = [event for event in captured.values() if relevant(event)]
@@ -606,20 +605,9 @@ async def _collect_init_script_events(
     return events
 
 
-def _classify_selective_body(
-    url: str, mime: str, scope: Scope | None,
-) -> tuple[str, int] | None:
-    """Return the kind and size limit for a JavaScript response."""
-    mime_lower = mime.lower()
-    if "javascript" in mime_lower or "ecmascript" in mime_lower:
-        return ("js", STATIC_JS_BODY_LIMIT)
-    return None
-
-
 async def _fill_selective_bodies(
     client,
     captured: dict[str, NetworkEvent],
-    scope: Scope | None,
     skip_rids: set[str] | None = None,
 ) -> tuple[list[CapturedBody], set[str]]:
     """Collect JavaScript bodies once per request for static endpoint discovery."""
@@ -631,23 +619,20 @@ async def _fill_selective_bodies(
         if ev.status is None or ev.source == "init_script":
             continue
         mime = ev.response_mime or ""
-        classification = _classify_selective_body(ev.url, mime, scope)
-        if classification is None:
+        if "javascript" not in mime.lower() and "ecmascript" not in mime.lower():
             continue
-        kind, limit = classification
         try:
             res = await client.send("Network.getResponseBody", {"requestId": rid})
             fetched_rids.add(rid)
             body_text = res.get("body", "") or ""
             if body_text:
-                truncated = len(body_text) > limit
+                truncated = len(body_text) > STATIC_JS_BODY_LIMIT
                 if truncated:
-                    body_text = body_text[:limit]
+                    body_text = body_text[:STATIC_JS_BODY_LIMIT]
                 bodies.append(CapturedBody(
                     url=ev.url,
                     body=body_text,
                     mime=mime,
-                    kind=kind,
                     truncated=truncated,
                 ))
         except Exception:

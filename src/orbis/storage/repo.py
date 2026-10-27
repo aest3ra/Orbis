@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import json
-import logging
-from collections import defaultdict
 from datetime import datetime, timezone
 
 from sqlalchemy import inspect
@@ -13,9 +11,6 @@ from sqlmodel import Session, select
 from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, _SOURCE_PRIORITY
 from orbis.analysis.params import merge_types
 from orbis.storage.db import Endpoint, Parameter, Scan
-
-log = logging.getLogger("orbis.storage")
-
 
 def create_scan(session: Session, target: str, auth_path: str | None = None) -> int:
     scan = Scan(target=target, auth_state_path=auth_path)
@@ -145,126 +140,6 @@ def _save_params(session: Session, endpoint_id: int, ep: NormalizedEndpoint) -> 
 def _merge_samples(first: str, second: str) -> str:
     values = dict.fromkeys(json.loads(first) + json.loads(second))
     return json.dumps(list(values)[:MAX_SAMPLES])
-
-
-def _has_children(path: str, all_paths: set[str]) -> bool:
-    """True if some other observed path nests under ``path`` (path/...)."""
-    prefix = path.rstrip("/") + "/"
-    return any(p != path and p.startswith(prefix) for p in all_paths)
-
-
-def collapse_scan_endpoints(
-    session: Session,
-    scan_id: int,
-    threshold: int = 3,
-) -> int:
-    """Post-scan: collapse high-cardinality sibling page routes.
-
-    When multiple page routes share the same (method, host, parent_path)
-    and differ only in the last path segment, they are merged into one
-    endpoint with a ``{slug}`` placeholder.  Root-level paths (prefix is
-    empty) are never collapsed to avoid merging unrelated top-level pages
-    like ``/about`` and ``/contact``.
-
-    Returns the number of endpoints removed by merging.
-    """
-    endpoints = list(
-        session.exec(select(Endpoint).where(Endpoint.scan_id == scan_id)).all()
-    )
-
-    # Group by (method, host, parent_path) — skip already-templatized last segments
-    # and root-level paths (empty prefix).
-    groups: dict[tuple[str, str, str], list[Endpoint]] = defaultdict(list)
-    for ep in endpoints:
-        if ep.route_kind != "page_route":
-            continue
-        parts = ep.path_template.rsplit("/", 1)
-        if len(parts) == 2 and parts[0] and not parts[1].startswith("{"):
-            key = (ep.method, ep.host, parts[0])
-            groups[key].append(ep)
-
-    # All observed paths (any method) — used to tell a leaf data value from a
-    # resource that has its own sub-paths.
-    all_paths: dict[str, set[str]] = defaultdict(set)
-    by_key = {}
-    for ep in endpoints:
-        all_paths[ep.host].add(ep.path_template)
-        by_key[(ep.method, ep.host, ep.path_template)] = ep
-
-    merged = 0
-    for key, eps in groups.items():
-        if len(eps) < threshold:
-            continue
-        last_segs = {e.path_template.rsplit("/", 1)[-1] for e in eps}
-        if len(last_segs) < threshold:
-            continue
-        # Leaf guard: siblings that mostly have deeper paths of their own are
-        # distinct resources (e.g. /api/forum/{communities,posts} where
-        # /api/forum/communities/... exists), not data slugs. Collapsing those
-        # would destroy real endpoints, so skip the group.
-        non_leaf = sum(1 for e in eps if _has_children(e.path_template, all_paths[e.host]))
-        if non_leaf * 2 >= len(eps):
-            continue
-
-        method, host, prefix = key
-        template = f"{prefix}/{{slug}}"
-        survivor = by_key.get((method, host, template))
-        # An existing API/download template is separate observed evidence.
-        if survivor is not None and survivor.route_kind != "page_route":
-            continue
-        members = [survivor, *eps] if survivor is not None else eps
-        survivor = survivor if survivor is not None else eps[0]
-        source = min(members, key=lambda e: _SOURCE_PRIORITY.get(e.source, 99)).source
-        dynamic = [e for e in members if e.source == "dynamic"]
-        if dynamic:
-            representative = next((e for e in dynamic if e.discovered_via is None), dynamic[0])
-        else:
-            # Keep the sample URL and status together: a failed sibling must
-            # not erase proof that another member of the template responded.
-            probe_order = {"verified": 0, "unverified": 1, "failed": 2}
-            representative = min(members, key=lambda e: (
-                probe_order.get(e.probe_status, 1), _SOURCE_PRIORITY.get(e.source, 99),
-            ))
-        survivor.sample_url = representative.sample_url
-        survivor.route_kind = representative.route_kind
-        survivor.discovered_via = representative.discovered_via
-        survivor.probe_status = None if dynamic else representative.probe_status
-        survivor.probe_code = None if dynamic else representative.probe_code
-        survivor.source = source
-        survivor.path_template = template
-        survivor.seen_count = sum(e.seen_count for e in members)
-
-        for ep in members:
-            if ep is survivor:
-                continue
-            # Migrate unique params to survivor, then delete the duplicate.
-            for param in session.exec(
-                select(Parameter).where(Parameter.endpoint_id == ep.id)
-            ).all():
-                existing = session.exec(
-                    select(Parameter).where(
-                        Parameter.endpoint_id == survivor.id,
-                        Parameter.location == param.location,
-                        Parameter.name == param.name,
-                    )
-                ).first()
-                if existing:
-                    existing.seen_count += param.seen_count
-                    existing.type_inferred = merge_types(existing.type_inferred, param.type_inferred)
-                    existing.sample_values_json = _merge_samples(
-                        existing.sample_values_json, param.sample_values_json,
-                    )
-                    session.delete(param)
-                else:
-                    param.endpoint_id = survivor.id
-            session.delete(ep)
-            merged += 1
-
-    if merged:
-        session.commit()
-        log.info("collapsed %d sibling endpoints into {slug} templates", merged)
-
-    return merged
 
 
 def list_endpoints(session: Session, scan_id: int | None = None) -> list[Endpoint]:

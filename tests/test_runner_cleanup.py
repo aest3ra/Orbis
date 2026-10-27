@@ -135,7 +135,6 @@ def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, c
     playwright = runner.async_playwright.return_value.start.return_value
     if stop_fails:
         playwright.stop.side_effect = OSError("driver stop failure")
-    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
     config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
     scan = runner._crawl_scan(
         config, Mock(), 17, Scope(config.scope), None, None,
@@ -144,7 +143,6 @@ def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, c
 
     assert asyncio.run(scan)["stop_reason"] == "max_pages"
 
-    runner.collapse_scan_endpoints.assert_called_once()
     playwright.stop.assert_awaited_once_with()
     browser.close.assert_awaited_once_with()
     request.dispose.assert_not_awaited()
@@ -154,7 +152,6 @@ def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, c
 def test_llm_dispose_failure_still_closes_browser(crawl_resources, monkeypatch, caplog):
     request, browser = crawl_resources
     request.dispose.side_effect = RuntimeError("synthetic request disposal failure")
-    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
     config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
 
     summary = asyncio.run(runner._crawl_scan(

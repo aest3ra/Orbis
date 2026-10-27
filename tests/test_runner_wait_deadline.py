@@ -35,7 +35,6 @@ def crawl_resources(monkeypatch):
     ]))
     monkeypatch.setattr(runner, "list_unverified_endpoints", rows)
     monkeypatch.setattr(runner, "probe_candidates", probe)
-    monkeypatch.setattr(runner, "collapse_scan_endpoints", Mock(return_value=0))
     return SimpleNamespace(browser=browser, playwright=playwright, trace=trace,
                            capture=capture, probe=probe, rows=rows)
 

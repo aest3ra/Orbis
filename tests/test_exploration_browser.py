@@ -330,7 +330,7 @@ def test_scan_uses_isolated_llm_transport_and_persists_evidence(workflow_site, t
     auth = tmp_path / "state.json"
     auth.write_text(json.dumps({"cookies": [{"name": "session", "value": "private-session", "domain": "127.0.0.1",
                                            "path": "/", "httpOnly": True, "secure": False, "sameSite": "Lax"}], "origins": []}))
-    config = ScanConfig(target=target, auth=AuthConfig(type="storage_state", storage_state_path=auth),
+    config = ScanConfig(target=target, auth=AuthConfig(storage_state_path=auth),
                         interaction=InteractionConfig(allow_write=True, upload_files=[upload]),
                         llm=LLMConfig(enabled=True, base_url=target + "/v1", max_calls=20))
     config.limits.max_pages = 1

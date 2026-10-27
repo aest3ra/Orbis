@@ -65,7 +65,7 @@ def scan(
     config = _load_config(target_or_config)
 
     if auth:
-        config.auth = AuthConfig(type="storage_state", storage_state_path=auth)
+        config.auth = AuthConfig(storage_state_path=auth)
 
     db_path = db or _default_db(config.target)
     db_path.parent.mkdir(parents=True, exist_ok=True)
