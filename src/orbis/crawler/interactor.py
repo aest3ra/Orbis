@@ -31,6 +31,12 @@ MAX_SCROLL_ACTIONS_PER_URL = 3
 # keeps producing new request routes stays eligible; one that stopped is capped
 # so open/close toggles and repeated uploads cannot drain the page budget.
 MAX_REPEATS_PER_CANDIDATE = 2
+# Site-wide UI is judged by what it yields, not by how often it appears: the
+# controls one action reveals form a widget, and a widget that produced no new
+# request route on this many consecutive URLs is ordered after the page's own
+# controls. It is never excluded, so a widget that routes differently on some
+# page still gets its turn once the page-specific controls are done.
+DEMOTE_AFTER_DRY_URLS = 2
 __all__ = ["run_safe_interactions"]
 
 log = logging.getLogger("orbis.interactor")
@@ -114,6 +120,12 @@ class ExplorationState:
     executed_counts: dict[str, int] = field(default_factory=dict)
     # action key -> whether its latest execution produced new request routes
     productive: dict[str, bool] = field(default_factory=dict)
+    # control key -> widget key of the action that first revealed it
+    revealed_by: dict[str, str] = field(default_factory=dict)
+    # (widget key, url) -> new request routes its controls produced there
+    widget_yield: dict[tuple[str, str], int] = field(default_factory=dict)
+    # widget key -> consecutive URLs on which it produced nothing new
+    widget_dry_urls: dict[str, int] = field(default_factory=dict)
 
     def event(self, event: str, **details) -> None:
         if self.emit is None:
@@ -143,11 +155,18 @@ async def run_safe_interactions(
     attempts = 0
     stop_reason = "action_budget"
     previous_candidates: set[str] = set()
+    last_widget: str | None = None
+    touched: set[tuple[str, str]] = set()
     while attempts < max_actions and count < max_actions:
         if not scope.allows(page.url) or not _action_time_left(deadline):
             stop_reason = "out_of_scope" if not scope.allows(page.url) else "deadline"
             break
         candidates = await _collect_candidates(page)
+        if last_widget is not None:
+            # Controls that appeared after an action belong to that action's widget.
+            for c in candidates:
+                if _candidate_key(c) not in previous_candidates:
+                    state.revealed_by.setdefault(_control_key(c), last_widget)
         fingerprint = _state_fingerprint(candidates)
         node = (page.url, fingerprint)
         attempted = state.acted.setdefault(node, set())
@@ -172,7 +191,8 @@ async def run_safe_interactions(
             # producing new low-priority controls (inserted links, revealed
             # menus, toasts) and would otherwise starve an already visible
             # submit control until the page budget is gone.
-            fresh.sort(key=lambda c: (state.executed_counts.get(_action_key(page.url, c), 0) > 0,
+            fresh.sort(key=lambda c: (_demoted(state, c),
+                                      state.executed_counts.get(_action_key(page.url, c), 0) > 0,
                                       _priority(c), _candidate_key(c) in previous_candidates))
             candidate = dict(fresh[0])
             decision_started = time.monotonic()
@@ -199,9 +219,11 @@ async def run_safe_interactions(
         candidate["action_id"] = action_id
         action_key = _action_key(before_url, candidate)
         state.action_counts[action_key] = state.action_counts.get(action_key, 0) + 1
+        widget = _widget_key(state, candidate)
         record = {"action_id": action_id, "page_id": state.page_id, "action_key": action_key,
                   "started_at": timestamp(), "kind": candidate["kind"],
                   "label": candidate.get("label", candidate.get("text", "")),
+                  "widget": widget, "demoted": _demoted(state, candidate),
                   "before_url": before_url, "state": fingerprint, "status": "started", "executions": 0,
                   "attempt_number": state.action_counts[action_key], "candidate_count": len(candidates),
                   "fresh_candidates": len(fresh), "selection": selection if fresh else "backtrack",
@@ -227,6 +249,11 @@ async def run_safe_interactions(
             record["observed_progress"] = bool(record["ui_state_changed"] or page.url != before_url
                                                 or record.get("new_request_routes", 0))
             state.productive[action_key] = bool(record.get("new_request_routes", 0))
+            if executed:
+                touched.add((widget, before_url))
+                state.widget_yield[(widget, before_url)] = (
+                    state.widget_yield.get((widget, before_url), 0) + (record.get("new_request_routes") or 0))
+                last_widget = widget
         except asyncio.CancelledError:
             record.update(status="interrupted", failure_reason="cancelled")
             raise
@@ -241,6 +268,9 @@ async def run_safe_interactions(
             record.update(clean(record))
             state.event("action_end", **{key: value for key, value in record.items() if key != "page_id"})
             state.current_action = None
+    for widget, url in touched:
+        state.widget_dry_urls[widget] = 0 if state.widget_yield.get((widget, url), 0) else (
+            state.widget_dry_urls.get(widget, 0) + 1)
     state.event("exploration_end", url=page.url, stop_reason=stop_reason, attempts=attempts, executions=count)
     return count
 
@@ -257,6 +287,20 @@ def _candidate_key(candidate: dict) -> str:
 
 def _action_key(url: str, candidate: dict) -> str:
     return hashlib.sha256((url + _candidate_key(candidate)).encode()).hexdigest()[:16]
+
+
+def _control_key(candidate: dict) -> str:
+    """What a control is, independent of the URL and DOM position it was seen at."""
+    return json.dumps([candidate.get(name, "") for name in ("kind", "name", "label", "type")], ensure_ascii=False)
+
+
+def _widget_key(state: ExplorationState, candidate: dict) -> str:
+    key = _control_key(candidate)
+    return state.revealed_by.get(key, key)
+
+
+def _demoted(state: ExplorationState, candidate: dict) -> bool:
+    return state.widget_dry_urls.get(_widget_key(state, candidate), 0) >= DEMOTE_AFTER_DRY_URLS
 
 
 def _repeat_allowed(state: ExplorationState, url: str, candidate: dict) -> bool:

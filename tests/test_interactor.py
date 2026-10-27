@@ -521,3 +521,55 @@ def test_failed_executions_do_not_consume_the_cap(monkeypatch) -> None:
 
     assert ("click", "#save") in page.actions
     assert visibility_checks["save"] == 3
+
+
+def _site_wide_pages(exploration, yields):
+    """Three pages that share a 'Compose' button revealing a Title input, plus one
+    page-specific link each. ``yields`` says whether the widget's input produces a
+    new request route when filled."""
+    orders = []
+    for name in ("a", "b", "c"):
+        link = {"kind": "link", "selector": f"#{name}", "key": f"#{name}", "text": f"Detail {name}",
+                "label": f"Detail {name}", "nav_url": f"https://example.com/{name}/detail", "method": "GET"}
+        compose = {"kind": "button", "selector": "#compose", "key": "#compose", "text": "Compose",
+                   "label": "Compose", "button_type": "button"}
+        title = {"kind": "input", "selector": "#title", "key": "#title", "text": "Title", "label": "Title",
+                 "name": "title", "type": "text"}
+        page = FakePage([compose, link], url=f"https://example.com/{name}")
+        original_click = FakeLocator.click
+
+        async def click(self, **kwargs):
+            await original_click(self, **kwargs)
+            if self.selector == "#compose":
+                page.candidates = [compose, title, link]
+
+        FakeLocator.click = click
+
+        async def observe():
+            action = exploration.current_action
+            yielded = action["kind"] == "link" or (action["kind"] == "input" and yields)
+            exploration.records[-1]["new_request_routes"] = 1 if yielded else 0
+
+        try:
+            asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(allow_write=True),
+                                              state=exploration, observe=observe, max_actions=3))
+        finally:
+            FakeLocator.click = original_click
+        orders.append([selector for _, selector, *_ in page.actions])
+    return orders
+
+
+def test_site_wide_widget_goes_after_page_controls_once_dry_on_two_urls() -> None:
+    exploration = interactor.ExplorationState()
+    orders = _site_wide_pages(exploration, yields=False)
+    # Pages a and b: the Compose widget runs first by priority and yields nothing.
+    assert orders[0][0] == "#compose" and orders[1][0] == "#compose"
+    # Page c: the page's own link comes first; the widget still gets its turn.
+    assert orders[2][0] == "#c"
+    assert "#compose" in orders[2]
+
+
+def test_site_wide_widget_that_keeps_yielding_is_not_demoted() -> None:
+    exploration = interactor.ExplorationState()
+    orders = _site_wide_pages(exploration, yields=True)
+    assert [order[0] for order in orders] == ["#compose", "#compose", "#compose"]
