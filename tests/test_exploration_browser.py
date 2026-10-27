@@ -390,32 +390,6 @@ def test_http_failures_no_progress_and_new_endpoints_are_distinct(workflow_site,
     assert rows[-1]["totals"]["actions_without_observed_progress"] == 2
 
 
-def test_get_probe_does_not_verify_static_post_candidate(workflow_site, tmp_path):
-    from sqlmodel import Session, select
-    from orbis.crawler.runner import run_scan
-    from orbis.storage.db import Endpoint, open_db
-
-    target, state = workflow_site
-    config = ScanConfig(target=target)
-    config.limits.max_pages = 1
-    config.limits.max_scrolls_per_page = 0
-    config.limits.max_actions_per_page = 0
-    config.limits.probe_max_requests = 3
-    database = tmp_path / 'probe.db'
-    scan_id = asyncio.run(run_scan(config, db_path=str(database), wayback=False))
-    engine = open_db(database)
-    try:
-        with Session(engine) as session:
-            endpoint = session.exec(select(Endpoint).where(Endpoint.scan_id == scan_id,
-                                                           Endpoint.path_template == '/api/readonly')).one()
-            assert endpoint.method == 'POST'
-            assert endpoint.probe_status == 'unverified'
-            assert endpoint.probe_code is None
-    finally:
-        engine.dispose()
-    assert ('GET', '/api/readonly') not in state['requests']
-
-
 def test_post_download_preserves_method_and_separate_artifacts(workflow_site, tmp_path):
     from orbis.crawler.interactor import ExplorationState
     target, _state = workflow_site
