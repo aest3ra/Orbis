@@ -65,7 +65,7 @@ def probe_scan(tmp_path, monkeypatch):
 
 async def crawl(resources):
     return await runner._crawl_scan(
-        resources.config, resources.engine, resources.scan_id, Scope(resources.config.scope), None, None,
+        resources.config, resources.engine, resources.scan_id, Scope(resources.config.scope), None,
         db_path=resources.db_path, headless=True, wayback=False, trace=resources.trace,
     )
 

@@ -16,7 +16,6 @@ from playwright.async_api import BrowserContext, Error as PlaywrightError, Page
 from orbis.analysis.url import templatize_path
 from orbis.config import InteractionConfig
 from orbis.crawler.interactor import ExplorationState, _upload_files, run_safe_interactions
-from orbis.crawler.planner import QwenPlanner
 from orbis.crawler.scope import Scope
 from orbis.telemetry import safe_url, timestamp
 
@@ -119,7 +118,6 @@ async def capture_page(
     settle_ms: int = 2_000,
     interaction: InteractionConfig | None = None,
     exploration: ExplorationState | None = None,
-    planner: QwenPlanner | None = None,
     max_actions: int = 20,
     download_dir: Path | None = None,
     deadline: float | None = None,
@@ -324,7 +322,7 @@ async def capture_page(
                 tracker = _DeltaTracker(captured)
                 await run_safe_interactions(
                     page, scope, tracker=tracker, options=interaction, state=state,
-                    planner=planner, max_actions=max_actions, observe=observe, deadline=deadline,
+                    max_actions=max_actions, observe=observe, deadline=deadline,
                 )
             seen_keys = {(event.method, event.url) for event in captured.values()}
             for event in await _collect_init_script_events(page, page.url, seen_keys):

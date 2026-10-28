@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 from sqlmodel import Session, select
 
-from orbis.config import LLMConfig, LimitsConfig, ScanConfig
+from orbis.config import LimitsConfig, ScanConfig
 from orbis.crawler import runner
 from orbis.storage.db import Observation, open_db
 from orbis.telemetry import ScanLog

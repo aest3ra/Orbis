@@ -24,14 +24,6 @@ class InteractionConfig(BaseModel):
     upload_files: list[Path] = []
 
 
-class LLMConfig(BaseModel):
-    enabled: bool = False
-    base_url: str = "https://integrate.api.nvidia.com/v1"
-    model: str = "qwen/qwen3.5-122b-a10b"
-    max_calls: int = Field(default=30, ge=0)
-    timeout_sec: float = Field(default=30, gt=0)
-
-
 class LimitsConfig(BaseModel):
     max_pages: int = 100
     max_depth: int | None = None
@@ -59,7 +51,6 @@ class ScanConfig(BaseModel):
     auth: AuthConfig = AuthConfig()
     limits: LimitsConfig = LimitsConfig()
     interaction: InteractionConfig = InteractionConfig()
-    llm: LLMConfig = LLMConfig()
 
     def model_post_init(self, __context: Any) -> None:
         if not self.scope.include_domains:

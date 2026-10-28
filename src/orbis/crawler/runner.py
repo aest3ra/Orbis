@@ -16,7 +16,6 @@ from orbis.analysis.analyzer import analyze, build_wayback_results
 from orbis.config import ScanConfig
 from orbis.crawler.browser import capture_page
 from orbis.crawler.interactor import ExplorationState
-from orbis.crawler.planner import QwenPlanner, load_api_key
 from orbis.crawler.frontier import Frontier
 from orbis.crawler.wayback import fetch_wayback_urls
 from orbis.crawler.probe import probe_candidates
@@ -41,7 +40,6 @@ async def run_scan(
     headless: bool = True,
     wayback: bool = True,
 ) -> int:
-    api_key = load_api_key() if config.llm.enabled else None
     for path in config.interaction.upload_files:
         if not path.is_file():
             raise ValueError(f"Upload file does not exist: {path}")
@@ -58,10 +56,10 @@ async def run_scan(
         try:
             log.info("scan=%d diagnostics=%s", scan_id, trace.path)
             trace.emit("scan_start", target=config.target, limits=config.limits.model_dump(),
-                       authenticated=auth_path is not None, llm_enabled=config.llm.enabled, wayback=wayback)
+                       authenticated=auth_path is not None, wayback=wayback)
             outcome = {"status": "error", "stop_reason": "exception"}
             try:
-                summary = await _crawl_scan(config, engine, scan_id, scope, auth_path, api_key,
+                summary = await _crawl_scan(config, engine, scan_id, scope, auth_path,
                                             db_path=db_path, headless=headless, wayback=wayback, trace=trace)
                 outcome = {"status": "completed", **summary}
             except asyncio.CancelledError:
@@ -111,7 +109,7 @@ async def _close(closing, what: str) -> None:
 
 
 async def _crawl_scan(
-    config: ScanConfig, engine, scan_id: int, scope: Scope, auth_path: str | None, api_key: str | None,
+    config: ScanConfig, engine, scan_id: int, scope: Scope, auth_path: str | None,
     *, db_path: str, headless: bool, wayback: bool, trace: ScanLog,
 ) -> dict:
     frontier = Frontier(
@@ -163,122 +161,113 @@ async def _crawl_scan(
             if auth_path:
                 ctx_kw["storage_state"] = auth_path
             context = await browser.new_context(**ctx_kw)
-            planner = llm_request = None
-            if api_key:
-                llm_request = await pw.request.new_context(extra_http_headers={"Authorization": f"Bearer {api_key}"})
-                planner = QwenPlanner(llm_request, config.llm, emit=exploration.event)
-            try:
-                while pages < limits.max_pages:
-                    wayback_seed_idx = _enqueue_wayback_backfill(
-                        frontier, wayback_seeds, wayback_seed_idx,
-                    )
-                    if frontier.size == 0:
-                        stop_reason = "frontier_exhausted"
-                        break
-
-                    if time.monotonic() >= deadline:
-                        stop_reason = "max_duration"
-                        log.warning("timeout: %ds limit reached", limits.max_duration_sec)
-                        break
-
-                    wait = (last_req_at + rate_delay) - time.monotonic()
-                    if wait > 0:
-                        try:
-                            async with asyncio.timeout_at(deadline):
-                                await asyncio.sleep(wait)
-                        except TimeoutError:
-                            stop_reason = "max_duration"
-                            break
-                    if time.monotonic() >= deadline:
-                        stop_reason = "max_duration"
-                        break
-
-                    item = frontier.pop()
-                    if item is None:
-                        stop_reason = "frontier_exhausted"
-                        break
-                    last_req_at = time.monotonic()
-
-                    page_started = time.monotonic()
-                    exploration.page_id = pages + 1
-                    trace.emit("page_start", page_id=exploration.page_id, url=item.url, depth=item.depth)
-                    try:
-                        capture = await capture_page(
-                            context,
-                            item.url,
-                            scope=scope,
-                            max_scrolls=limits.max_scrolls_per_page,
-                            interaction=config.interaction,
-                            exploration=exploration,
-                            planner=planner,
-                            max_actions=limits.max_actions_per_page,
-                            download_dir=Path(db_path).resolve().parent / "downloads" / str(scan_id),
-                            deadline=deadline,
-                        )
-                    except asyncio.CancelledError:
-                        trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="interrupted",
-                                   error="cancelled", duration_ms=round((time.monotonic() - page_started) * 1000, 1))
-                        raise
-                    except Exception as exc:
-                        pages += 1
-                        log.warning(
-                            "[%d/%d] FAIL %s (%s)",
-                            pages, limits.max_pages, safe_url(item.url), type(exc).__name__,
-                        )
-                        trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="failed",
-                                   error=type(exc).__name__, duration_ms=round((time.monotonic() - page_started) * 1000, 1))
-                        continue
-
-                    pages += 1
-
-                    # Analyzer: all judgment happens here
-                    result = analyze(capture, scope)
-
-                    for url in result.frontier_urls:
-                        frontier.enqueue(url, depth=item.depth + 1)
-
-                    added = 0
-                    if result.endpoints:
-                        with Session(engine) as session:
-                            added, _ = save_endpoints(session, scan_id, result.endpoints)
-                            total_added += added
-
-                    # Diminishing returns: when repeated visits to one template stop
-                    # producing new endpoints, freeze it so its remaining siblings are
-                    # not crawled. Unique pages (visited once) never reach the streak.
-                    tkey = frontier.template_key(item.url)
-                    if added > 0:
-                        zero_streak.pop(tkey, None)
-                    else:
-                        zero_streak[tkey] = zero_streak.get(tkey, 0) + 1
-                        if zero_streak[tkey] >= limits.template_saturation:
-                            frontier.saturate(tkey)
-
-                    api_n = len(result.endpoints)
-                    link_n = len(result.frontier_urls)
-                    actions = [row for row in capture.observations if row.get("observation") == "action"]
-                    page_record = trace.emit(
-                        "page_end", page_id=exploration.page_id, url=item.url, final_url=capture.final_url,
-                        status="partial" if capture.error else "completed", error=capture.error,
-                        duration_ms=round((time.monotonic() - page_started) * 1000, 1),
-                        endpoints_observed=api_n, endpoints_new=added, frontier_candidates=link_n, queue=frontier.size,
-                        actions=len(actions), actions_failed=sum(row["status"] == "failed" for row in actions),
-                        actions_with_http_errors=sum(bool(row.get("http_error_count")) for row in actions),
-                    )
-                    err = f" err={capture.error}" if capture.error else ""
-                    log.info(
-                        "[%d/%d] %s -> endpoints_observed=%d endpoints_new=%d links=%d queue=%d duration_ms=%.1f%s",
-                        pages, limits.max_pages, safe_url(item.url),
-                        api_n, added, link_n, frontier.size, page_record["duration_ms"], err,
-                    )
+            while pages < limits.max_pages:
+                wayback_seed_idx = _enqueue_wayback_backfill(
+                    frontier, wayback_seeds, wayback_seed_idx,
+                )
+                if frontier.size == 0:
+                    stop_reason = "frontier_exhausted"
+                    break
 
                 if time.monotonic() >= deadline:
                     stop_reason = "max_duration"
-                if await _probe_unobserved(context, engine, scan_id, scope, limits, deadline, trace):
+                    log.warning("timeout: %ds limit reached", limits.max_duration_sec)
+                    break
+
+                wait = (last_req_at + rate_delay) - time.monotonic()
+                if wait > 0:
+                    try:
+                        async with asyncio.timeout_at(deadline):
+                            await asyncio.sleep(wait)
+                    except TimeoutError:
+                        stop_reason = "max_duration"
+                        break
+                if time.monotonic() >= deadline:
                     stop_reason = "max_duration"
-            finally:
-                if llm_request is not None:
-                    await _close(llm_request.dispose(), "LLM request context disposal")
+                    break
+
+                item = frontier.pop()
+                if item is None:
+                    stop_reason = "frontier_exhausted"
+                    break
+                last_req_at = time.monotonic()
+
+                page_started = time.monotonic()
+                exploration.page_id = pages + 1
+                trace.emit("page_start", page_id=exploration.page_id, url=item.url, depth=item.depth)
+                try:
+                    capture = await capture_page(
+                        context,
+                        item.url,
+                        scope=scope,
+                        max_scrolls=limits.max_scrolls_per_page,
+                        interaction=config.interaction,
+                        exploration=exploration,
+                        max_actions=limits.max_actions_per_page,
+                        download_dir=Path(db_path).resolve().parent / "downloads" / str(scan_id),
+                        deadline=deadline,
+                    )
+                except asyncio.CancelledError:
+                    trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="interrupted",
+                               error="cancelled", duration_ms=round((time.monotonic() - page_started) * 1000, 1))
+                    raise
+                except Exception as exc:
+                    pages += 1
+                    log.warning(
+                        "[%d/%d] FAIL %s (%s)",
+                        pages, limits.max_pages, safe_url(item.url), type(exc).__name__,
+                    )
+                    trace.emit("page_end", page_id=exploration.page_id, url=item.url, status="failed",
+                               error=type(exc).__name__, duration_ms=round((time.monotonic() - page_started) * 1000, 1))
+                    continue
+
+                pages += 1
+
+                # Analyzer: all judgment happens here
+                result = analyze(capture, scope)
+
+                for url in result.frontier_urls:
+                    frontier.enqueue(url, depth=item.depth + 1)
+
+                added = 0
+                if result.endpoints:
+                    with Session(engine) as session:
+                        added, _ = save_endpoints(session, scan_id, result.endpoints)
+                        total_added += added
+
+                # Diminishing returns: when repeated visits to one template stop
+                # producing new endpoints, freeze it so its remaining siblings are
+                # not crawled. Unique pages (visited once) never reach the streak.
+                tkey = frontier.template_key(item.url)
+                if added > 0:
+                    zero_streak.pop(tkey, None)
+                else:
+                    zero_streak[tkey] = zero_streak.get(tkey, 0) + 1
+                    if zero_streak[tkey] >= limits.template_saturation:
+                        frontier.saturate(tkey)
+
+                api_n = len(result.endpoints)
+                link_n = len(result.frontier_urls)
+                actions = [row for row in capture.observations if row.get("observation") == "action"]
+                page_record = trace.emit(
+                    "page_end", page_id=exploration.page_id, url=item.url, final_url=capture.final_url,
+                    status="partial" if capture.error else "completed", error=capture.error,
+                    duration_ms=round((time.monotonic() - page_started) * 1000, 1),
+                    endpoints_observed=api_n, endpoints_new=added, frontier_candidates=link_n, queue=frontier.size,
+                    actions=len(actions), actions_failed=sum(row["status"] == "failed" for row in actions),
+                    actions_with_http_errors=sum(bool(row.get("http_error_count")) for row in actions),
+                )
+                err = f" err={capture.error}" if capture.error else ""
+                log.info(
+                    "[%d/%d] %s -> endpoints_observed=%d endpoints_new=%d links=%d queue=%d duration_ms=%.1f%s",
+                    pages, limits.max_pages, safe_url(item.url),
+                    api_n, added, link_n, frontier.size, page_record["duration_ms"], err,
+                )
+
+            if time.monotonic() >= deadline:
+                stop_reason = "max_duration"
+            if await _probe_unobserved(context, engine, scan_id, scope, limits, deadline, trace):
+                stop_reason = "max_duration"
         finally:
             await _close(browser.close(), "browser close")
     finally:

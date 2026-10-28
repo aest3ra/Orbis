@@ -11,7 +11,7 @@ import pytest
 from playwright.async_api import async_playwright
 
 from orbis.analysis.analyzer import analyze
-from orbis.config import AuthConfig, InteractionConfig, LLMConfig, ScanConfig, ScopeConfig
+from orbis.config import AuthConfig, InteractionConfig, ScanConfig, ScopeConfig
 from orbis.crawler.browser import capture_page
 from orbis.crawler.scope import Scope
 
@@ -78,7 +78,7 @@ export async function show() {
 
 @pytest.fixture
 def workflow_site():
-    state = {"requests": [], "posts": [], "uploaded": False, "llm_requests": []}
+    state = {"requests": [], "posts": [], "uploaded": False}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_args):
@@ -146,10 +146,6 @@ def workflow_site():
                 return
             if self.path == "/api/export":
                 self.send_body(ATTACHMENT, "text/plain", attachment=True)
-                return
-            if self.path == "/v1/chat/completions":
-                state["llm_requests"].append({"body": json.loads(body), "cookie": self.headers.get("Cookie")})
-                self.send_body(json.dumps({"choices": [{"message": {"content": '{"candidate_id": 0}'}}]}).encode())
                 return
             if self.path == "/api/uploads":
                 state["uploaded"] = ATTACHMENT in body
@@ -318,21 +314,19 @@ def test_deadline_preserves_observations_and_closes_page(workflow_site):
     asyncio.run(exercise())
 
 
-def test_scan_uses_isolated_llm_transport_and_persists_evidence(workflow_site, tmp_path, monkeypatch):
+def test_scan_log_redacts_session_and_persists_evidence(workflow_site, tmp_path):
     from sqlmodel import Session, select
     from orbis.crawler.runner import run_scan
     from orbis.storage.db import Endpoint, Observation, open_db
 
     target, state = workflow_site
-    monkeypatch.setenv("NVIDIA_API_KEY", "fixture-only-key")
     upload = tmp_path / "fixture.txt"
     upload.write_bytes(ATTACHMENT)
     auth = tmp_path / "state.json"
     auth.write_text(json.dumps({"cookies": [{"name": "session", "value": "private-session", "domain": "127.0.0.1",
                                            "path": "/", "httpOnly": True, "secure": False, "sameSite": "Lax"}], "origins": []}))
     config = ScanConfig(target=target, auth=AuthConfig(storage_state_path=auth),
-                        interaction=InteractionConfig(allow_write=True, upload_files=[upload]),
-                        llm=LLMConfig(enabled=True, base_url=target + "/v1", max_calls=20))
+                        interaction=InteractionConfig(allow_write=True, upload_files=[upload]))
     config.limits.max_pages = 1
     config.limits.max_scrolls_per_page = 0
     config.limits.probe_max_requests = 0
@@ -340,13 +334,9 @@ def test_scan_uses_isolated_llm_transport_and_persists_evidence(workflow_site, t
     scan_id = asyncio.run(run_scan(config, db_path=str(database), wayback=False))
     log_text = next(tmp_path.glob("scan.scan-*.jsonl")).read_text()
     log_rows = [json.loads(line) for line in log_text.splitlines()]
-    assert not any(value in log_text for value in ("private-session", "fixture-only-key"))
-    assert any(row["event"] == "llm_end" and row["outcome"] == "selected" for row in log_rows)
-    assert {row["event"] for row in log_rows} >= {"action_end", "download_end", "llm_end"}
+    assert "private-session" not in log_text
+    assert {row["event"] for row in log_rows} >= {"action_end", "download_end"}
     assert any(row.get("status") == "saved" for row in log_rows if row["event"] == "download_end")
-    assert all("action_id" in row and "duration_ms" in row for row in log_rows if row["event"] == "llm_end")
-    assert state["llm_requests"]
-    assert all(record["cookie"] is None for record in state["llm_requests"])
     assert len(state["posts"]) == 1
     engine = open_db(database)
     try:

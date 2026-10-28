@@ -82,25 +82,22 @@ def test_scan_cleanup_preserves_result_and_crawl_failure(scan_resources, failure
 
 @pytest.fixture
 def crawl_resources(monkeypatch):
-    request = SimpleNamespace(dispose=AsyncMock())
     browser = SimpleNamespace(new_context=AsyncMock(return_value=object()), close=AsyncMock())
     playwright = SimpleNamespace(
         chromium=SimpleNamespace(launch=AsyncMock(return_value=browser)),
-        request=SimpleNamespace(new_context=AsyncMock(return_value=request)),
         stop=AsyncMock(),
     )
     manager = SimpleNamespace(start=AsyncMock(return_value=playwright))
     monkeypatch.setattr(runner, "async_playwright", Mock(return_value=manager))
     monkeypatch.setattr(runner, "Session", MagicMock())
-    monkeypatch.setattr(runner, "QwenPlanner", Mock(return_value=SimpleNamespace(records=[])))
     monkeypatch.setattr(runner, "list_unprobed_endpoints", Mock(return_value=[]))
     monkeypatch.setattr(runner, "probe_candidates", AsyncMock(return_value=ProbeResults()))
-    return request, browser
+    return browser
 
 
 @pytest.mark.parametrize("failure_type", [None, RuntimeError])
 def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failure_type):
-    request, browser = crawl_resources
+    browser = crawl_resources
     playwright = runner.async_playwright.return_value.start.return_value
     trace = Mock(emit=Mock(side_effect=failure_type("primary failure") if failure_type else None))
     config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=1 if failure_type else 0))
@@ -114,7 +111,7 @@ def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failu
 
         playwright.stop.side_effect = blocked
         task = asyncio.create_task(runner._crawl_scan(
-            config, Mock(), 17, Scope(config.scope), None, None,
+            config, Mock(), 17, Scope(config.scope), None,
             db_path="unused.db", headless=True, wayback=False, trace=trace,
         ))
         await asyncio.wait_for(entered.wait(), timeout=0.5)
@@ -131,13 +128,13 @@ def test_fresh_cancellation_during_driver_stop_propagates(crawl_resources, failu
 def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, caplog, stop_fails):
     """Driver teardown runs exactly once; a failing stop is logged and does not
     turn a completed crawl into an error."""
-    request, browser = crawl_resources
+    browser = crawl_resources
     playwright = runner.async_playwright.return_value.start.return_value
     if stop_fails:
         playwright.stop.side_effect = OSError("driver stop failure")
     config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
     scan = runner._crawl_scan(
-        config, Mock(), 17, Scope(config.scope), None, None,
+        config, Mock(), 17, Scope(config.scope), None,
         db_path="unused.db", headless=True, wayback=False, trace=Mock(),
     )
 
@@ -145,21 +142,4 @@ def test_driver_stop_runs_once_after_normal_body(crawl_resources, monkeypatch, c
 
     playwright.stop.assert_awaited_once_with()
     browser.close.assert_awaited_once_with()
-    request.dispose.assert_not_awaited()
     assert ("Playwright stop failed" in caplog.text) == stop_fails
-
-
-def test_llm_dispose_failure_still_closes_browser(crawl_resources, monkeypatch, caplog):
-    request, browser = crawl_resources
-    request.dispose.side_effect = RuntimeError("synthetic request disposal failure")
-    config = ScanConfig(target="http://localhost/", limits=LimitsConfig(max_pages=0))
-
-    summary = asyncio.run(runner._crawl_scan(
-        config, Mock(), 17, Scope(config.scope), None, "synthetic-key",
-        db_path="unused.db", headless=True, wayback=False, trace=Mock(),
-    ))
-
-    assert summary["stop_reason"] == "max_pages"
-    assert "LLM request context disposal failed" in caplog.text
-    request.dispose.assert_awaited_once_with()
-    browser.close.assert_awaited_once_with()

@@ -49,7 +49,7 @@ def config_for(*, pages=2, duration=1, rate=0):
 
 async def crawl(config, resources):
     return await runner._crawl_scan(
-        config, Mock(), 17, Scope(config.scope), None, None,
+        config, Mock(), 17, Scope(config.scope), None,
         db_path="unused.db", headless=True, wayback=False, trace=resources.trace,
     )
 

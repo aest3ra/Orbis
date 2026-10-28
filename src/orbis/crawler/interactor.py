@@ -19,7 +19,6 @@ from urllib.parse import urljoin, urlparse
 from playwright.async_api import Error as PlaywrightError, Page, Request, TimeoutError as PlaywrightTimeoutError
 
 from orbis.config import InteractionConfig
-from orbis.crawler.planner import QwenPlanner
 from orbis.crawler.scope import Scope
 from orbis.safety import is_dangerous_url, is_download_url, is_safe_url, text_has_danger_keyword
 from orbis.telemetry import clean, timestamp
@@ -123,7 +122,6 @@ async def run_safe_interactions(
     page: Page, scope: Scope, *, tracker: Any = None,
     options: InteractionConfig | None = None,
     state: ExplorationState | None = None,
-    planner: QwenPlanner | None = None,
     max_actions: int = MAX_ACTIONS_PER_PAGE,
     observe: Callable[[], Awaitable[None]] | None = None,
     deadline: float | None = None,
@@ -179,14 +177,6 @@ async def run_safe_interactions(
             candidate = dict(fresh[0])
             decision_started = time.monotonic()
             selection = "rules"
-            if planner is not None and (deadline is None or
-                    deadline - time.monotonic() > planner.config.timeout_sec * 2 + 5):
-                decision = await planner.choose(page.url, fresh, state.records)
-                if decision is not None:
-                    selection = "llm"
-                    candidate = dict(fresh[decision.candidate_id])
-                    if decision.value is not None and candidate["kind"] in ("input", "select"):
-                        candidate["value"] = decision.value
             if candidate["kind"] == "file":
                 candidate["files"] = [str(p) for p in _upload_files(candidate, options)]
             if options.allow_write and candidate["kind"] == "input":
