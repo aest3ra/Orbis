@@ -94,6 +94,8 @@ def callback_capture(tmp_path):
                 if state.phase == "detach":
                     responses()
             result = [] if message["method"] == "evaluate" else {}
+            if message["method"] == "send" and message["params"].get("method") == "Page.getFrameTree":
+                result = {"frameTree": {"frame": {"id": "offline-frame"}}}
             loop.call_soon(connection.dispatch, {"id": message["id"], "result": {"value": result}})
 
         transport.send = send
@@ -168,5 +170,5 @@ def test_successful_dispatch_preserves_observations_and_request_order(callback_c
     assert state.result.network_events[0].status == 503
     assert state.result.network_events[0].response_headers == {"generation": "503"}
     assert state.evaluations == 3
-    assert state.messages == ["send", "evaluate", "evaluate", "evaluate", "detach"]
+    assert state.messages == ["send", "send", "send", "evaluate", "evaluate", "evaluate", "detach"]
     assert state.closed == state.detached == 1

@@ -127,6 +127,14 @@ def workflow_site():
                     await fetch('/api/items/' + Date.now());
                   };
                 </script>''', "text/html")
+            elif self.path == "/full-nav":
+                self.send_body(b'''<a href="/full-target">Detail page</a>
+                  <button type="button" onclick="location.href='/full-target?via=button'">Open report</button>
+                  <form method="post" action="/api/submit-redirect"><input name="q" value="x">
+                  <button type="submit">Save draft</button></form>''', "text/html")
+            elif self.path.startswith("/full-target") or self.path == "/full-done":
+                load = b"/api/full-done-load" if self.path == "/full-done" else b"/api/full-target-load"
+                self.send_body(b'<script>fetch("' + load + b'")</script><p>loaded</p>', "text/html")
             elif self.path == "/app.js":
                 self.send_body(APP_JS.encode(), "text/javascript")
             elif self.path == "/editor.js":
@@ -146,6 +154,12 @@ def workflow_site():
                 return
             if self.path == "/api/export":
                 self.send_body(ATTACHMENT, "text/plain", attachment=True)
+                return
+            if self.path == "/api/submit-redirect":
+                self.send_response(303)
+                self.send_header("Location", "/full-done")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
                 return
             if self.path == "/api/uploads":
                 state["uploaded"] = ATTACHMENT in body
@@ -443,3 +457,41 @@ def test_route_novelty_ignores_high_cardinality_paths(workflow_site, tmp_path):
     assert actions[1]["new_request_routes"] == 0
     assert len([path for method, path in state["requests"] if path.startswith("/api/items/")]) == 2
     assert not capture.error
+
+
+
+def test_action_page_loads_stay_on_screen_and_feed_the_frontier(workflow_site, tmp_path):
+    """A link or script navigation to another HTML page is kept from replacing the
+    screen: its URL reaches the frontier with its real status, the page is not
+    rendered here and no Back is spent. A redirect that follows a POST still lands."""
+    from orbis.crawler.interactor import ExplorationState
+    target, state = workflow_site
+    scope = Scope(ScopeConfig(include_domains=["127.0.0.1"]))
+    events = []
+    exploration = ExplorationState(emit=lambda name, **details: events.append((name, details)) or details)
+
+    async def exercise():
+        async with async_playwright() as pw:
+            browser = await pw.chromium.launch()
+            try:
+                context = await browser.new_context()
+                return await capture_page(context, target + "/full-nav", scope=scope, max_scrolls=0, settle_ms=50,
+                                          max_actions=4, interaction=InteractionConfig(allow_write=True),
+                                          exploration=exploration, download_dir=tmp_path)
+            finally:
+                await browser.close()
+
+    capture = asyncio.run(exercise())
+
+    assert capture.final_url == target + "/full-nav" and not capture.error
+    assert ("GET", "/api/full-target-load") not in state["requests"]
+    assert ("POST", "/api/submit-redirect") in state["requests"]
+    assert ("GET", "/api/full-done-load") in state["requests"]
+    blocked = sorted(details["url"] for name, details in events if name == "navigation_blocked")
+    assert blocked == [target + "/full-target", target + "/full-target?via=button"]
+    documents = {event.url: event for event in capture.network_events if event.resource_type == "Document"}
+    assert all(documents[url].status == 200 and documents[url].loading_error is None for url in blocked)
+    assert set(blocked) <= set(analyze(capture, scope).frontier_urls)
+    actions = [row for row in capture.observations if row.get("observation") == "action"]
+    assert [row["label"] for row in actions].count("Back") == 1  # only the POST redirect left the screen
+    assert all(row["network_failure_count"] == 0 for row in actions if row["label"] != "Back")

@@ -132,6 +132,12 @@ async def capture_page(
     page = None
     client = None
     closing = False
+    main_frame_id: str | None = None
+    # requestId -> method of the first hop, so a redirect after a POST is never cut short
+    origin_methods: dict[str, str] = {}
+    # requestId -> real status of a page load that was kept from replacing the screen
+    blocked_navigations: dict[str, int] = {}
+    pause_tasks: set[asyncio.Task] = set()
 
     async def downloaded(item, action: dict, network_event: NetworkEvent | None, has_network_evidence: bool) -> None:
         started = time.monotonic()
@@ -212,6 +218,7 @@ async def capture_page(
 
     def on_request(event: dict) -> None:
         req = event["request"]
+        origin_methods.setdefault(event["requestId"], req["method"])
         captured[event["requestId"]] = NetworkEvent(
             request_id=event["requestId"], method=req["method"], url=req["url"],
             resource_type=event.get("type", "Other"),
@@ -223,7 +230,7 @@ async def capture_page(
         cap = captured.get(event["requestId"])
         if cap is not None:
             resp = event["response"]
-            cap.status = resp["status"]
+            cap.status = blocked_navigations.get(event["requestId"], resp["status"])
             cap.response_headers = resp.get("headers") or {}
             cap.response_mime = resp.get("mimeType")
             if relevant(cap):
@@ -231,7 +238,7 @@ async def capture_page(
 
     def on_failed(event: dict) -> None:
         cap = captured.get(event["requestId"])
-        if cap is not None:
+        if cap is not None and event["requestId"] not in blocked_navigations:
             error = event.get("errorText", "")
             cap.loading_error = error if error.startswith("net::") and " " not in error else "network_failure"
             if relevant(cap):
@@ -256,6 +263,38 @@ async def capture_page(
                     http_status=event.status, loading_error=event.loading_error,
                     attribution="action_window" if event.action_id is not None else "outside_action", **details)
         reported_requests[event.request_id] = event.status
+
+    async def resolve_paused(event: dict) -> None:
+        request_id = event["requestId"]
+        network_id = event.get("networkId") or ""
+        # Teardown counts as no running action: nothing is explored any more.
+        action = None if closing else state.current_action
+        try:
+            first_method = origin_methods.get(network_id, event["request"]["method"])
+            block = _blocks_navigation(event, action, main_frame_id, first_method)
+        except Exception:
+            log.debug("navigation check failed", exc_info=True)
+            block = False
+        try:
+            if not block:
+                await client.send("Fetch.continueRequest", {"requestId": request_id})
+                return
+            status = event["responseStatusCode"]
+            blocked_navigations[network_id] = status
+            if network_id in captured:
+                captured[network_id].status = status
+            # A 204 answer to a navigation leaves the current document in place.
+            await client.send("Fetch.fulfillRequest", {"requestId": request_id, "responseCode": 204})
+            state.event("navigation_blocked", action_id=action.get("action_id"),
+                        url=event["request"]["url"], http_status=status)
+        except Exception:
+            # The page may be closing; an unresolved pause dies with it.
+            log.debug("paused document request not resolved", exc_info=True)
+
+    def on_paused(event: dict) -> None:
+        task = asyncio.create_task(resolve_paused(event))
+        pause_tasks.add(task)
+        task.add_done_callback(pause_tasks.discard)
 
     async def observe() -> None:
         elements = await _collect_dom(page)
@@ -307,6 +346,9 @@ async def capture_page(
             client.on("Network.requestWillBeSent", on_request)
             client.on("Network.responseReceived", on_response)
             client.on("Network.loadingFailed", on_failed)
+            main_frame_id = (await client.send("Page.getFrameTree"))["frameTree"]["frame"]["id"]
+            client.on("Fetch.requestPaused", on_paused)
+            await client.send("Fetch.enable", {"patterns": [{"resourceType": "Document", "requestStage": "Response"}]})
             try:
                 if deadline is not None:
                     nav_timeout_ms = max(1, min(nav_timeout_ms, int((deadline - time.monotonic() - 0.1) * 1000)))
@@ -352,6 +394,34 @@ async def capture_page(
                 report_request(event)
         await _release_page(client, page, result)
     return result
+
+
+def _blocks_navigation(event: dict, action: dict | None, main_frame_id: str | None, first_method: str) -> bool:
+    """Whether a paused document response would replace the screen an action is exploring.
+
+    ``event`` is a Fetch.requestPaused event at the response stage, ``action`` the
+    running action or None, and ``first_method`` the method of the request that
+    started the redirect chain.
+
+    Only a main-frame GET chain that answers with an HTML page qualifies. Its URL is
+    already a captured Document request, which the analyzer hands to the
+    frontier, so the page is visited later on its own instead of costing an
+    action here plus a Back. Redirect hops, downloads, other content types,
+    subframes, chains that started with a non-GET request and the Back action
+    itself load normally. Client-side route changes never issue a document
+    request and are not affected.
+    """
+    if action is None or action.get("kind") == "back":
+        return False
+    if event.get("frameId") != main_frame_id or first_method != "GET":
+        return False
+    status = event.get("responseStatusCode")
+    if status is None or 300 <= status < 400:
+        return False
+    headers = {item["name"].lower(): item["value"] for item in event.get("responseHeaders") or []}
+    if "attachment" in headers.get("content-disposition", "").lower():
+        return False
+    return "html" in headers.get("content-type", "").lower()
 
 
 async def _release_page(client, page: Page | None, result: PageCapture) -> None:

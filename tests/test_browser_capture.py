@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import asyncio
 
+import pytest
+
 from orbis.analysis.analyzer import analyze
 from orbis.config import ScopeConfig
-from orbis.crawler.browser import capture_page
+from orbis.crawler.browser import _blocks_navigation, capture_page
 from orbis.crawler.scope import Scope
 
 
@@ -20,8 +22,8 @@ class FakeCdpClient:
         self.detached = False
 
     async def send(self, method: str, params: dict | None = None) -> dict:
-        assert method == "Network.enable"
-        return {}
+        assert method in ("Network.enable", "Page.getFrameTree", "Fetch.enable")
+        return {"frameTree": {"frame": {"id": "main"}}} if method == "Page.getFrameTree" else {}
 
     def on(self, event_name: str, callback) -> None:
         self.handlers[event_name] = callback
@@ -273,3 +275,41 @@ def test_interaction_created_observations_flow_through_capture_and_analyzer() ->
     assert ("dynamic", "https://example.com:443", "/api/from-interaction") in endpoints
     assert not any(host == "https://evil.com:443" for _source, host, _path in endpoints)
     assert "https://example.com/from-interaction" in result.frontier_urls
+
+
+def _paused_document(*, status=200, content_type="text/html; charset=utf-8", frame="main", disposition=None) -> dict:
+    """A Fetch.requestPaused event for a document response, as CDP reports it."""
+    headers = [{"name": "Content-Type", "value": content_type}]
+    if disposition is not None:
+        headers.append({"name": "Content-Disposition", "value": disposition})
+    return {
+        "requestId": "interception-1", "networkId": "request-1", "frameId": frame,
+        "request": {"method": "GET", "url": "https://example.com/next"},
+        "responseStatusCode": status, "responseHeaders": headers,
+    }
+
+
+CLICK = {"kind": "link", "action_id": 7}
+
+
+@pytest.mark.parametrize("event", [_paused_document(), _paused_document(status=404)], ids=["page", "error-page"])
+def test_an_actions_page_load_in_the_main_frame_is_kept_off_the_screen(event) -> None:
+    assert _blocks_navigation(event, CLICK, "main", "GET") is True
+
+
+@pytest.mark.parametrize(
+    ("event", "action", "first_method"),
+    [
+        (_paused_document(), None, "GET"),
+        (_paused_document(), {"kind": "back", "action_id": 8}, "GET"),
+        (_paused_document(frame="child"), CLICK, "GET"),
+        (_paused_document(status=302), CLICK, "GET"),
+        (_paused_document(status=None), CLICK, "GET"),
+        (_paused_document(), CLICK, "POST"),
+        (_paused_document(disposition='attachment; filename="report.html"'), CLICK, "GET"),
+        (_paused_document(content_type="application/json"), CLICK, "GET"),
+    ],
+    ids=["no-action", "back", "subframe", "redirect-hop", "no-status", "after-post", "html-attachment", "not-html"],
+)
+def test_other_document_responses_load_normally(event, action, first_method) -> None:
+    assert _blocks_navigation(event, action, "main", first_method) is False
