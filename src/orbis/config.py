@@ -20,7 +20,6 @@ class AuthConfig(BaseModel):
 
 
 class InteractionConfig(BaseModel):
-    allow_write: bool = False
     upload_files: list[Path] = []
 
 

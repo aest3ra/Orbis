@@ -205,7 +205,7 @@ async def capture_page(
 
     async def choose_files(chooser, action_id: int | None) -> None:
         files = []
-        if interaction is not None and interaction.allow_write and (scope is None or scope.allows(page.url)):
+        if interaction is not None and (scope is None or scope.allows(page.url)):
             files = _upload_files({"accept": await chooser.element.get_attribute("accept") or "",
                                    "multiple": chooser.is_multiple()}, interaction)
         await chooser.set_files([str(path) for path in files])

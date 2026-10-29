@@ -48,13 +48,7 @@ _MIN_OBSERVATION_MS = 1_000
 _SETTLE_TIMEOUT_MS = 2_000
 _SETTLE_POLL_MS = 50
 _SEARCH_RE = re.compile(r"(^q$|search|query|keyword|filter|find|lookup|term)", re.I)
-_BUTTON_RE = re.compile(
-    r"(tab|modal|accordion|collapse|load[\s_-]*more|show[\s_-]*more|"
-    r"next|search|filter|더보기|다음|검색|필터)",
-    re.I,
-)
 # Buttons worth clicking repeatedly to walk through pages of results.
-# Strict subset of _BUTTON_RE (tabs/modals are one-shot, paginators repeat).
 _PAGINATION_RE = re.compile(
     r"(load[\s_-]*more|show[\s_-]*more|next|더보기|다음)", re.I,
 )
@@ -179,7 +173,7 @@ async def run_safe_interactions(
             selection = "rules"
             if candidate["kind"] == "file":
                 candidate["files"] = [str(p) for p in _upload_files(candidate, options)]
-            if options.allow_write and candidate["kind"] == "input":
+            if candidate["kind"] == "input":
                 candidate.setdefault("value", _input_value(candidate))
             attempted.add(_candidate_key(candidate))
         previous_candidates = {_candidate_key(c) for c in candidates}
@@ -379,17 +373,6 @@ def _is_pagination(candidate: dict[str, Any]) -> bool:
     return bool(_PAGINATION_RE.search(text))
 
 
-def _has_structural_button_signal(candidate: dict[str, Any]) -> bool:
-    role = str(candidate.get("role") or "").lower()
-    tag = str(candidate.get("tag") or "").lower()
-    if role == "tab" or tag == "summary":
-        return True
-    return any(
-        str(candidate.get(key) or "")
-        for key in ("toggle", "controls", "expanded")
-    )
-
-
 async def _collect_candidates(page: Page) -> list[dict[str, Any]]:
     raw = await page.evaluate(_COLLECT_JS)
     return [
@@ -420,47 +403,20 @@ def _is_candidate_safe(
     form_action = _abs(candidate.get("form_action") or base_url, base_url)
     if not _safe_url(form_action, scope):
         return False
-    if kind == "scroll":
+    if kind in ("scroll", "input", "select", "check"):
         return True
     if kind == "link":
-        if not options.allow_write and _WRITE_RE.search(candidate.get("label", candidate.get("text", ""))):
-            return False
         target = candidate.get("nav_url", "")
         return (urlparse(target).scheme in ("http", "https") and scope.allows(target)
-                and not is_dangerous_url(target)
-                and (options.allow_write or _method(candidate, "method") == "GET"))
+                and not is_dangerous_url(target))
     if kind == "file":
-        return options.allow_write and bool(_upload_files(candidate, options))
-    if kind in ("select", "check"):
-        return options.allow_write or bool(_SEARCH_RE.search(text))
-
-    if kind == "input":
-        if options.allow_write:
-            return True
-        if not _SEARCH_RE.search(text):
-            return False
-        return not candidate.get("form_method") or (
-            _method(candidate, "form_method") == "GET" and _safe_url(form_action, scope)
-        )
+        return bool(_upload_files(candidate, options))
     if kind == "button":
         if _UPLOAD_RE.search(text) and not options.upload_files:
             return False
-        if not (options.allow_write or _BUTTON_RE.search(text) or _CLOSE_RE.search(candidate.get("label", ""))
-                or _has_structural_button_signal(candidate) or candidate.get("nav_url")):
-            return False
         if candidate.get("nav_url") and not _safe_url(candidate["nav_url"], scope):
             return False
-        if not options.allow_write and _WRITE_RE.search(text):
-            return False
-        if not options.allow_write and candidate.get("method") and _method(candidate, "method") != "GET":
-            return False
-        if action and not _safe_url(action, scope):
-            return False
-        if options.allow_write:
-            return True
-        if _is_submit(candidate):
-            return _method(candidate, "form_method") == "GET" and _safe_url(form_action, scope)
-        return not candidate.get("form_method") or _method(candidate, "form_method") == "GET"
+        return not action or _safe_url(action, scope)
     return False
 
 
@@ -578,11 +534,3 @@ def _safe_url(url: str, scope: Scope) -> bool:
 
 def _abs(url: str, base_url: str) -> str:
     return urljoin(base_url, url) if url else ""
-
-
-def _method(candidate: dict[str, Any], key: str) -> str:
-    return str(candidate.get(key) or "GET").upper()
-
-
-def _is_submit(candidate: dict[str, Any]) -> bool:
-    return candidate.get("button_type") in ("", "submit") and bool(candidate.get("form_method"))

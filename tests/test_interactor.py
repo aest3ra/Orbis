@@ -84,12 +84,11 @@ def test_search_input_enters_value() -> None:
     count = asyncio.run(run_safe_interactions(page, _scope()))
 
     assert count == 1
-    assert page.actions == [("fill", "#q", "test"), ("press", "#q", "Enter")]
+    assert page.actions == [("fill", "#q", "Orbis test"), ("press", "#q", "Enter")]
 
 
 def test_unsafe_candidates_ignored() -> None:
     page = FakePage([
-        {"kind": "button", "selector": "#download", "text": "Download report"},
         {"kind": "button", "selector": "#delete", "text": "Delete account"},
         {
             "kind": "button",
@@ -102,13 +101,6 @@ def test_unsafe_candidates_ignored() -> None:
             "selector": "#logout-action",
             "text": "Load more",
             "action": "https://example.com/logout",
-        },
-        {
-            "kind": "button",
-            "selector": "#post-button",
-            "text": "Search",
-            "method": "POST",
-            "action": "https://example.com/search",
         },
         {
             "kind": "button",
@@ -435,7 +427,7 @@ def test_never_executed_candidate_outranks_a_repeat(monkeypatch) -> None:
         page.candidates = candidates()
 
     monkeypatch.setattr(FakeLocator, "fill", fill)
-    options = InteractionConfig(allow_write=True)
+    options = InteractionConfig()
     asyncio.run(run_safe_interactions(page, _scope(), options=options, max_actions=6))
 
     assert [action[:2] for action in page.actions][:3] == [("fill", "#q"), ("click", "#save"), ("fill", "#q")]
@@ -473,7 +465,7 @@ def test_failed_executions_do_not_consume_the_cap(monkeypatch) -> None:
 
     monkeypatch.setattr(FakeLocator, "click", click)
     monkeypatch.setattr(FakeLocator, "is_visible", is_visible)
-    asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(allow_write=True), max_actions=10))
+    asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(), max_actions=10))
 
     assert ("click", "#save") in page.actions
     assert visibility_checks["save"] == 3
@@ -507,7 +499,7 @@ def _site_wide_pages(exploration, yields):
             exploration.records[-1]["new_request_routes"] = 1 if yielded else 0
 
         try:
-            asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(allow_write=True),
+            asyncio.run(run_safe_interactions(page, _scope(), options=InteractionConfig(),
                                               state=exploration, observe=observe, max_actions=3))
         finally:
             FakeLocator.click = original_click

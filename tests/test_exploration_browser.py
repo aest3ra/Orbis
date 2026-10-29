@@ -195,7 +195,7 @@ def test_spa_write_upload_download_are_observed(workflow_site, tmp_path):
                 context = await browser.new_context()
                 capture = await capture_page(
                     context, target, scope=scope, max_scrolls=0, settle_ms=50, max_actions=12,
-                    interaction=InteractionConfig(allow_write=True, upload_files=[upload]),
+                    interaction=InteractionConfig(upload_files=[upload]),
                     download_dir=tmp_path / "downloads",
                 )
                 assert not context.pages
@@ -215,26 +215,6 @@ def test_spa_write_upload_download_are_observed(workflow_site, tmp_path):
     downloads = [row for row in capture.observations if row.get("kind") == "download"]
     assert len(downloads) == 1
     assert downloads[0]["sha256"] == hashlib.sha256(ATTACHMENT).hexdigest()
-
-
-def test_readonly_exploration_does_not_submit_posts(workflow_site, tmp_path):
-    target, state = workflow_site
-    scope = Scope(ScopeConfig(include_domains=["127.0.0.1"]))
-
-    async def exercise():
-        async with async_playwright() as pw:
-            browser = await pw.chromium.launch()
-            try:
-                context = await browser.new_context()
-                return await capture_page(context, target, scope=scope, max_scrolls=0, settle_ms=50,
-                                          download_dir=tmp_path, max_actions=12)
-            finally:
-                await browser.close()
-
-    capture = asyncio.run(exercise())
-    assert ("GET", "/api/inventory") in state["requests"]
-    assert not [row for row in state["requests"] if row[0] == "POST"]
-    assert not capture.error
 
 
 def test_same_url_screen_states_allow_next_step_request(workflow_site, tmp_path):
@@ -297,7 +277,7 @@ def test_native_file_chooser_uses_only_configured_attachment(workflow_site, tmp_
                 context = await browser.new_context()
                 capture = await capture_page(context, target + "/chooser", scope=scope,
                                              max_scrolls=0, settle_ms=0, max_actions=1,
-                                             interaction=InteractionConfig(allow_write=True, upload_files=[upload]))
+                                             interaction=InteractionConfig(upload_files=[upload]))
                 assert not context.pages
                 return capture
             finally:
@@ -340,7 +320,7 @@ def test_scan_log_redacts_session_and_persists_evidence(workflow_site, tmp_path)
     auth.write_text(json.dumps({"cookies": [{"name": "session", "value": "private-session", "domain": "127.0.0.1",
                                            "path": "/", "httpOnly": True, "secure": False, "sameSite": "Lax"}], "origins": []}))
     config = ScanConfig(target=target, auth=AuthConfig(storage_state_path=auth),
-                        interaction=InteractionConfig(allow_write=True, upload_files=[upload]))
+                        interaction=InteractionConfig(upload_files=[upload]))
     config.limits.max_pages = 1
     config.limits.max_scrolls_per_page = 0
     config.limits.probe_max_requests = 0
@@ -368,7 +348,7 @@ def test_http_failures_no_progress_and_new_endpoints_are_distinct(workflow_site,
     from orbis.storage.db import Observation, open_db
 
     target, _state = workflow_site
-    config = ScanConfig(target=target + "/logging", interaction=InteractionConfig(allow_write=True))
+    config = ScanConfig(target=target + "/logging")
     config.limits.max_pages = 1
     config.limits.max_scrolls_per_page = 0
     config.limits.max_actions_per_page = 3
@@ -407,7 +387,7 @@ def test_post_download_preserves_method_and_separate_artifacts(workflow_site, tm
                 context = await browser.new_context()
                 return await capture_page(context, target + '/post-download', scope=scope,
                                           max_scrolls=0, settle_ms=0, max_actions=1,
-                                          interaction=InteractionConfig(allow_write=True), download_dir=tmp_path,
+                                          interaction=InteractionConfig(), download_dir=tmp_path,
                                           exploration=exploration)
             finally:
                 await browser.close()
@@ -476,7 +456,7 @@ def test_action_page_loads_stay_on_screen_and_feed_the_frontier(workflow_site, t
             try:
                 context = await browser.new_context()
                 return await capture_page(context, target + "/full-nav", scope=scope, max_scrolls=0, settle_ms=50,
-                                          max_actions=4, interaction=InteractionConfig(allow_write=True),
+                                          max_actions=4, interaction=InteractionConfig(),
                                           exploration=exploration, download_dir=tmp_path)
             finally:
                 await browser.close()

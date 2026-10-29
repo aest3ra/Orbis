@@ -102,7 +102,7 @@ def test_public_filechooser_timeout_origin(download_capture, monkeypatch, timing
                 return await browser.capture_page(
                     fixture.context, fixture.page.url, max_scrolls=0, settle_ms=0,
                     exploration=fixture.state, download_dir=fixture.directory,
-                    interaction=InteractionConfig(allow_write=True, upload_files=[upload]), deadline=deadline,
+                    interaction=InteractionConfig(upload_files=[upload]), deadline=deadline,
                 )
             except asyncio.CancelledError as error:
                 cancellation.append(error)
