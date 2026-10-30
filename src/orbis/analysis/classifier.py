@@ -52,7 +52,8 @@ def classify(event: NetworkEvent) -> str:
 
 def _is_api(ev: NetworkEvent, path: str, mime: str, rtype: str) -> bool:
     if rtype == "Document":
-        return False
+        # A document sent with a body-carrying method is a form submission, not a page to revisit.
+        return ev.method not in ("GET", "HEAD")
     if rtype not in ("XHR", "Fetch"):
         return False
     if API_PREFIX_RE.search(path):

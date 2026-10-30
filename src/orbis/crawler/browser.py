@@ -219,6 +219,17 @@ async def capture_page(
     def on_request(event: dict) -> None:
         req = event["request"]
         origin_methods.setdefault(event["requestId"], req["method"])
+        hop = captured.get(event["requestId"])
+        redirect = event.get("redirectResponse")
+        if hop is not None and redirect is not None:
+            # A redirect reuses the requestId; keep the answered hop under its own key.
+            hop.request_id = f"redirect:{event['requestId']}:{len(captured)}"
+            hop.status = redirect["status"]
+            hop.response_headers = redirect.get("headers") or {}
+            hop.response_mime = redirect.get("mimeType")
+            captured[hop.request_id] = captured.pop(event["requestId"])
+            if relevant(hop):
+                report_request(hop)
         captured[event["requestId"]] = NetworkEvent(
             request_id=event["requestId"], method=req["method"], url=req["url"],
             resource_type=event.get("type", "Other"),

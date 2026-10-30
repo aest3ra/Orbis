@@ -148,6 +148,16 @@ class TestClassifyApplicationApi:
         assert classify(ev) != "application_api"
         assert classify(ev) == "page_route"
 
+    @pytest.mark.parametrize("method", ["POST", "PUT", "DELETE"])
+    def test_document_form_submission_is_api(self, method: str) -> None:
+        ev = _event("https://example.com/repo/create", method=method, resource_type="Document",
+                    response_mime="text/html")
+        assert classify(ev) == "application_api"
+
+    def test_document_head_is_page_route(self) -> None:
+        ev = _event("https://example.com/about", method="HEAD", resource_type="Document")
+        assert classify(ev) == "page_route"
+
 
 class TestClassifyPageRoute:
     def test_document_resource_type(self) -> None:

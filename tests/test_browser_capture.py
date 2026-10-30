@@ -277,6 +277,46 @@ def test_interaction_created_observations_flow_through_capture_and_analyzer() ->
     assert "https://example.com/from-interaction" in result.frontier_urls
 
 
+class RedirectedFormPage(FakePage):
+    """A form post answered with 303, which the browser follows with a GET under the same requestId."""
+
+    async def goto(self, url: str, *, timeout: int, wait_until: str) -> None:
+        self.url = "https://example.com/owner/demo"
+        assert self.client is not None
+        self.client.emit("Network.requestWillBeSent", {
+            "requestId": "form-1", "type": "Document",
+            "request": {"method": "POST", "url": "https://example.com/repo/create", "headers": {},
+                        "postData": "repo_name=demo&private=on"},
+        })
+        self.client.emit("Network.requestWillBeSent", {
+            "requestId": "form-1", "type": "Document",
+            "request": {"method": "GET", "url": "https://example.com/owner/demo", "headers": {}},
+            "redirectResponse": {"status": 303, "headers": {"Location": "/owner/demo"}, "mimeType": "text/html"},
+        })
+        self.client.emit("Network.responseReceived", {
+            "requestId": "form-1",
+            "response": {"status": 200, "headers": {"content-type": "text/html"}, "mimeType": "text/html"},
+        })
+
+
+def test_a_redirected_form_post_keeps_its_own_hop_and_becomes_an_endpoint() -> None:
+    context = FakeContext()
+    context.page = RedirectedFormPage()
+    scope = _scope(["example.com"])
+
+    capture = asyncio.run(capture_page(context, "https://example.com/repo/create", max_scrolls=0, settle_ms=0))
+
+    assert [(event.method, event.url, event.status) for event in capture.network_events] == [
+        ("POST", "https://example.com/repo/create", 303),
+        ("GET", "https://example.com/owner/demo", 200),
+    ]
+    result = analyze(capture, scope)
+    endpoints = {(ep.method, ep.path_template): ep for ep in result.endpoints}
+    assert set(endpoints) == {("POST", "/repo/create")}
+    assert {name for _location, name in endpoints[("POST", "/repo/create")].params} == {"repo_name", "private"}
+    assert "https://example.com/owner/demo" in result.frontier_urls
+
+
 def _paused_document(*, status=200, content_type="text/html; charset=utf-8", frame="main", disposition=None) -> dict:
     """A Fetch.requestPaused event for a document response, as CDP reports it."""
     headers = [{"name": "Content-Type", "value": content_type}]
