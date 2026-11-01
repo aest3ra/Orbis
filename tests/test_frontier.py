@@ -3,7 +3,7 @@
 import pytest
 
 from orbis.config import ScopeConfig
-from orbis.crawler.frontier import Frontier, _normalize
+from orbis.crawler.frontier import Frontier, normalize_url
 from orbis.crawler.scope import Scope
 
 
@@ -13,29 +13,29 @@ def _scope(domains: list[str] | None = None) -> Scope:
 
 class TestNormalize:
     def test_strips_trailing_slash(self) -> None:
-        assert _normalize("https://example.com/path/") == "https://example.com/path"
+        assert normalize_url("https://example.com/path/") == "https://example.com/path"
 
     def test_root_keeps_slash(self) -> None:
-        assert _normalize("https://example.com/") == "https://example.com/"
+        assert normalize_url("https://example.com/") == "https://example.com/"
 
     def test_empty_path_gets_slash(self) -> None:
-        result = _normalize("https://example.com")
+        result = normalize_url("https://example.com")
         assert "//" not in result or result.startswith("https://")
         # should have path /
         from urllib.parse import urlparse
         assert urlparse(result).path == "/"
 
     def test_strips_fragment(self) -> None:
-        assert _normalize("https://example.com/page#section") == \
+        assert normalize_url("https://example.com/page#section") == \
             "https://example.com/page"
 
     def test_keeps_spa_hash_fragment(self) -> None:
         url = "https://example.com/app#/dashboard"
-        assert "/dashboard" in _normalize(url)
+        assert "/dashboard" in normalize_url(url)
 
     def test_keeps_hashbang_fragment(self) -> None:
         url = "https://example.com/app#!/settings"
-        assert "!/settings" in _normalize(url)
+        assert "!/settings" in normalize_url(url)
 
 
 class TestNoveltyPriority:

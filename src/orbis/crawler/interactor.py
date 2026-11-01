@@ -19,6 +19,7 @@ from urllib.parse import urljoin, urlparse
 from playwright.async_api import Error as PlaywrightError, Page, Request, TimeoutError as PlaywrightTimeoutError
 
 from orbis.config import InteractionConfig
+from orbis.crawler.frontier import normalize_url
 from orbis.crawler.scope import Scope
 from orbis.safety import is_dangerous_url, is_download_url, is_safe_url, text_has_danger_keyword
 from orbis.telemetry import clean, timestamp
@@ -148,7 +149,7 @@ async def run_safe_interactions(
             c for c in candidates
             if _candidate_key(c) not in attempted
             and _is_candidate_safe(c, scope, page.url, options)
-            and (c["kind"] != "scroll" or state.scrolls.get(page.url, 0) < MAX_SCROLL_ACTIONS_PER_URL)
+            and (c["kind"] != "scroll" or state.scrolls.get(normalize_url(page.url), 0) < MAX_SCROLL_ACTIONS_PER_URL)
             and _repeat_allowed(state, page.url, c)
         ]
         if not fresh:
@@ -179,7 +180,8 @@ async def run_safe_interactions(
         previous_candidates = {_candidate_key(c) for c in candidates}
         before_url = page.url
         if candidate["kind"] == "scroll":
-            state.scrolls[page.url] = state.scrolls.get(page.url, 0) + 1
+            page_key = normalize_url(page.url)
+            state.scrolls[page_key] = state.scrolls.get(page_key, 0) + 1
         attempts += 1
         action_id = len(state.records) + 1
         candidate["action_id"] = action_id
@@ -252,7 +254,13 @@ def _candidate_key(candidate: dict) -> str:
 
 
 def _action_key(url: str, candidate: dict) -> str:
-    return hashlib.sha256((url + _candidate_key(candidate)).encode()).hexdigest()[:16]
+    """What a control does on a page, not where it sits: DOM paths shift and generated ids
+    are renumbered when content is added before a control, and a post often lands on an
+    anchor of the new content (#comment-31). Keyed by either, a comment form would look new
+    after every comment it posts and never reach the repeat cap."""
+    identity = json.dumps([candidate.get(name, "") for name in
+                           ("kind", "tag", "role", "type", "name", "label", "nav_url", "form_action", "context")])
+    return hashlib.sha256((normalize_url(url) + identity).encode()).hexdigest()[:16]
 
 
 def _control_key(candidate: dict) -> str:

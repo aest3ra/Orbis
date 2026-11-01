@@ -40,7 +40,7 @@ class Frontier:
         self._saturated: set[tuple[str, str]] = set()
 
     def enqueue(self, url: str, depth: int = 0) -> bool:
-        url = _normalize(url)
+        url = normalize_url(url)
         if not url or url in self._seen:
             return False
         if self._max_depth is not None and depth > self._max_depth:
@@ -75,7 +75,7 @@ class Frontier:
     def template_key(self, url: str) -> tuple[str, str]:
         """Current (host, template) for a URL — used by the crawler to track
         per-template novelty for diminishing-returns saturation."""
-        parsed = urlparse(_normalize(url))
+        parsed = urlparse(normalize_url(url))
         host = origin(url)
         return host, self._detector.template(host, parsed.path or "/")
 
@@ -111,7 +111,7 @@ class Frontier:
         return min(10 + visits * 10, 90)        # 2nd→30, 3rd→40, ...
 
 
-def _normalize(url: str) -> str:
+def normalize_url(url: str) -> str:
     parsed = urlparse(url)
     fragment = parsed.fragment
     if fragment.startswith("/") or fragment.startswith("!/"):

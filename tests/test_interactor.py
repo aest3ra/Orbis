@@ -116,10 +116,10 @@ def test_unsafe_candidates_ignored() -> None:
 
 def test_safe_buttons_are_clicked() -> None:
     page = FakePage([
-        {"kind": "button", "selector": "#tab", "text": "Results tab"},
-        {"kind": "button", "selector": "#modal", "text": "Open modal"},
-        {"kind": "button", "selector": "#more", "text": "Load more"},
-        {"kind": "button", "selector": "#next", "text": "Next"},
+        {"kind": "button", "selector": "#tab", "text": "Results tab", "label": "Results tab"},
+        {"kind": "button", "selector": "#modal", "text": "Open modal", "label": "Open modal"},
+        {"kind": "button", "selector": "#more", "text": "Load more", "label": "Load more"},
+        {"kind": "button", "selector": "#next", "text": "Next", "label": "Next"},
     ])
 
     count = asyncio.run(run_safe_interactions(page, _scope()))
@@ -152,7 +152,7 @@ def test_structural_buttons_are_clicked_without_label_keywords() -> None:
 
 def test_action_cap_is_fixed() -> None:
     page = FakePage([
-        {"kind": "button", "selector": f"#b{i}", "text": "Open modal"}
+        {"kind": "button", "selector": f"#b{i}", "text": f"Open modal {i}", "label": f"Open modal {i}"}
         for i in range(30)
     ])
 
@@ -355,7 +355,7 @@ def test_repeat_cap_bounds_unproductive_toggles(monkeypatch) -> None:
 
     def candidates():
         return [{"kind": "button", "selector": f"#t{i}", "key": f"#t{i}", "text": f"Section {i}",
-                 "expanded": "true" if opened[i] else "false"} for i in range(3)]
+                 "label": f"Section {i}", "expanded": "true" if opened[i] else "false"} for i in range(3)]
 
     page = FakePage(candidates())
     original_click = FakeLocator.click
@@ -371,6 +371,54 @@ def test_repeat_cap_bounds_unproductive_toggles(monkeypatch) -> None:
 
     assert count == 6
     assert all(page.actions.count(("click", f"#t{i}")) == 2 for i in range(3))
+
+
+def test_repeat_cap_holds_when_posting_renumbers_the_form(monkeypatch) -> None:
+    """Each posted comment re-renders the page on an anchor of the new comment and
+    renumbers generated editor ids, so both the URL and the comment form's DOM keys
+    change after every post. The cap still holds the form at two posts instead of
+    commenting until the page budget is gone."""
+    posts = {"n": 0}
+
+    def candidates():
+        form = "https://example.com/issues/2/comments"
+        n = posts["n"]
+        return [
+            {"kind": "input", "selector": "#body", "key": f"#editor_{95 + 16 * n}", "text": "Comment",
+             "label": "Comment", "name": "content", "type": "text", "form_action": form},
+            {"kind": "button", "selector": "#post", "key": f"#form_{n}/BUTTON:0", "text": "Comment",
+             "label": "Comment", "button_type": "submit", "form_action": form},
+        ]
+
+    page = FakePage(candidates())
+    original_click = FakeLocator.click
+
+    async def post(self, **kwargs):
+        await original_click(self, **kwargs)
+        posts["n"] += 1
+        page.url = f"https://example.com/issues/2#issuecomment-{30 + posts['n']}"
+        page.candidates = candidates()
+
+    async def go_back(**_kwargs):
+        page.actions.append(("back",))
+        page.url = "https://example.com/issues/2"
+
+    monkeypatch.setattr(FakeLocator, "click", post)
+    page.url = "https://example.com/issues/2"
+    page.go_back = go_back
+    count = asyncio.run(run_safe_interactions(page, _scope(), max_actions=50))
+
+    assert page.actions.count(("click", "#post")) == 2
+    assert count < 10
+
+
+def test_repeat_identity_keeps_hash_routes_apart() -> None:
+    """An anchor names a spot in the same document; a hash route names another screen."""
+    save = {"kind": "button", "label": "Save", "form_action": ""}
+    key = interactor._action_key
+
+    assert key("https://example.com/issues/2#issuecomment-31", save) == key("https://example.com/issues/2", save)
+    assert key("https://example.com/#/users", save) != key("https://example.com/#/settings", save)
 
 
 def test_productive_candidate_may_repeat_beyond_cap(monkeypatch) -> None:
