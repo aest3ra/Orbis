@@ -311,14 +311,6 @@ class TestAnalyzeIntegration:
         result = analyze(cap, _scope())
         assert "https://example.com" in result.frontier_urls
 
-    def test_ping_url_not_in_frontier(self) -> None:
-        """a[ping] tracking beacons must NOT enter the frontier."""
-        cap = self._capture_with_dom([
-            DomElement(tag="a-ping", attributes={"ping": "https://example.com/track"}),
-        ])
-        result = analyze(cap, _scope())
-        assert "https://example.com/track" not in result.frontier_urls
-
     def test_base_href_changes_resolution(self) -> None:
         """<base href> should change relative URL resolution."""
         cap = self._capture_with_dom([

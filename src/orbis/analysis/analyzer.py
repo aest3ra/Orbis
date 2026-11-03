@@ -21,11 +21,15 @@ log = logging.getLogger("orbis.analyzer")
 
 MAX_SAMPLES = 5
 
-# --- Inline URL noise filters (classification belongs in Analyzer, not Capture) ---
-_INLINE_NOISE = re.compile(
-    r"\.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?|ttf|eot|map|webp|avif|webmanifest)(\?|$)",
-    re.I,
-)
+# Source priority: lower number = higher priority.
+# dynamic wins over all static sources (it's actually observed traffic).
+SOURCE_PRIORITY: dict[str, int] = {
+    "dynamic": 0,
+    "static_js": 1,
+    "wayback": 2,   # archived/unverified — lowest; any live sighting overrides
+}
+
+# --- Inline URL noise filter (classification belongs in Analyzer, not Capture) ---
 _INLINE_SKIP = re.compile(r"^/(_next/static|static/|__webpack|node_modules)")
 
 # --- Hidden input name whitelist for URL extraction ---
@@ -94,20 +98,10 @@ def analyze(capture: PageCapture, scope: Scope) -> AnalysisResult:
         if kind in ("application_api", "download"):
             _accumulate(endpoints, event, kind)
 
-    for elem in capture.dom_elements:
-        url = _extract_url(elem)
-        if url is None:
-            continue
-        if _INLINE_NOISE.search(url) or _INLINE_SKIP.search(url):
+    dom_urls = (url for url in map(_extract_url, capture.dom_elements) if url is not None)
+    for url in (*dom_urls, *capture.inline_urls):
+        if _is_asset_url(url) or _INLINE_SKIP.search(url):
             continue  # images/fonts/css/js/manifests are assets, never crawlable pages
-        absolute = urljoin(base_url, url)
-        parsed = urlparse(absolute)
-        if parsed.scheme in ("http", "https") and scope.allows(absolute):
-            frontier_urls.append(absolute)
-
-    for url in capture.inline_urls:
-        if _INLINE_NOISE.search(url) or _INLINE_SKIP.search(url):
-            continue
         absolute = urljoin(base_url, url)
         parsed = urlparse(absolute)
         if parsed.scheme in ("http", "https") and scope.allows(absolute):
@@ -127,6 +121,17 @@ def analyze(capture: PageCapture, scope: Scope) -> AnalysisResult:
             unique.append(url)
 
     return AnalysisResult(frontier_urls=unique, endpoints=list(endpoints.values()))
+
+
+def _is_asset_url(url: str) -> bool:
+    return urlparse(url).path.lower().endswith(ASSET_SUFFIXES)
+
+
+def _endpoint_key(method: str, url: str) -> tuple[tuple[str, str, str], str, str]:
+    """(key, origin, path template) that identifies one endpoint."""
+    host = origin(url)
+    template = templatize_path((urlparse(url).path or "/").rstrip("/") or "/")
+    return (method, host, template), host, template
 
 
 def _extract_url(elem: DomElement) -> str | None:
@@ -173,12 +178,7 @@ def _accumulate(
     event: NetworkEvent,
     kind: str,
 ) -> None:
-    parsed = urlparse(event.url)
-    host = origin(event.url)
-    path = (parsed.path or "/").rstrip("/") or "/"
-    template = templatize_path(path)
-    key = (event.method, host, template)
-
+    key, host, template = _endpoint_key(event.method, event.url)
     ep = eps.get(key)
     if ep is None:
         ep = NormalizedEndpoint(
@@ -215,14 +215,6 @@ def _accumulate(
 
 # --- Phase 1-B: Static analysis helpers ---
 
-# Source priority: lower number = higher priority.
-# dynamic wins over all static sources (it's actually observed traffic).
-_SOURCE_PRIORITY: dict[str, int] = {
-    "dynamic": 0,
-    "static_js": 1,
-    "wayback": 2,   # archived/unverified — lowest; any live sighting overrides
-}
-
 
 def _resolve_static_url(raw_url: str, base_url: str) -> str | None:
     """Resolve a URL extracted from JS/static source against the page URL.
@@ -257,12 +249,7 @@ def _merge_endpoint(
     - If key exists with lower-priority source: replace source, union parameters
     - New key: add as application_api
     """
-    parsed = urlparse(absolute_url)
-    host = origin(absolute_url)
-    path = (parsed.path or "/").rstrip("/") or "/"
-    template = templatize_path(path)
-    key = (method, host, template)
-
+    key, host, template = _endpoint_key(method, absolute_url)
     ep = eps.get(key)
     if ep is None:
         # New endpoint
@@ -277,8 +264,8 @@ def _merge_endpoint(
         eps[key] = ep
     else:
         # Existing: apply source priority
-        existing_priority = _SOURCE_PRIORITY.get(ep.source, 99)
-        new_priority = _SOURCE_PRIORITY.get(source, 99)
+        existing_priority = SOURCE_PRIORITY.get(ep.source, 99)
+        new_priority = SOURCE_PRIORITY.get(source, 99)
         if new_priority < existing_priority:
             ep.source = source
             ep.sample_url = absolute_url
@@ -358,10 +345,7 @@ def _accumulate_wayback(
     eps: dict[tuple[str, str, str], NormalizedEndpoint],
     parsed,
 ) -> None:
-    host = origin(parsed.geturl())
-    path = (parsed.path or "/").rstrip("/") or "/"
-    template = templatize_path(path)
-    key = ("GET", host, template)
+    key, host, template = _endpoint_key("GET", parsed.geturl())
     ep = eps.get(key)
     if ep is None:
         ep = NormalizedEndpoint(

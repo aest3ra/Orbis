@@ -19,15 +19,15 @@ from dataclasses import dataclass
 from typing import Any
 from urllib.parse import parse_qsl, urlparse
 
+from orbis.config import LimitsConfig
 from orbis.crawler.scope import Scope
-from orbis.safety import is_safe_url
+from orbis.safety import ACTION_KEYS, is_safe_url
 
 log = logging.getLogger("orbis.probe")
 
 _UNRESOLVED_PLACEHOLDER = re.compile(
     r"\{(?:id|n|slug|uuid|hash|date)\}|\$\{[^}]*\}"
 )
-_ACTION_KEYS = {"action", "do", "cmd", "op", "operation"}
 _DANGER_VERBS = {
     "delete",
     "remove",
@@ -97,7 +97,7 @@ def _query_is_dangerous(url: str) -> bool:
         key_l = key.strip().lower()
         if key_l in _TOKEN_KEYS:
             return True
-        if key_l in _ACTION_KEYS and _dangerous_action_value(value):
+        if key_l in ACTION_KEYS and _dangerous_action_value(value):
             return True
     return False
 
@@ -162,15 +162,14 @@ async def probe_candidates(
     candidates: list[tuple[int, str | None]],
     *,
     scope: Scope,
-    limits: Any,
+    limits: LimitsConfig,
     on_result: Callable[[tuple[int, str, int | None]], None] | None = None,
 ) -> ProbeResults:
     results: list[tuple[int, str, int | None]] = []
     total = len(candidates)
-    budget = max(0, int(getattr(limits, "probe_max_requests", 0)))
-    timeout_sec = float(getattr(limits, "probe_timeout_sec", 10))
-    rps = float(getattr(limits, "rate_limit_rps", 0.0))
-    rate_delay = 0.0 if rps <= 0 else 1.0 / rps
+    budget = max(0, limits.probe_max_requests)
+    timeout_sec = float(limits.probe_timeout_sec)
+    rate_delay = 0.0 if limits.rate_limit_rps <= 0 else 1.0 / limits.rate_limit_rps
     last_req_at = 0.0
     sent = 0
     skipped = 0

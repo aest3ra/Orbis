@@ -25,7 +25,6 @@ from orbis.safety import is_dangerous_url, is_download_url, is_safe_url, text_ha
 from orbis.telemetry import clean, timestamp
 
 MAX_ACTIONS_PER_PAGE = 20     # total actions across all re-discovery rounds
-MAX_PAGINATION_REPEATS = 4    # repeat clicks on one "load more"/"next" while it keeps firing
 MAX_SCROLL_ACTIONS_PER_URL = 3
 # Executions of one candidate on one URL across screen states. A control that
 # keeps producing new request routes stays eligible; one that stopped is capped
@@ -37,7 +36,7 @@ MAX_REPEATS_PER_CANDIDATE = 2
 # controls. It is never excluded, so a widget that routes differently on some
 # page still gets its turn once the page-specific controls are done.
 DEMOTE_AFTER_DRY_URLS = 2
-__all__ = ["run_safe_interactions"]
+__all__ = ["ExplorationState", "run_safe_interactions", "upload_files"]
 
 log = logging.getLogger("orbis.interactor")
 
@@ -49,10 +48,6 @@ _MIN_OBSERVATION_MS = 1_000
 _SETTLE_TIMEOUT_MS = 2_000
 _SETTLE_POLL_MS = 50
 _SEARCH_RE = re.compile(r"(^q$|search|query|keyword|filter|find|lookup|term)", re.I)
-# Buttons worth clicking repeatedly to walk through pages of results.
-_PAGINATION_RE = re.compile(
-    r"(load[\s_-]*more|show[\s_-]*more|next|더보기|다음)", re.I,
-)
 _EXTRA_DANGER = frozenset({
     "billing", "checkout", "invite", "payment", "purchase", "결제", "초대",
 })
@@ -171,9 +166,8 @@ async def run_safe_interactions(
                                       _priority(c), _candidate_key(c) in previous_candidates))
             candidate = dict(fresh[0])
             decision_started = time.monotonic()
-            selection = "rules"
             if candidate["kind"] == "file":
-                candidate["files"] = [str(p) for p in _upload_files(candidate, options)]
+                candidate["files"] = [str(p) for p in upload_files(candidate, options)]
             if candidate["kind"] == "input":
                 candidate.setdefault("value", _input_value(candidate))
             attempted.add(_candidate_key(candidate))
@@ -194,14 +188,14 @@ async def run_safe_interactions(
                   "widget": widget, "demoted": _demoted(state, candidate),
                   "before_url": before_url, "state": fingerprint, "status": "started", "executions": 0,
                   "attempt_number": state.action_counts[action_key], "candidate_count": len(candidates),
-                  "fresh_candidates": len(fresh), "selection": selection if fresh else "backtrack",
+                  "fresh_candidates": len(fresh), "selection": "rules" if fresh else "backtrack",
                   "decision_ms": round((time.monotonic() - decision_started) * 1000, 1) if fresh else 0}
         state.records.append(record)
         state.event("action_start", **{key: value for key, value in record.items() if key != "page_id"})
         started = time.monotonic()
         state.current_action = candidate
         try:
-            executed = await _act(page, candidate, scope, tracker, max_actions - count, deadline)
+            executed = await _act(page, candidate, tracker, deadline)
             count += executed
             if executed:
                 # Only completed executions count toward the per-URL cap; a control
@@ -327,7 +321,7 @@ def _input_value(candidate: dict) -> str:
     return value[:length] if length > 0 else value
 
 
-def _upload_files(candidate: dict, options: InteractionConfig) -> list[Path]:
+def upload_files(candidate: dict, options: InteractionConfig) -> list[Path]:
     accept = [value.strip().lower() for value in candidate.get("accept", "").split(",") if value.strip()]
     files = []
     for path in options.upload_files:
@@ -338,47 +332,18 @@ def _upload_files(candidate: dict, options: InteractionConfig) -> list[Path]:
     return files if candidate.get("multiple") else files[:1]
 
 
-async def _act(
-    page: Page, candidate: dict[str, Any], scope: Scope, tracker: Any, budget: int,
-    deadline: float | None = None,
-) -> int:
-    """Perform one candidate, returning the number of actions taken.
-
-    Pagination buttons ("load more"/"next") are clicked repeatedly while the
-    tracker confirms each click drained new requests; everything else fires
-    once. Without a tracker there is no productivity signal, so even a
-    paginator is clicked a single time.
-    """
-    paginate = tracker is not None and _is_pagination(candidate)
-    repeats = min(MAX_PAGINATION_REPEATS if paginate else 1, budget)
-    done = 0
-    for _ in range(repeats):
-        if not _action_time_left(deadline):
-            break
-        if tracker is not None:
-            tracker.begin()
-        performed = await _perform_and_settle(page, candidate)
-        if not performed:
-            break
-        done += 1
-        fired = None
-        if tracker is not None:
-            # clean human label; fall back to the broad text, then the kind
-            fired = tracker.commit(str(candidate.get("label") or candidate.get("text") or candidate.get("kind") or ""))
-        if not scope.allows(page.url):
-            break
-        if paginate and not fired:
-            break  # paginator produced no new traffic → stop walking it
-    return done
-
-
-def _is_pagination(candidate: dict[str, Any]) -> bool:
-    if candidate.get("kind") != "button":
-        return False
-    text = " ".join(
-        str(candidate.get(key) or "") for key in ("text", "label", "role")
-    )
-    return bool(_PAGINATION_RE.search(text))
+async def _act(page: Page, candidate: dict[str, Any], tracker: Any, deadline: float | None = None) -> int:
+    """Perform one candidate once; 1 when it ran, 0 when it could not."""
+    if not _action_time_left(deadline):
+        return 0
+    if tracker is not None:
+        tracker.begin()
+    if not await _perform_and_settle(page, candidate):
+        return 0
+    if tracker is not None:
+        # clean human label; fall back to the broad text, then the kind
+        tracker.commit(str(candidate.get("label") or candidate.get("text") or candidate.get("kind") or ""))
+    return 1
 
 
 async def _collect_candidates(page: Page) -> list[dict[str, Any]]:
@@ -418,7 +383,7 @@ def _is_candidate_safe(
         return (urlparse(target).scheme in ("http", "https") and scope.allows(target)
                 and not is_dangerous_url(target))
     if kind == "file":
-        return bool(_upload_files(candidate, options))
+        return bool(upload_files(candidate, options))
     if kind == "button":
         if _UPLOAD_RE.search(text) and not options.upload_files:
             return False

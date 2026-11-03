@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from sqlalchemy import inspect
 from sqlmodel import Session, select
 
-from orbis.analysis.analyzer import MAX_SAMPLES, NormalizedEndpoint, _SOURCE_PRIORITY
+from orbis.analysis.analyzer import MAX_SAMPLES, SOURCE_PRIORITY, NormalizedEndpoint
 from orbis.analysis.params import merge_types
 from orbis.storage.db import Endpoint, Parameter, Scan
 
@@ -74,7 +74,7 @@ def save_endpoints(
 
         if row:
             row.seen_count += ep.seen_count
-            if _SOURCE_PRIORITY.get(ep.source, 99) < _SOURCE_PRIORITY.get(row.source, 99):
+            if SOURCE_PRIORITY.get(ep.source, 99) < SOURCE_PRIORITY.get(row.source, 99):
                 row.source = ep.source
                 row.probe_status = probe_status
                 row.probe_code = None

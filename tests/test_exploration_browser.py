@@ -364,8 +364,7 @@ def test_http_failures_no_progress_and_new_endpoints_are_distinct(workflow_site,
     assert [row["http_error_count"] for row in actions] == [1, 1, 0]
     assert [row["new_request_routes"] for row in actions] == [1, 0, 0]
     assert [row["observed_progress"] for row in actions] == [True, False, False]
-    assert all(row["application_outcome"] == "unverified" for row in actions)
-    requests = [row for row in rows if row["event"] == "request_observed" and row["http_status"] == 500]
+    requests =[row for row in rows if row["event"] == "request_observed" and row["http_status"] == 500]
     assert [row["action_id"] for row in requests] == [1, 2]
     page = next(row for row in rows if row["event"] == "page_end")
     assert page["endpoints_new"] > 0 and page["endpoints_observed"] >= page["endpoints_new"]

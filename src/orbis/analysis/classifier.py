@@ -9,7 +9,8 @@ from orbis.crawler.browser import NetworkEvent
 
 ASSET_SUFFIXES = (
     ".js", ".css", ".map", ".png", ".jpg", ".jpeg", ".gif",
-    ".svg", ".ico", ".webp", ".woff", ".woff2", ".ttf", ".eot",
+    ".svg", ".ico", ".webp", ".avif", ".woff", ".woff2", ".ttf", ".eot",
+    ".webmanifest",
 )
 STATIC_SUFFIXES = (
     ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip", ".csv", ".txt",

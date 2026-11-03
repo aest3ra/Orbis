@@ -293,60 +293,6 @@ def test_same_button_can_be_used_in_distinct_screen_states(monkeypatch) -> None:
     assert page.actions == [("click", "#toggle"), ("click", "#toggle")]
 
 
-class FakePaginationTracker:
-    """Reports a fixed sequence of "requests fired" counts per commit."""
-
-    def __init__(self, fired_sequence: list[int]) -> None:
-        self.fired = list(fired_sequence)
-        self.begins = 0
-        self.commits: list[tuple] = []
-
-    def begin(self) -> None:
-        self.begins += 1
-
-    def commit(self, tag: str) -> int:
-        self.commits.append(tag)
-        return self.fired.pop(0) if self.fired else 0
-
-
-def test_pagination_repeats_while_requests_keep_firing() -> None:
-    page = FakePage([
-        {"kind": "button", "selector": "#more", "text": "Load more"},
-    ])
-    # two productive clicks, then a dry one → walking stops at the third.
-    tracker = FakePaginationTracker([3, 2, 0])
-
-    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
-
-    assert count == 3
-    assert page.actions == [("click", "#more")] * 3
-    assert len(tracker.commits) == 3
-
-
-def test_pagination_capped_by_max_repeats() -> None:
-    page = FakePage([
-        {"kind": "button", "selector": "#more", "text": "Load more"},
-    ])
-    # always productive — bounded only by MAX_PAGINATION_REPEATS.
-    tracker = FakePaginationTracker([9] * 10)
-
-    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
-
-    assert count == interactor.MAX_PAGINATION_REPEATS
-
-
-def test_non_paginator_clicked_once_even_with_tracker() -> None:
-    page = FakePage([
-        {"kind": "button", "selector": "#tab", "text": "Results tab"},
-    ])
-    tracker = FakePaginationTracker([5] * 10)
-
-    count = asyncio.run(run_safe_interactions(page, _scope(), tracker=tracker))
-
-    assert count == 1
-    assert page.actions == [("click", "#tab")]
-
-
 def test_repeat_cap_bounds_unproductive_toggles(monkeypatch) -> None:
     """Three accordion toggles each flip their own state and never yield a
     request. Per-screen-state history would re-open and re-close them until the

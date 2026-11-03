@@ -12,6 +12,9 @@ DANGER_KEYWORDS = frozenset({
     "로그아웃", "삭제", "탈퇴",
 })
 
+# Query keys whose value names the operation a URL performs (?action=delete).
+ACTION_KEYS = frozenset({"action", "do", "cmd", "op", "operation"})
+
 DOWNLOAD_EXTENSIONS = frozenset({
     ".zip", ".tar", ".gz", ".rar", ".7z",
     ".exe", ".msi", ".dmg", ".pkg",
@@ -24,7 +27,7 @@ _SEG_SPLIT = re.compile(r"[-_]")
 def is_dangerous_url(url: str) -> bool:
     parsed = urlparse(url)
     for key, value in parse_qsl(parsed.query):
-        if key.lower() in {"action", "do", "cmd", "op", "operation"}:
+        if key.lower() in ACTION_KEYS:
             if any(part in DANGER_KEYWORDS for part in re.split(r"[-_\s]+", value.lower())):
                 return True
     path = parsed.path.lower()

@@ -15,7 +15,7 @@ from playwright.async_api import BrowserContext, Error as PlaywrightError, Page
 
 from orbis.analysis.url import templatize_path
 from orbis.config import InteractionConfig
-from orbis.crawler.interactor import ExplorationState, _upload_files, run_safe_interactions
+from orbis.crawler.interactor import ExplorationState, run_safe_interactions, upload_files
 from orbis.crawler.scope import Scope
 from orbis.telemetry import safe_url, timestamp
 
@@ -206,8 +206,8 @@ async def capture_page(
     async def choose_files(chooser, action_id: int | None) -> None:
         files = []
         if interaction is not None and (scope is None or scope.allows(page.url)):
-            files = _upload_files({"accept": await chooser.element.get_attribute("accept") or "",
-                                   "multiple": chooser.is_multiple()}, interaction)
+            files = upload_files({"accept": await chooser.element.get_attribute("accept") or "",
+                                  "multiple": chooser.is_multiple()}, interaction)
         await chooser.set_files([str(path) for path in files])
         state.event("file_selection", action_id=action_id, file_count=len(files))
 
@@ -341,8 +341,7 @@ async def capture_page(
                 network_failure_count=sum(event.loading_error is not None and event.resource_type != "Download" for event in events),
                 http_status_counts={str(status) if status is not None else "unknown": sum(event.status == status for event in events)
                                     for status in {event.status for event in events}},
-                new_request_routes=len(routes - state.seen_request_routes), attribution="action_window",
-                application_outcome="unverified",
+                new_request_routes=len(routes - state.seen_request_routes),
             )
         state.seen_request_routes.update(_route(event) for event in events)
 
@@ -496,17 +495,10 @@ class _DeltaTracker:
     def begin(self) -> None:
         self._before = set(self._captured)
 
-    def commit(self, tag: str) -> int:
-        """Tag requests that appeared since begin(); return how many fired.
-
-        The count lets the interactor decide whether a pagination button is
-        still productive (keep clicking) or has run dry (stop).
-        """
-        fired = 0
+    def commit(self, tag: str) -> None:
+        """Tag the requests that appeared since begin()."""
         for rid in set(self._captured) - self._before:
             self._captured[rid].triggered_by = tag
-            fired += 1
-        return fired
 
 
 async def _collect_dom(page: Page) -> list[DomElement]:
@@ -532,7 +524,7 @@ async def _collect_dom(page: Page) -> list[DomElement]:
             for (const l of document.querySelectorAll('link[rel="preconnect"],link[rel="dns-prefetch"],link[rel="prefetch"],link[rel="preload"],link[rel="modulepreload"],link[rel="manifest"],link[rel="canonical"],link[rel="alternate"],link[rel="sitemap"]'))
                 push("link", {href:l.getAttribute("href")||"", rel:l.getAttribute("rel")||""});
             // --- [P3] Meta tags ---
-            for (const m of document.querySelectorAll('meta[property^="og:"],meta[name="csrf-token"],meta[name="csrf-param"],meta[name="api-base-url"],meta[http-equiv="refresh"]'))
+            for (const m of document.querySelectorAll('meta[property^="og:"],meta[name="api-base-url"],meta[http-equiv="refresh"]'))
                 push("meta", {name:m.getAttribute("property")||m.getAttribute("name")||m.getAttribute("http-equiv")||"", content:m.getAttribute("content")||""});
             // --- [P4] data-* URL attributes ---
             for (const el of document.querySelectorAll("[data-href],[data-url],[data-src],[data-endpoint],[data-api]")) {
@@ -563,10 +555,6 @@ async def _collect_dom(page: Page) -> list[DomElement]:
             // iframe, source, track, embed, object
             for (const el of document.querySelectorAll("iframe[src],source[src],track[src],embed[src],object[data]"))
                 push(el.tagName.toLowerCase(), {src:el.getAttribute("src")||el.getAttribute("data")||""});
-            // a[ping] — stored under "ping" key (not "href") so _extract_url
-            // won't send tracking beacons into the frontier
-            for (const a of document.querySelectorAll("a[ping]"))
-                push("a-ping", {ping:a.getAttribute("ping")||""});
 
             return out;
         }""")

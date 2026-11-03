@@ -204,7 +204,7 @@ async def _login_flow(url: str, out: Path) -> None:
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        print(f"\n[bold]Log in in the browser, then press Enter here:[/bold]")
+        print("\n[bold]Log in in the browser, then press Enter here:[/bold]")
         await asyncio.to_thread(input)
         state = await context.storage_state(path=str(out))
         await browser.close()
